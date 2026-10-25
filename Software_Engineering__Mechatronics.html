@@ -1,0 +1,1173 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mechatronics — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="active" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Mechatronics</h1><p class="meta">Software Engineering · Software_Engineering/Mechatronics.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-what-mechatronics-is">1. What Mechatronics Is</a></li><li><a href="#2-cpus-and-microcontrollers">2. CPUs and Microcontrollers</a></li><li><a href="#3-mechatronic-hardware-sensors-and-actuators">3. Mechatronic Hardware — Sensors and Actuators</a></li><li><a href="#4-wiring-diagrams">4. Wiring Diagrams</a></li><li><a href="#5-control-algorithms">5. Control Algorithms</a></li><li><a href="#6-electricity-fundamentals">6. Electricity Fundamentals</a></li><li><a href="#7-hsc-exam-response-structures">7. HSC Exam Response Structures</a></li><li><a href="#8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-key-definitions-quick-reference">9. Key Definitions Quick Reference</a></li><li><a href="#10-quick-revision-checklist">10. Quick Revision Checklist</a></li></ul></div><h1>Mechatronics — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 11, Unit 3</strong> | What mechatronics is, CPUs vs microcontrollers, sensors and actuators, wiring diagrams, control algorithms and electricity fundamentals.</p>
+</blockquote>
+<hr>
+<h2 id="1-what-mechatronics-is">1. What Mechatronics Is</h2>
+<p><strong>Definition</strong>: Mechatronics = <strong>Mechanics + Electronics + Computing + Control Systems</strong>.</p>
+<blockquote>
+<p>&quot;Mechatronics is a field that combines mechanical, electrical, electronic, and software engineering to create smarter and more efficient systems.&quot;</p>
+</blockquote>
+<p><strong>Origin</strong>: The term was coined in Japan by <strong>Tetsuro Mori</strong>, an engineer at <strong>Yaskawa Electric Corporation</strong> — a combination of &quot;mechanics&quot; and &quot;electronics&quot;.</p>
+<p><strong>Where it is found</strong>: robotics, automated systems, smart home devices, robotic arms, drones, self-driving cars.</p>
+<table>
+<thead>
+<tr>
+<th>Benefits</th>
+<th>Drawbacks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Efficiency and speed</td>
+<td>Job loss in some sectors</td>
+</tr>
+<tr>
+<td>Reduced human error</td>
+<td>High costs</td>
+</tr>
+<tr>
+<td>Can take on <strong>dangerous or repetitive</strong> tasks</td>
+<td>Ethical concerns (surveillance, dependency)</td>
+</tr>
+</tbody></table>
+<p><strong>Applications for people with disability:</strong></p>
+<ul>
+<li><strong>Exoskeleton suits</strong> — for cerebral palsy</li>
+<li><strong>Robotic prosthetic limbs</strong> — for amputations</li>
+<li><strong>Brain–machine interfaces</strong> — for spinal injuries</li>
+<li>Custom robotic enhancements</li>
+</ul>
+<hr>
+<h2 id="2-cpus-and-microcontrollers">2. CPUs and Microcontrollers</h2>
+<h3 id="2-1-cpu-components">2.1 CPU Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Control Unit (CU)</strong></td>
+<td>Runs the CPU, and thus the fetch–execute cycle</td>
+</tr>
+<tr>
+<td><strong>Arithmetic Logic Unit (ALU)</strong></td>
+<td>Runs mathematical and logical operations</td>
+</tr>
+<tr>
+<td><strong>Registers</strong></td>
+<td>Temporary memory locations mainly accessible to the CPU</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-the-registers">2.2 The Registers</h3>
+<blockquote>
+<p><strong>A register is a temporary memory location mainly accessible to the CPU.</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Full name</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PC</strong></td>
+<td>Program Counter</td>
+<td>The <strong>address of the next</strong> instruction to be executed</td>
+</tr>
+<tr>
+<td><strong>MAR</strong></td>
+<td>Memory Address Register</td>
+<td>The memory address <strong>currently being accessed</strong></td>
+</tr>
+<tr>
+<td><strong>MDR</strong></td>
+<td>Memory Data Register</td>
+<td>The <strong>data</strong> fetched from or being written to that address</td>
+</tr>
+<tr>
+<td><strong>ACC</strong></td>
+<td>Accumulator</td>
+<td>The <strong>results</strong> of the current operations</td>
+</tr>
+<tr>
+<td><strong>CIR / IR</strong></td>
+<td>Current Instruction Register</td>
+<td>The <strong>current instruction</strong> being executed</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — MAR vs MDR</strong>
+<strong>MAR</strong> holds the <strong>address</strong> (<em>where</em> in memory).
+<strong>MDR</strong> holds the <strong>data</strong> (<em>what</em> is at that address).
+Address register = the house number; data register = what&#39;s inside the house.</p>
+</blockquote>
+<h3 id="2-3-the-fetch-execute-cycle">2.3 The Fetch–Execute Cycle</h3>
+<pre><code>BEGIN
+    PC → MAR                        fetch: address of next instruction
+    MAR sends address to RAM
+    RAM sends data at address to MDR
+    MDR → CIR                       instruction now in the instruction register
+    CU decodes CIR contents         decode
+    OPCODE  ← CIR[bits 0–3]         what to do
+    OPERAND ← CIR[bits 4–7]         what to do it to
+    IF OPCODE == 0101 THEN load operand into ACC
+    IF OPCODE == 0001 THEN ACC ← ACC + MDR
+    IF OPCODE == 0010 THEN ACC ← ACC − MDR
+    PC ← PC + 1                     point at the next instruction
+END
+</code></pre>
+<p><strong>Step by step (one cycle):</strong></p>
+<ol>
+<li>CU copies <strong>PC</strong> to <strong>MAR</strong></li>
+<li>Address goes onto the <strong>Address Bus</strong></li>
+<li>Memory loads the value onto the <strong>Data Bus</strong></li>
+<li>Value arrives in <strong>MDR</strong></li>
+<li>Value moves to <strong>CIR</strong></li>
+<li><strong>PC is incremented</strong></li>
+<li>Decode Unit splits the instruction into <strong>opcode</strong> and <strong>operand</strong></li>
+<li>Opcode <code>0000</code> means <strong>end program</strong></li>
+</ol>
+<blockquote>
+<p><strong>Confusing pair — Opcode vs Operand</strong>
+<strong>Opcode</strong> = the <strong>operation</strong> to perform (bits 0–3) — the verb.
+<strong>Operand</strong> = the <strong>data or address</strong> to perform it on (bits 4–7) — the noun.</p>
+</blockquote>
+<h3 id="2-4-machine-language-worked-examples">2.4 Machine Language Worked Examples</h3>
+<p>Instructions and data are stored as <strong>binary in RAM</strong>.</p>
+<blockquote>
+<p>Addresses <code>0010 1000</code> (= 5) and <code>0010 1001</code> (= 3) match the values typed in.
+Memory 6 contained <code>A1</code>; the program added Memory 5 (<code>30</code>) → <strong><code>A1 + 30 = D1</code></strong> in hex.</p>
+</blockquote>
+<p><strong>Worked: multiply Memory 5 by three, storing the result in Memory 7</strong></p>
+<pre><code>LOAD  (Reg1, Mem 5)        ; Reg1 = Mem5           = x
+ADD   (Reg2, Reg1, Reg1)   ; Reg2 = x + x          = 2x
+ADD   (Reg3, Reg2, Reg1)   ; Reg3 = 2x + x         = 3x
+STORE (Reg3, Mem 7)        ; Mem7 = 3x
+STOP
+</code></pre>
+<blockquote>
+<p>Note the technique: there is no MULTIPLY instruction, so multiplication is achieved by <strong>repeated addition</strong>.</p>
+</blockquote>
+<h3 id="2-5-cpu-vs-microcontroller">2.5 CPU vs Microcontroller</h3>
+<blockquote>
+<p>&quot;A <strong>CPU</strong> is just the processor and needs extra parts to work, handling many tasks fast. A <strong>microcontroller</strong> has a CPU, memory, and I/O <strong>in one chip</strong> for specific tasks.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>CPU</strong></th>
+<th><strong>Microcontroller</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>What it is</td>
+<td>Processor only</td>
+<td>CPU + memory + I/O <strong>on one chip</strong></td>
+</tr>
+<tr>
+<td>Needs extra parts?</td>
+<td><strong>Yes</strong></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>Registers</td>
+<td>More, and faster</td>
+<td>Fewer</td>
+</tr>
+<tr>
+<td>Opcodes</td>
+<td>Complex</td>
+<td>Simpler, for hardware control</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>General-purpose, many fast tasks</td>
+<td>Specific / <strong>embedded</strong> tasks</td>
+</tr>
+<tr>
+<td>Example use</td>
+<td>Desktop computer, phone</td>
+<td>Arduino, micro:bit, washing machine</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why microcontrollers suit mechatronics</strong>: everything needed to read a sensor and drive an actuator is already on the chip — no separate memory or I/O hardware, lower cost, lower power, smaller size.</p>
+</blockquote>
+<hr>
+<h2 id="3-mechatronic-hardware-sensors-and-actuators">3. Mechatronic Hardware — Sensors and Actuators</h2>
+<h3 id="3-1-core-definitions">3.1 Core Definitions</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sensor</strong></td>
+<td>A device that <strong>transduces</strong> a physical quantity such as pressure, light, motion or temperature <strong>into an electrical signal</strong> that can be read by a control system</td>
+</tr>
+<tr>
+<td><strong>Actuator</strong></td>
+<td>A mechanism that <strong>converts electrical input into a mechanical action</strong> — motion or force</td>
+</tr>
+<tr>
+<td><strong>End effector / gripper</strong></td>
+<td>Grips objects using mechanical jaws or fingers, often driven by servos or pneumatics</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing term — Transduce</strong>
+To <strong>transduce</strong> means to convert energy from one form into another.
+A <strong>sensor</strong> transduces physical → electrical (light becomes a voltage).
+An <strong>actuator</strong> transduces electrical → physical (a voltage becomes movement).
+They are mirror images of each other.</p>
+</blockquote>
+<h3 id="3-2-sensors-and-actuators-across-industries">3.2 Sensors and Actuators Across Industries</h3>
+<table>
+<thead>
+<tr>
+<th>Industry</th>
+<th>Sensors</th>
+<th>Actuators</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Manufacturing</strong></td>
+<td>Position, temperature, flow, pressure</td>
+<td>Motors, valves, conveyor belts, robotic arms</td>
+</tr>
+<tr>
+<td><strong>Healthcare</strong></td>
+<td>Vital signs, movement, environment</td>
+<td>Prosthetics, surgical tools, infusion and breathing pumps</td>
+</tr>
+<tr>
+<td><strong>Agriculture</strong></td>
+<td>Soil moisture, temperature, crop health, obstacle detection</td>
+<td>Irrigation, spray systems, driverless tractors</td>
+</tr>
+<tr>
+<td><strong>Construction</strong></td>
+<td>Structural stress, orientation</td>
+<td>Hydraulic machinery — excavators, lifts</td>
+</tr>
+<tr>
+<td><strong>Transportation</strong></td>
+<td>Speed, proximity, orientation</td>
+<td>Braking, steering, doors, suspension, autonomous systems</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-how-specific-sensors-work">3.3 How Specific Sensors Work</h3>
+<table>
+<thead>
+<tr>
+<th>Sensor</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PIR</strong> (passive infrared)</td>
+<td>Detects <strong>changes in infrared radiation</strong> (body heat) across paired segments; differential signals are amplified and compared</td>
+</tr>
+<tr>
+<td><strong>Accelerometer</strong></td>
+<td>Measures <strong>acceleration and tilt</strong> via MEMS, across 3 axes</td>
+</tr>
+<tr>
+<td><strong>Gyroscope</strong></td>
+<td>Measures <strong>angular velocity</strong> via vibrating structures or a rotating mass</td>
+</tr>
+<tr>
+<td><strong>Ultrasonic distance</strong></td>
+<td>Emits pulses and measures the <strong>echo return time</strong> → distance</td>
+</tr>
+<tr>
+<td><strong>LDR</strong> (light dependent resistor)</td>
+<td>Resistance changes with light — <strong>dark = high</strong> resistance, <strong>bright = low</strong></td>
+</tr>
+<tr>
+<td><strong>Analogue sensor</strong></td>
+<td>Output voltage varies <strong>continuously</strong>; needs an <strong>ADC</strong> to interface with digital systems</td>
+</tr>
+<tr>
+<td><strong>I²C light sensor</strong></td>
+<td>Uses the I²C <strong>serial protocol</strong> for a digital light reading</td>
+</tr>
+<tr>
+<td><strong>Joystick</strong></td>
+<td>Potentiometers or hall-effect sensors giving <strong>X/Y axis</strong> control</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>ADC (Analogue-to-Digital Converter)</strong>: converts a continuously varying voltage into a discrete number the microcontroller can process. Needed because sensors produce analogue signals but processors work in binary.</p>
+</blockquote>
+<h3 id="3-4-how-specific-actuators-work">3.4 How Specific Actuators Work</h3>
+<table>
+<thead>
+<tr>
+<th>Actuator</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Rotary / linear / micro servo</strong></td>
+<td>Converts electrical signals to <strong>precise movement</strong>. Rotary servos travel up to <strong>180°</strong>; continuous servos rotate indefinitely</td>
+</tr>
+<tr>
+<td><strong>Hydraulic actuator</strong></td>
+<td>Fluid pressure moves a piston → <strong>high-force</strong> linear or rotary motion</td>
+</tr>
+<tr>
+<td><strong>Robotic gripper</strong></td>
+<td>Picks up, holds and releases objects, controlled by sensor signals</td>
+</tr>
+</tbody></table>
+<h3 id="3-5-device-classification-worked">3.5 Device Classification — worked</h3>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Input/Output</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DC motor</td>
+<td>Output</td>
+<td>Actuator</td>
+</tr>
+<tr>
+<td>DC motor + gearing to clamp</td>
+<td>Output</td>
+<td><strong>End effector</strong> (and actuator)</td>
+</tr>
+<tr>
+<td>Accelerometer (3 axes)</td>
+<td>Input</td>
+<td>Sensor</td>
+</tr>
+<tr>
+<td>Photodiode</td>
+<td>Input</td>
+<td>Sensor</td>
+</tr>
+<tr>
+<td>180° positional servo</td>
+<td>Output</td>
+<td>Actuator</td>
+</tr>
+</tbody></table>
+<h3 id="3-6-the-software-data-layer">3.6 The Software / Data Layer</h3>
+<table>
+<thead>
+<tr>
+<th>Data type</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Operational data</strong></td>
+<td>Real-time sensor readings — temperature, motion</td>
+</tr>
+<tr>
+<td><strong>Diagnostic data</strong></td>
+<td>Error codes, system health metrics</td>
+</tr>
+<tr>
+<td><strong>Optimisation data</strong></td>
+<td>Historical performance for <strong>predictive maintenance</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>&quot;Sensors capture raw data. The controller processes this via <strong>filtering, analytics and decision logic</strong> to determine actuator responses. This <strong>feedback loop</strong> ensures adaptability, precision and safety.&quot;</p>
+</blockquote>
+<p><strong>The feedback loop:</strong></p>
+<pre><code>SENSOR  →  CONTROLLER  →  ACTUATOR
+   ↑                          │
+   └──────────────────────────┘
+      (sensor reads the result of the action)
+</code></pre>
+<hr>
+<h2 id="4-wiring-diagrams">4. Wiring Diagrams</h2>
+<h3 id="4-1-nesa-symbol-set">4.1 NESA Symbol Set</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Capacitor</strong></td>
+<td>Stores energy as an electric field</td>
+</tr>
+<tr>
+<td><strong>Diode</strong></td>
+<td>Allows current in <strong>one direction only</strong></td>
+</tr>
+<tr>
+<td><strong>Resistor</strong></td>
+<td>Limits current</td>
+</tr>
+<tr>
+<td><strong>Potentiometer</strong></td>
+<td>Adjustable resistor</td>
+</tr>
+<tr>
+<td><strong>2-way switch</strong></td>
+<td>Selects between two paths</td>
+</tr>
+<tr>
+<td><strong>On/off switch</strong></td>
+<td>Opens or closes the circuit</td>
+</tr>
+<tr>
+<td><strong>Speaker</strong></td>
+<td>Converts electrical signal to sound</td>
+</tr>
+<tr>
+<td><strong>Motor</strong></td>
+<td>Converts electrical energy to rotation</td>
+</tr>
+<tr>
+<td><strong>LED</strong></td>
+<td>Light-emitting diode — indicator output</td>
+</tr>
+<tr>
+<td><strong>Lightbulb</strong></td>
+<td>Light output</td>
+</tr>
+<tr>
+<td><strong>Integrated circuit</strong></td>
+<td>A microcontroller or chip</td>
+</tr>
+<tr>
+<td><strong>Voltage source</strong> / <strong>DC voltage source</strong></td>
+<td>Supplies power</td>
+</tr>
+<tr>
+<td><strong>Amplifier</strong> (operational amplifier)</td>
+<td>Increases signal strength</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>If a wiring diagram requires other electrical components, <strong>the components must be clearly labelled</strong> for identification.</p>
+</blockquote>
+<h3 id="4-2-wiring-a-real-circuit">4.2 Wiring a Real Circuit</h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Wiring</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Variable speed via potentiometer</strong></td>
+<td>One end to power, other end to ground; <strong>centre tap to an analog input</strong></td>
+</tr>
+<tr>
+<td><strong>On/off via switch</strong></td>
+<td>One end to power, other to a digital input; <strong>resistor to ground</strong> prevents the input &quot;floating&quot; when the switch is open</td>
+</tr>
+<tr>
+<td><strong>User feedback via LED</strong></td>
+<td>One end to a digital output, other to ground <strong>through a resistor</strong> (limits current so the LED isn&#39;t destroyed)</td>
+</tr>
+<tr>
+<td><strong>Power the microcontroller</strong></td>
+<td>USB to voltage source; negative side to ground</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing term — Floating input</strong>
+A digital input not connected to either power or ground picks up electrical noise and reads randomly high or low. A <strong>pull-down resistor</strong> to ground gives it a defined value (0) when the switch is open.</p>
+</blockquote>
+<hr>
+<h2 id="5-control-algorithms">5. Control Algorithms</h2>
+<blockquote>
+<p><strong>Definition</strong>: &quot;A control algorithm is code that controls the operation of a mechatronic system. It uses values from the available <strong>sensors</strong> to compute outputs that it then sends to connected <strong>actuators</strong>.&quot;</p>
+</blockquote>
+<h3 id="5-1-typical-structure">5.1 Typical Structure</h3>
+<p><strong>1. Set-up / calibration</strong> — measure the range of sensor values.
+<em>Example</em>: a line-follower measures reflected light from the line versus the background, so it knows what &quot;on the line&quot; looks like.</p>
+<p><strong>2. Main control loop</strong> (repeated continuously):</p>
+<pre><code>(a) Read sensors           →  determine the current state
+(b) Compute control values →  move toward a desired SET POINT
+(c) Output to actuators
+</code></pre>
+<blockquote>
+<p><strong>Set point</strong> = the target value the system is trying to reach and hold — room temperature, car speed, position on the line.</p>
+</blockquote>
+<blockquote>
+<p><strong>Worked comparison from class</strong>: the first algorithm produced <strong>jerky on/off control</strong> with constant overcorrection. The second used <strong>proportional control</strong>, where the size of the correction depends on <strong>how far</strong> the robot is from the line — noticeably smoother.</p>
+</blockquote>
+<h3 id="5-2-open-loop-vs-closed-loop">5.2 Open-Loop vs Closed-Loop</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Open-loop</strong></th>
+<th><strong>Closed-loop</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Feedback?</strong></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>How it works</td>
+<td>Runs on a <strong>fixed plan</strong>, ignoring the result</td>
+<td><strong>Measures the result</strong> and corrects</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>Lower</td>
+<td>&quot;More accurate because the system constantly monitors feedback and adjusts itself&quot;</td>
+</tr>
+<tr>
+<td>Cost/complexity</td>
+<td>Simple and cheap</td>
+<td>&quot;More complex and expensive — requires sensors, feedback mechanisms and faster processing&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Closed-loop error</strong> = the difference between the <strong>desired set point</strong> and the <strong>actual sensor value</strong>. Everything a closed-loop controller does is an attempt to drive that error to zero.</p>
+</blockquote>
+<p><strong>Classification table — learn these examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Loop type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TV remote</td>
+<td><strong>Open</strong></td>
+</tr>
+<tr>
+<td>Vehicle cruise control</td>
+<td><strong>Closed</strong></td>
+</tr>
+<tr>
+<td>Vehicle steering</td>
+<td><strong>Closed</strong></td>
+</tr>
+<tr>
+<td>Ceiling fan speed</td>
+<td><strong>Open</strong></td>
+</tr>
+<tr>
+<td>Air conditioner temperature</td>
+<td><strong>Closed</strong></td>
+</tr>
+<tr>
+<td>Washing machine cycle timing</td>
+<td><strong>Open</strong></td>
+</tr>
+<tr>
+<td>Traffic light control</td>
+<td><strong>Open</strong></td>
+</tr>
+<tr>
+<td>Robotic arm (predetermined path)</td>
+<td><strong>Open</strong></td>
+</tr>
+<tr>
+<td>Line-following robot</td>
+<td><strong>Closed</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The test to apply</strong>: does the system <strong>measure its own output</strong> and change behaviour based on it? A washing machine timer runs for 40 minutes whether or not the clothes are clean → <strong>open</strong>. An air conditioner keeps measuring the room temperature and switching accordingly → <strong>closed</strong>.</p>
+</blockquote>
+<h3 id="5-3-the-three-autonomous-control-algorithms">5.3 The Three Autonomous Control Algorithms</h3>
+<p>All three are <strong>closed-loop</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>How it works</th>
+<th>Weakness</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>On/off (&quot;bang-bang&quot;)</strong></td>
+<td>Switches abruptly between two extremes — fully on or fully off. No intermediate levels</td>
+<td>Constant overshoot and oscillation; jerky</td>
+</tr>
+<tr>
+<td><strong>Proportional</strong></td>
+<td>&quot;Adjusts the output <strong>continuously based on the size of the error</strong>&quot; — bigger error, bigger correction. Reduces oscillation</td>
+<td>A small <strong>steady-state error</strong> may remain permanently</td>
+</tr>
+<tr>
+<td><strong>PID</strong> (Proportional, Integral, Derivative)</td>
+<td><strong>P</strong> responds to the current error; <strong>I</strong> accumulates error over time to <strong>eliminate the steady-state error</strong>; <strong>D</strong> responds to the <strong>rate of change</strong>, damping overshoot</td>
+<td>More complex to tune</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>What each PID term actually fixes</strong>
+<strong>P</strong> — &quot;how far off am I <em>right now</em>?&quot; Gets you most of the way there.
+<strong>I</strong> — &quot;how long have I been off?&quot; Removes the small leftover error P can&#39;t fix.
+<strong>D</strong> — &quot;how fast am I approaching?&quot; Slows you down so you don&#39;t overshoot.</p>
+</blockquote>
+<hr>
+<h2 id="6-electricity-fundamentals">6. Electricity Fundamentals</h2>
+<h3 id="6-1-circuits">6.1 Circuits</h3>
+<p><strong>Complete vs incomplete circuits</strong>: an ammeter reads <strong>zero</strong> if a wire is missing between battery and bulb, the battery is wrongly connected, or the bulb is blown. It reads a value when &quot;the circuit is connected correctly / it is a complete circuit.&quot;</p>
+<h3 id="6-2-measuring-instruments">6.2 Measuring Instruments</h3>
+<blockquote>
+<p><strong>The rule to memorise: the ammeter goes in SERIES, the voltmeter goes in PARALLEL.</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>Placement</th>
+<th>Measures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ammeter</strong></td>
+<td>In <strong>series</strong> with the component</td>
+<td>Current (amps)</td>
+</tr>
+<tr>
+<td><strong>Voltmeter</strong></td>
+<td>In <strong>parallel</strong> with the material</td>
+<td>Potential difference (volts)</td>
+</tr>
+</tbody></table>
+<p>To <strong>change the current</strong> in a circuit: &quot;adjust / use the <strong>variable resistor</strong>.&quot;</p>
+<h3 id="6-3-ohm-s-law-worked-example">6.3 Ohm&#39;s Law — Worked Example</h3>
+<pre><code>V = I × R          R = V ÷ I          I = V ÷ R
+</code></pre>
+<blockquote>
+<p><strong>Worked (conducting putty at 25 cm, current 0.15 A):</strong></p>
+<ul>
+<li>Resistance = <strong>37.5 Ω</strong> (accept 36–39)</li>
+<li>Potential difference = R × I = 37.5 × 0.15 = <strong>5.625 V</strong> (mark scheme: 5.6)</li>
+</ul>
+</blockquote>
+<p><strong>Key finding</strong>: &quot;The <strong>thicker</strong> the putty, the <strong>lower</strong> the resistance.&quot; A thicker conductor gives current more paths to flow through.</p>
+<p><strong>Improving reliability</strong>: &quot;<strong>Repeat readings and take a mean</strong>&quot; — <em>not</em> simply &quot;take more readings.&quot; The mark scheme requires the averaging step.</p>
+<h3 id="6-4-energy">6.4 Energy</h3>
+<p><strong>Flywheel energy</strong> is stored as <strong>kinetic energy</strong>. A brighter bulb draws more energy per second, so the flywheel &quot;<strong>slows down more quickly</strong>.&quot; Energy is lost from the axle and bearings (as heat and sound) and from the wires (as heat).</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fossil fuels</strong></td>
+<td>Coal, gas (also petrol/oil)</td>
+</tr>
+<tr>
+<td><strong>Solar panel</strong></td>
+<td>Source is <strong>the Sun</strong>; &quot;cannot work at night because there is no light&quot;</td>
+</tr>
+<tr>
+<td><strong>Wind turbine</strong></td>
+<td>Blades turn due to <strong>wind</strong>; &quot;cannot generate all the time because it might not be windy&quot;</td>
+</tr>
+<tr>
+<td><strong>Renewable</strong></td>
+<td>Sun/solar, waves, wind</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-hsc-exam-response-structures">7. HSC Exam Response Structures</h2>
+<h3 id="common-question-types">Common Question Types</h3>
+<table>
+<thead>
+<tr>
+<th>Question type</th>
+<th>How to answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Distinguish between a CPU and a microcontroller&quot;</strong></td>
+<td>Define both → integration of memory/IO → register count and opcode complexity → typical use case each</td>
+</tr>
+<tr>
+<td><strong>&quot;Describe the fetch–execute cycle&quot;</strong></td>
+<td>Name each register in order and state what moves where; finish with PC increment</td>
+</tr>
+<tr>
+<td><strong>&quot;Classify this system as open or closed loop, and justify&quot;</strong></td>
+<td>State the classification → identify whether a sensor measures the <strong>output</strong> → explain what feedback does or doesn&#39;t happen</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain why PID is used instead of proportional control&quot;</strong></td>
+<td>Define both → identify the <strong>steady-state error</strong> proportional control leaves → explain how the integral term eliminates it and derivative damps overshoot</td>
+</tr>
+<tr>
+<td><strong>&quot;Design a control algorithm for [scenario]&quot;</strong></td>
+<td>Set-up/calibration → main loop: read sensors → compute toward set point → output to actuators</td>
+</tr>
+<tr>
+<td><strong>&quot;Draw a wiring diagram&quot;</strong></td>
+<td>Use the NESA symbols; label any non-standard component; include the current-limiting resistor for LEDs and the pull-down resistor for switches</td>
+</tr>
+</tbody></table>
+<h3 id="paragraph-scaffold">Paragraph Scaffold</h3>
+<pre><code>Topic sentence (define the term)
+  → explain the mechanism (how the hardware or algorithm actually works)
+  → apply to a scenario (line-follower, cruise control, your project)
+  → link to a syllabus concept (feedback, accuracy vs cost, safety)
+</code></pre>
+<hr>
+<h2 id="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sensor</strong></td>
+<td>Physical → electrical</td>
+<td><strong>Actuator</strong> — electrical → physical</td>
+</tr>
+<tr>
+<td><strong>Actuator</strong></td>
+<td>Produces motion or force</td>
+<td><strong>End effector</strong> — the tool at the end that grips</td>
+</tr>
+<tr>
+<td><strong>Transduce</strong></td>
+<td>Convert energy from one form to another</td>
+<td>Transmit (just moving a signal)</td>
+</tr>
+<tr>
+<td><strong>CPU</strong></td>
+<td>Processor only; needs external memory and I/O</td>
+<td><strong>Microcontroller</strong> — all on one chip</td>
+</tr>
+<tr>
+<td><strong>MAR</strong></td>
+<td>Holds the <strong>address</strong></td>
+<td><strong>MDR</strong> — holds the <strong>data</strong></td>
+</tr>
+<tr>
+<td><strong>PC</strong> (Program Counter)</td>
+<td>Address of the <strong>next</strong> instruction</td>
+<td><strong>CIR</strong> — the <strong>current</strong> instruction</td>
+</tr>
+<tr>
+<td><strong>ACC</strong> (Accumulator)</td>
+<td>Holds operation <strong>results</strong></td>
+<td>A general register</td>
+</tr>
+<tr>
+<td><strong>Opcode</strong></td>
+<td>The operation (bits 0–3)</td>
+<td><strong>Operand</strong> — the data/address (bits 4–7)</td>
+</tr>
+<tr>
+<td><strong>Register</strong></td>
+<td>Temporary storage inside the CPU</td>
+<td>RAM (external main memory)</td>
+</tr>
+<tr>
+<td><strong>Open loop</strong></td>
+<td>No feedback; runs a fixed plan</td>
+<td><strong>Closed loop</strong> — measures and corrects</td>
+</tr>
+<tr>
+<td><strong>Set point</strong></td>
+<td>The target value</td>
+<td>The current sensor reading</td>
+</tr>
+<tr>
+<td><strong>Error</strong> (control)</td>
+<td>Set point <strong>minus</strong> actual value</td>
+<td>A software bug</td>
+</tr>
+<tr>
+<td><strong>On/off (bang-bang)</strong></td>
+<td>Fully on or fully off</td>
+<td><strong>Proportional</strong> — correction scaled to error</td>
+</tr>
+<tr>
+<td><strong>Proportional</strong></td>
+<td>Leaves a small steady-state error</td>
+<td><strong>PID</strong> — integral removes that error</td>
+</tr>
+<tr>
+<td><strong>Steady-state error</strong></td>
+<td>Small permanent offset from the set point</td>
+<td>Overshoot (going past the target)</td>
+</tr>
+<tr>
+<td><strong>Analogue</strong></td>
+<td>Continuously varying signal</td>
+<td><strong>Digital</strong> — discrete values; needs an <strong>ADC</strong> to bridge</td>
+</tr>
+<tr>
+<td><strong>LDR</strong></td>
+<td>Resistance falls as light increases</td>
+<td>Photodiode (produces current from light)</td>
+</tr>
+<tr>
+<td><strong>Potentiometer</strong></td>
+<td>Adjustable resistor, used as a variable input</td>
+<td>Fixed resistor</td>
+</tr>
+<tr>
+<td><strong>Ammeter in series</strong></td>
+<td>Measures current</td>
+<td><strong>Voltmeter in parallel</strong> — measures voltage</td>
+</tr>
+<tr>
+<td><strong>Floating input</strong></td>
+<td>Unconnected input reading random noise</td>
+<td>A grounded input (defined at 0)</td>
+</tr>
+<tr>
+<td><strong>Operational data</strong></td>
+<td>Live sensor readings</td>
+<td><strong>Diagnostic</strong> — error codes; <strong>Optimisation</strong> — historical</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-key-definitions-quick-reference">9. Key Definitions Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-Line Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mechatronics</td>
+<td>Mechanics + electronics + computing + control systems</td>
+</tr>
+<tr>
+<td>Sensor</td>
+<td>Transduces a physical quantity into an electrical signal</td>
+</tr>
+<tr>
+<td>Actuator</td>
+<td>Converts electrical input into mechanical action</td>
+</tr>
+<tr>
+<td>End effector</td>
+<td>The gripping tool at the end of a robotic arm</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>The processor; requires external memory and I/O</td>
+</tr>
+<tr>
+<td>Microcontroller</td>
+<td>CPU, memory and I/O integrated on a single chip</td>
+</tr>
+<tr>
+<td>Control Unit</td>
+<td>Runs the CPU and the fetch–execute cycle</td>
+</tr>
+<tr>
+<td>ALU</td>
+<td>Performs mathematical and logical operations</td>
+</tr>
+<tr>
+<td>Register</td>
+<td>Temporary memory location accessible to the CPU</td>
+</tr>
+<tr>
+<td>Program Counter</td>
+<td>Holds the address of the next instruction</td>
+</tr>
+<tr>
+<td>MAR</td>
+<td>Holds the memory address currently being accessed</td>
+</tr>
+<tr>
+<td>MDR</td>
+<td>Holds the data at that address</td>
+</tr>
+<tr>
+<td>Accumulator</td>
+<td>Holds the results of current operations</td>
+</tr>
+<tr>
+<td>CIR</td>
+<td>Holds the current instruction being executed</td>
+</tr>
+<tr>
+<td>Opcode</td>
+<td>The operation portion of an instruction</td>
+</tr>
+<tr>
+<td>Operand</td>
+<td>The data or address the operation acts on</td>
+</tr>
+<tr>
+<td>Fetch–execute cycle</td>
+<td>PC → MAR → RAM → MDR → CIR → decode → execute → PC+1</td>
+</tr>
+<tr>
+<td>ADC</td>
+<td>Converts an analogue voltage into a digital value</td>
+</tr>
+<tr>
+<td>Control algorithm</td>
+<td>Code using sensor values to compute actuator outputs</td>
+</tr>
+<tr>
+<td>Set point</td>
+<td>The target value the system aims to reach and hold</td>
+</tr>
+<tr>
+<td>Open loop</td>
+<td>Control without feedback</td>
+</tr>
+<tr>
+<td>Closed loop</td>
+<td>Control that measures the result and corrects</td>
+</tr>
+<tr>
+<td>On/off control</td>
+<td>Switches abruptly between two extremes</td>
+</tr>
+<tr>
+<td>Proportional control</td>
+<td>Correction sized according to the error</td>
+</tr>
+<tr>
+<td>PID control</td>
+<td>Proportional + integral + derivative control</td>
+</tr>
+<tr>
+<td>Steady-state error</td>
+<td>Small permanent offset remaining under proportional control</td>
+</tr>
+<tr>
+<td>Operational data</td>
+<td>Real-time sensor readings</td>
+</tr>
+<tr>
+<td>Diagnostic data</td>
+<td>Error codes and system health metrics</td>
+</tr>
+<tr>
+<td>Optimisation data</td>
+<td>Historical performance used for predictive maintenance</td>
+</tr>
+<tr>
+<td>Ohm&#39;s law</td>
+<td>V = I × R</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-quick-revision-checklist">10. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Define mechatronics and name its four component fields</li>
+<li><input disabled="" type="checkbox"> Benefits, drawbacks and disability applications</li>
+<li><input disabled="" type="checkbox"> Name all five registers and what each holds</li>
+<li><input disabled="" type="checkbox"> Recite the fetch–execute cycle in order</li>
+<li><input disabled="" type="checkbox"> Opcode vs operand, and the bit ranges</li>
+<li><input disabled="" type="checkbox"> CPU vs microcontroller across all six comparison rows</li>
+<li><input disabled="" type="checkbox"> Sensor vs actuator vs end effector</li>
+<li><input disabled="" type="checkbox"> How PIR, ultrasonic, LDR and accelerometer work</li>
+<li><input disabled="" type="checkbox"> Classify devices as input/output and sensor/actuator</li>
+<li><input disabled="" type="checkbox"> Operational vs diagnostic vs optimisation data</li>
+<li><input disabled="" type="checkbox"> NESA wiring diagram symbols</li>
+<li><input disabled="" type="checkbox"> Why an LED needs a resistor and a switch needs a pull-down</li>
+<li><input disabled="" type="checkbox"> The control algorithm structure: calibrate → read → compute → output</li>
+<li><input disabled="" type="checkbox"> Open vs closed loop, plus the nine classification examples</li>
+<li><input disabled="" type="checkbox"> On/off vs proportional vs PID, and what each PID term fixes</li>
+<li><input disabled="" type="checkbox"> Ammeter in series, voltmeter in parallel</li>
+<li><input disabled="" type="checkbox"> Ohm&#39;s law calculation and the reliability answer (&quot;repeat and take a mean&quot;)</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> | <a href="Software_Engineering__Software_Automation.html">Software Automation</a> | <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-what-mechatronics-is" data-target="1-what-mechatronics-is">1. What Mechatronics Is</a></li><li><a href="#2-cpus-and-microcontrollers" data-target="2-cpus-and-microcontrollers">2. CPUs and Microcontrollers</a><ul class="sub"><li><a href="#2-1-cpu-components" data-target="2-1-cpu-components" data-parent="2-cpus-and-microcontrollers">2.1 CPU Components</a></li><li><a href="#2-2-the-registers" data-target="2-2-the-registers" data-parent="2-cpus-and-microcontrollers">2.2 The Registers</a></li><li><a href="#2-3-the-fetch-execute-cycle" data-target="2-3-the-fetch-execute-cycle" data-parent="2-cpus-and-microcontrollers">2.3 The Fetch–Execute Cycle</a></li><li><a href="#2-4-machine-language-worked-examples" data-target="2-4-machine-language-worked-examples" data-parent="2-cpus-and-microcontrollers">2.4 Machine Language Worked Examples</a></li><li><a href="#2-5-cpu-vs-microcontroller" data-target="2-5-cpu-vs-microcontroller" data-parent="2-cpus-and-microcontrollers">2.5 CPU vs Microcontroller</a></li></ul></li><li><a href="#3-mechatronic-hardware-sensors-and-actuators" data-target="3-mechatronic-hardware-sensors-and-actuators">3. Mechatronic Hardware — Sensors and Actuators</a><ul class="sub"><li><a href="#3-1-core-definitions" data-target="3-1-core-definitions" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.1 Core Definitions</a></li><li><a href="#3-2-sensors-and-actuators-across-industries" data-target="3-2-sensors-and-actuators-across-industries" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.2 Sensors and Actuators Across Industries</a></li><li><a href="#3-3-how-specific-sensors-work" data-target="3-3-how-specific-sensors-work" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.3 How Specific Sensors Work</a></li><li><a href="#3-4-how-specific-actuators-work" data-target="3-4-how-specific-actuators-work" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.4 How Specific Actuators Work</a></li><li><a href="#3-5-device-classification-worked" data-target="3-5-device-classification-worked" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.5 Device Classification — worked</a></li><li><a href="#3-6-the-software-data-layer" data-target="3-6-the-software-data-layer" data-parent="3-mechatronic-hardware-sensors-and-actuators">3.6 The Software / Data Layer</a></li></ul></li><li><a href="#4-wiring-diagrams" data-target="4-wiring-diagrams">4. Wiring Diagrams</a><ul class="sub"><li><a href="#4-1-nesa-symbol-set" data-target="4-1-nesa-symbol-set" data-parent="4-wiring-diagrams">4.1 NESA Symbol Set</a></li><li><a href="#4-2-wiring-a-real-circuit" data-target="4-2-wiring-a-real-circuit" data-parent="4-wiring-diagrams">4.2 Wiring a Real Circuit</a></li></ul></li><li><a href="#5-control-algorithms" data-target="5-control-algorithms">5. Control Algorithms</a><ul class="sub"><li><a href="#5-1-typical-structure" data-target="5-1-typical-structure" data-parent="5-control-algorithms">5.1 Typical Structure</a></li><li><a href="#5-2-open-loop-vs-closed-loop" data-target="5-2-open-loop-vs-closed-loop" data-parent="5-control-algorithms">5.2 Open-Loop vs Closed-Loop</a></li><li><a href="#5-3-the-three-autonomous-control-algorithms" data-target="5-3-the-three-autonomous-control-algorithms" data-parent="5-control-algorithms">5.3 The Three Autonomous Control Algorithms</a></li></ul></li><li><a href="#6-electricity-fundamentals" data-target="6-electricity-fundamentals">6. Electricity Fundamentals</a><ul class="sub"><li><a href="#6-1-circuits" data-target="6-1-circuits" data-parent="6-electricity-fundamentals">6.1 Circuits</a></li><li><a href="#6-2-measuring-instruments" data-target="6-2-measuring-instruments" data-parent="6-electricity-fundamentals">6.2 Measuring Instruments</a></li><li><a href="#6-3-ohm-s-law-worked-example" data-target="6-3-ohm-s-law-worked-example" data-parent="6-electricity-fundamentals">6.3 Ohm's Law — Worked Example</a></li><li><a href="#6-4-energy" data-target="6-4-energy" data-parent="6-electricity-fundamentals">6.4 Energy</a></li></ul></li><li><a href="#7-hsc-exam-response-structures" data-target="7-hsc-exam-response-structures">7. HSC Exam Response Structures</a><ul class="sub"><li><a href="#common-question-types" data-target="common-question-types" data-parent="7-hsc-exam-response-structures">Common Question Types</a></li><li><a href="#paragraph-scaffold" data-target="paragraph-scaffold" data-parent="7-hsc-exam-response-structures">Paragraph Scaffold</a></li></ul></li><li><a href="#8-glossary-terms-students-mix-up" data-target="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-key-definitions-quick-reference" data-target="9-key-definitions-quick-reference">9. Key Definitions Quick Reference</a></li><li><a href="#10-quick-revision-checklist" data-target="10-quick-revision-checklist">10. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

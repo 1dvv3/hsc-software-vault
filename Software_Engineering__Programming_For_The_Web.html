@@ -1,0 +1,1663 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Programming for the Web — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="active" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Programming for the Web</h1><p class="meta">Software Engineering · Software_Engineering/Programming_For_The_Web.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-client-side-vs-server-side-programming">1. Client-Side vs Server-Side Programming</a></li><li><a href="#2-networking">2. Networking</a></li><li><a href="#3-big-data">3. Big Data</a></li><li><a href="#4-w3c-and-web-standards">4. W3C and Web Standards</a></li><li><a href="#5-version-control-and-open-source-development-tools">5. Version Control and Open-Source Development Tools</a></li><li><a href="#6-server-side-programming-and-content-management-systems">6. Server-Side Programming and Content Management Systems</a></li><li><a href="#7-relational-databases-and-sql">7. Relational Databases and SQL</a></li><li><a href="#8-secure-web-services">8. Secure Web Services</a></li><li><a href="#9-web-algorithm-description">9. Web Algorithm Description</a></li><li><a href="#10-caesar-cipher">10. Caesar Cipher</a></li><li><a href="#11-hsc-exam-response-structures">11. HSC Exam Response Structures</a></li><li><a href="#12-glossary-terms-students-mix-up">12. Glossary — Terms Students Mix Up</a></li><li><a href="#13-key-definitions-quick-reference">13. Key Definitions Quick Reference</a></li><li><a href="#14-quick-revision-checklist">14. Quick Revision Checklist</a></li></ul></div><h1>Programming for the Web — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 12, Unit 4</strong> | Client vs server-side, networking, big data, W3C standards, version control, server-side programming, secure web services, databases and web algorithms.</p>
+</blockquote>
+<hr>
+<h2 id="1-client-side-vs-server-side-programming">1. Client-Side vs Server-Side Programming</h2>
+<h3 id="1-1-the-core-distinction">1.1 The Core Distinction</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Client</strong></th>
+<th><strong>Server</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>What it is</td>
+<td>&quot;Your device, like your phone or computer&quot;</td>
+<td>&quot;A powerful computer that stores and manages websites&quot;</td>
+</tr>
+<tr>
+<td>Restaurant analogy</td>
+<td>Your interaction with the restaurant</td>
+<td>The kitchen staff preparing your meal</td>
+</tr>
+<tr>
+<td>Does</td>
+<td>Displays the webpage, handles user interactions, runs JavaScript</td>
+<td>Retrieves information from a database, processes requests, generates content</td>
+</tr>
+<tr>
+<td>Languages</td>
+<td><strong>JavaScript, HTML, CSS</strong></td>
+<td><strong>PHP, Java, Python, Ruby on Rails</strong> (Node.js is server-side JavaScript)</td>
+</tr>
+</tbody></table>
+<p><strong>The three client-side languages:</strong></p>
+<ul>
+<li><strong>HTML</strong> displays <strong>structure</strong></li>
+<li><strong>CSS</strong> makes it <strong>look right</strong> (presentation)</li>
+<li><strong>JavaScript</strong> makes it <strong>interactive</strong> (behaviour)</li>
+</ul>
+<p><strong>Worked division of labour:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Site</th>
+<th>Client handles</th>
+<th>Server handles</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YouTube</td>
+<td>Rendering the UI, handling clicks</td>
+<td>Storing videos, processing search</td>
+</tr>
+<tr>
+<td>E-commerce</td>
+<td>Displaying cart and checkout</td>
+<td>Managing the database, processing transactions securely</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-full-stack-development">1.2 Full-Stack Development</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technologies</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Browser</strong> (front end)</td>
+<td>JavaScript, jQuery, Angular, Vue</td>
+</tr>
+<tr>
+<td><strong>Server</strong> (back end)</td>
+<td>PHP, ASP, Python, Node</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>SQL, SQLite, MongoDB</td>
+</tr>
+</tbody></table>
+<p><strong>Common stacks:</strong></p>
+<ul>
+<li><strong>MERN</strong> = MongoDB, Express, React, Node</li>
+<li><strong>MEAN</strong> = MongoDB, Express, Angular, Node</li>
+</ul>
+<h3 id="1-3-progressive-web-apps-pwas">1.3 Progressive Web Apps (PWAs)</h3>
+<p>Client-side capabilities: interactivity, <strong>dynamic updates without reload</strong>, <strong>offline</strong> operation via <strong>service workers</strong>, and local storage (IndexedDB / LocalStorage).</p>
+<blockquote>
+<p><strong>Confusing pair — Client-side vs Server-side rendering</strong>
+<strong>Client-side</strong>: the server sends data, and the browser builds the page. Faster after first load, but needs a capable device.
+<strong>Server-side</strong>: the server builds the finished HTML and sends it. Better for slow devices and search-engine indexing, but each interaction needs a round trip.</p>
+</blockquote>
+<h3 id="1-4-front-end-web-development-frameworks">1.4 Front-End Web Development Frameworks</h3>
+<blockquote>
+<p><strong>NESA note</strong>: &quot;Students should understand <strong>why</strong> such frameworks are useful in front-end web development. Students are <strong>not</strong> expected to have knowledge of a specific framework nor to code using any specific framework.&quot;</p>
+</blockquote>
+<p><strong>Why frameworks are useful</strong>: reusable components, consistent structure, faster development, tested and maintained code, built-in routing and state management, large community support.</p>
+<hr>
+<h2 id="2-networking">2. Networking</h2>
+<h3 id="2-1-hardware">2.1 Hardware</h3>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Function</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hub</strong></td>
+<td>Data in and out through <strong>one</strong> cable; slow; small networks</td>
+<td>&quot;A road where all cars meet at an intersection&quot;</td>
+</tr>
+<tr>
+<td><strong>Switch</strong></td>
+<td>Many in and out; directs traffic intelligently; large networks and offices</td>
+<td>&quot;Traffic lights&quot;</td>
+</tr>
+<tr>
+<td><strong>Router</strong></td>
+<td>Finds the &quot;best way&quot; for data; connects to the internet</td>
+<td>&quot;Sat-Nav&quot;</td>
+</tr>
+<tr>
+<td><strong>Bridge</strong></td>
+<td>Connects two <strong>same</strong> networks</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Gateway</strong></td>
+<td>Connects two <strong>different</strong> networks</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Bridge vs Gateway</strong>
+<strong>Bridge</strong> joins two networks of the <strong>same</strong> type (same protocol).
+<strong>Gateway</strong> joins two <strong>different</strong> networks and translates between protocols.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing pair — Hub vs Switch</strong>
+A <strong>hub</strong> broadcasts data to <strong>every</strong> connected device — wasteful and insecure.
+A <strong>switch</strong> sends data <strong>only to the intended device</strong> — faster and more secure.</p>
+</blockquote>
+<h3 id="2-2-topologies">2.2 Topologies</h3>
+<table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>Structure</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Star</strong></td>
+<td>All devices connect to a <strong>central device</strong></td>
+</tr>
+<tr>
+<td><strong>Ring</strong></td>
+<td>Circular, data travels in <strong>one direction</strong></td>
+</tr>
+<tr>
+<td><strong>Bus</strong></td>
+<td>Single line with <strong>terminators</strong> at each end</td>
+</tr>
+<tr>
+<td><strong>Hybrid</strong></td>
+<td>A combination of the above</td>
+</tr>
+<tr>
+<td><strong>Wireless</strong></td>
+<td>No physical cabling (e.g. Starlink)</td>
+</tr>
+<tr>
+<td><strong>Mesh</strong></td>
+<td>Devices interconnect with multiple paths (e.g. GPS)</td>
+</tr>
+</tbody></table>
+<p><strong>Worked classifications</strong>: bus = lift control · ring = driverless metro · mesh = GPS · cloud = social media · client-server = online games</p>
+<h3 id="2-3-mac-vs-ip-addresses">2.3 MAC vs IP Addresses</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>MAC address</strong></th>
+<th><strong>IP address</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nature</td>
+<td><strong>Permanent</strong> — burned into the hardware</td>
+<td><strong>Changes</strong> depending on connection</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Identifies the physical device</td>
+<td>Identifies the device&#39;s location on a network</td>
+</tr>
+</tbody></table>
+<p>Both show &quot;where a computer is located.&quot; Highest IPv4 = <code>255.255.255.255</code>; IPv6 uses hexadecimal (<code>FFFF…</code>).</p>
+<h3 id="2-4-dns">2.4 DNS</h3>
+<blockquote>
+<p><strong>DNS</strong> is &quot;like a <strong>phone book</strong> for the internet — it translates a website name into an IP address.&quot;</p>
+</blockquote>
+<ul>
+<li><strong>Primary DNS</strong> is asked first</li>
+<li><strong>Secondary DNS</strong> holds a copy if the primary is unavailable</li>
+</ul>
+<h3 id="2-5-packets-and-packet-switching">2.5 Packets and Packet Switching</h3>
+<blockquote>
+<p>Packet switching ensures &quot;data packets get to their destination on time and as free of errors as possible — <strong>even if sent out of sequence</strong>.&quot;</p>
+</blockquote>
+<p><strong>Every packet contains:</strong></p>
+<ol>
+<li><strong>Source address</strong></li>
+<li><strong>Destination address</strong></li>
+<li><strong>Sequence number</strong> (so packets can be reassembled in the right order)</li>
+</ol>
+<p>Packet structure is often described as <strong>header</strong> (addressing), <strong>body/payload</strong> (the data) and <strong>tail/footer</strong> (error checking).</p>
+<h3 id="2-6-protocols-and-ports">2.6 Protocols and Ports</h3>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Port</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>HTTP</strong></td>
+<td><strong>80</strong></td>
+<td>General websites</td>
+</tr>
+<tr>
+<td><strong>HTTPS</strong></td>
+<td><strong>443</strong></td>
+<td>Banking and secure sites</td>
+</tr>
+<tr>
+<td><strong>FTP</strong></td>
+<td><strong>21</strong></td>
+<td>File transfer</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td><strong>25</strong></td>
+<td><strong>Sends</strong> mail</td>
+</tr>
+<tr>
+<td><strong>POP</strong></td>
+<td>—</td>
+<td><strong>Collects</strong> email</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td><strong>53</strong></td>
+<td>Name resolution</td>
+</tr>
+<tr>
+<td><strong>SSH</strong></td>
+<td><strong>22</strong></td>
+<td>Secure shell (cloud and enterprise)</td>
+</tr>
+<tr>
+<td><strong>SSL/TLS</strong></td>
+<td>—</td>
+<td>Encrypts connections</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>&quot;<strong>Closing unnecessary ports helps prevent attacks</strong>&quot; — every open port is a potential entry point.</p>
+</blockquote>
+<p><strong>Development ports</strong>: local dev servers often use <code>localhost:3000</code>; APIs commonly run front-end on 3000 and back-end on 5000, requiring <strong>CORS</strong> management.</p>
+<blockquote>
+<p><strong>CORS (Cross-Origin Resource Sharing)</strong>: a browser security rule that blocks a page from requesting data from a <em>different</em> origin (domain/port) unless that server explicitly permits it. This is why a front end on port 3000 cannot call a back end on port 5000 without configuration.</p>
+</blockquote>
+<h3 id="2-7-the-browser-server-request-lifecycle">2.7 The Browser–Server Request Lifecycle</h3>
+<pre><code>1. User enters a URL
+2. DNS lookup resolves the domain to an IP address
+3. HTTP/HTTPS request sent to that IP
+4. Server responds with files (HTML, CSS, JS, images)
+5. Browser renders:
+     • DOM interpreter   (builds the page structure)
+     • CSS interpreter   (applies styling)
+     • JavaScript engine (executes behaviour, using JIT compilation)
+</code></pre>
+<h3 id="2-8-tcpdump">2.8 tcpdump</h3>
+<p>A command-line <strong>packet capture</strong> tool showing IPs, ports and protocols. Used for debugging traffic, checking ports 80/443, diagnosing SSL/TLS problems and investigating performance.</p>
+<hr>
+<h2 id="3-big-data">3. Big Data</h2>
+<h3 id="3-1-the-six-v-s">3.1 The Six V&#39;s</h3>
+<blockquote>
+<p>&quot;<strong>Velocity, volume, value, variety, veracity and variability</strong> — the six main and innate characteristics of big data.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>V</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Volume</strong></td>
+<td>The sheer quantity of data</td>
+</tr>
+<tr>
+<td><strong>Velocity</strong></td>
+<td>The speed at which it is generated and must be processed</td>
+</tr>
+<tr>
+<td><strong>Variety</strong></td>
+<td>The range of formats — text, image, video, sensor</td>
+</tr>
+<tr>
+<td><strong>Veracity</strong></td>
+<td>How <strong>trustworthy and accurate</strong> the data is</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Whether the data can produce useful insight</td>
+</tr>
+<tr>
+<td><strong>Variability</strong></td>
+<td>How the meaning and structure of the data <strong>change over time</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Veracity vs Variability</strong>
+<strong>Veracity</strong> = can I <strong>trust</strong> this data? (accuracy, reliability)
+<strong>Variability</strong> = does its <strong>meaning or format keep changing</strong>? (inconsistency over time)</p>
+</blockquote>
+<h3 id="3-2-the-data-hierarchy">3.2 The Data Hierarchy</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Definition</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data</strong></td>
+<td>&quot;Raw facts or values with <strong>no context</strong>&quot;</td>
+<td>Log-in timestamps</td>
+</tr>
+<tr>
+<td><strong>Information</strong></td>
+<td>&quot;Data that has been <strong>processed</strong> to make meaning&quot;</td>
+<td>A chart of peak log-in hours</td>
+</tr>
+<tr>
+<td><strong>Knowledge</strong></td>
+<td>&quot;Insights formed by <strong>analysing</strong> information&quot;</td>
+<td>Users log in after school</td>
+</tr>
+<tr>
+<td><strong>Understanding</strong></td>
+<td>&quot;Ability to <strong>apply</strong> knowledge to make decisions&quot;</td>
+<td>Adjust server load for 3–5pm</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data mining</strong></td>
+<td>&quot;Automatically analysing large data sets to detect trends or patterns&quot;</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td>&quot;<strong>Data about data</strong> — descriptive details&quot; (file size, date created, author)</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-web-mining">3.3 Web Mining</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it analyses</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Content mining</strong></td>
+<td>Text, images, audio, video — using text mining, ML and NLP</td>
+</tr>
+<tr>
+<td><strong>Structure mining</strong></td>
+<td>How pages <strong>link</strong> to each other (nodes and edges). <strong>Google&#39;s ranking uses this</strong></td>
+</tr>
+<tr>
+<td><strong>Usage mining</strong> (log mining)</td>
+<td>Clicks, time on page, navigation paths</td>
+</tr>
+</tbody></table>
+<h3 id="3-4-what-social-media-collects">3.4 What Social Media Collects</h3>
+<p>Location · device info · contacts · search history · message metadata · likes, comments and shares · browsing history · ad interactions · time spent · uploaded media · age and account details · <strong>biometric info</strong> (face patterns)</p>
+<h3 id="3-5-social-and-ethical-issues">3.5 Social and Ethical Issues</h3>
+<p>Data <strong>privacy</strong> · data <strong>security</strong> · data <strong>validation</strong> · data <strong>accuracy</strong> · data <strong>sanitisation</strong></p>
+<blockquote>
+<p><strong>Data sanitisation</strong> = removing or masking sensitive information from a dataset before it is stored, shared or processed. It is also a <strong>security</strong> control — sanitising user input prevents injection attacks (see <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a>).</p>
+</blockquote>
+<h3 id="3-6-effect-on-web-architecture">3.6 Effect on Web Architecture</h3>
+<p><strong>Scale examples</strong>: Facebook (500 TB/day) · YouTube (300 hours of video/minute) · Amazon (up to 2.5M price changes/day; <strong>35% of sales from recommendations</strong>) · Netflix · Starbucks</p>
+<p><strong>Architectural requirements</strong>: data warehouses and analytics servers · <strong>CDNs</strong> (content delivery networks) · real-time streaming protocols (<strong>HLS</strong>, <strong>DASH</strong>) · machine learning and metadata layers</p>
+<blockquote>
+<p><strong>Worked application — &quot;TuneMatch&quot;</strong>: data mining (listen, skip and playlist behaviour) · metadata (artist, album, genre, mood, year) · streaming delivered in <strong>small chunks</strong>.</p>
+</blockquote>
+<hr>
+<h2 id="4-w3c-and-web-standards">4. W3C and Web Standards</h2>
+<p><strong>W3C</strong> exists to &quot;develop <strong>open, consistent standards</strong> so the World Wide Web stays accessible, reliable, and works the same across all browsers, devices and countries.&quot; It works with governments, universities, companies, browser developers and accessibility groups.</p>
+<p><strong>Standards produced</strong>: HTML · CSS · XML · SVG · <strong>WCAG</strong> (accessibility) · Web APIs · browser and security specifications</p>
+<p><strong>Why standards matter</strong>: &quot;Ensures websites work consistently, reduces compatibility issues, improves accessibility, supports global languages, increases long-term stability.&quot;</p>
+<h3 id="4-1-the-need-for-standards-the-class-scenario">4.1 The Need for Standards — the class scenario</h3>
+<blockquote>
+<p>Design a new web-based robot-control language for use on other planets, with <strong>no standards</strong>. Anyone could invent arbitrary syntax, making <strong>interoperability impossible</strong>. This is the argument for W3C and standardisation.</p>
+<p>Required keywords in the exercise: <code>detectObstacle</code>, <code>moveForward</code>, <code>moveBackward</code>, <code>moveLeft</code>, <code>moveRight</code>, <code>stopRobot</code>, <code>startRobot</code>, <code>armForward</code>, <code>armBackward</code>, <code>armGrab</code>, <code>armPlaceInTray</code>.</p>
+</blockquote>
+<h3 id="4-2-web-accessibility-initiative-wai">4.2 Web Accessibility Initiative (WAI)</h3>
+<p>Guidelines and tools for users with disabilities — <strong>visual, hearing, mobility and cognitive</strong>.</p>
+<p><strong>Assistive tools</strong>: screen reader · screen magnifier · speech-to-text · sticky keys</p>
+<h3 id="4-3-internationalisation-i18n">4.3 Internationalisation (i18n)</h3>
+<p>Support for different <strong>languages and scripts without redesign</strong>.</p>
+<p><strong>Affects</strong>: UTF-8 character encoding · left-to-right and <strong>right-to-left</strong> text direction · language tags
+<strong>Supports</strong>: Arabic and Hebrew (RTL scripts)</p>
+<blockquote>
+<p><strong>Why &quot;i18n&quot;?</strong> There are <strong>18 letters</strong> between the &quot;i&quot; and the &quot;n&quot; in &quot;internationalisation&quot;.</p>
+</blockquote>
+<h3 id="4-4-privacy-vs-security">4.4 Privacy vs Security</h3>
+<blockquote>
+<p>&quot;<strong>Privacy</strong> is about <strong>rights</strong> — who should be allowed to see data. <strong>Security</strong> provides the <strong>technical measures</strong> (e.g. encryption, authentication) that enforce it.&quot;</p>
+</blockquote>
+<p><strong>Relevant standards</strong>: Threat Modelling · WebAuthn · Federated Identity · Web Payment Security</p>
+<h3 id="4-5-validation">4.5 Validation</h3>
+<p><code>validator.w3.org</code> checks HTML and CSS against the published standards.</p>
+<h3 id="4-6-css-syntax">4.6 CSS Syntax</h3>
+<blockquote>
+<p><strong>NESA</strong>: &quot;Students are expected to <strong>interpret code fragments</strong> written in CSS and HTML.&quot;</p>
+</blockquote>
+<pre><code class="language-css">/* Comment */
+selector {
+    property: value;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Comment</strong></td>
+<td>Anywhere in CSS, enclosed in <code>/*</code> and <code>*/</code></td>
+</tr>
+<tr>
+<td><strong>Selector</strong></td>
+<td>Targets a particular HTML element for styling</td>
+</tr>
+<tr>
+<td><strong>Property</strong></td>
+<td>A styling property, such as <code>color</code></td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>The value of that property, such as <code>red</code></td>
+</tr>
+</tbody></table>
+<p><strong>Worked example — the HTML:</strong></p>
+<pre><code class="language-html">&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;My Website&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+    &lt;p id=&quot;welcome&quot;&gt;Welcome to my website!&lt;/p&gt;
+    &lt;p class=&quot;red-text&quot;&gt;This text should be red&lt;/p&gt;
+    &lt;p&gt;My website also has &lt;span class=&quot;red-text&quot;&gt;red text&lt;/span&gt; here&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>The CSS that styles it:</strong></p>
+<pre><code class="language-css">/* This selector targets an HTML element */
+h1 {
+   font-size: 18px;
+}
+
+/* This selector targets an HTML element with a specific &quot;id&quot; */
+#welcome {
+   font-style: italic;
+}
+
+/* This selector targets an HTML element with a specific &quot;class&quot; */
+.red-text {
+   color: red;
+}
+</code></pre>
+<blockquote>
+<p><strong>The three selector types — memorise the punctuation</strong>
+<strong><code>h1</code></strong> (no symbol) → targets an <strong>element type</strong> — every <code>&lt;h1&gt;</code> on the page.
+<strong><code>#welcome</code></strong> (hash) → targets a single unique <strong>id</strong>. An id should appear <strong>once</strong> per page.
+<strong><code>.red-text</code></strong> (dot) → targets a <strong>class</strong>. A class can be used <strong>many times</strong>, and on <strong>different element types</strong> (note it applies to both a <code>&lt;p&gt;</code> and a <code>&lt;span&gt;</code> above).</p>
+</blockquote>
+<hr>
+<h2 id="5-version-control-and-open-source-development-tools">5. Version Control and Open-Source Development Tools</h2>
+<h3 id="5-1-version-control">5.1 Version Control</h3>
+<blockquote>
+<p>&quot;Version control <strong>keeps track of changes made to files over time</strong>, so you can return to a previous version if something goes wrong.&quot; It saves snapshots called <strong>commits</strong>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Git/GitHub term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fork</strong></td>
+<td>A copy of a repository in your own account</td>
+</tr>
+<tr>
+<td><strong>Repository (repo)</strong></td>
+<td>The project folder plus its complete history</td>
+</tr>
+<tr>
+<td><strong>README</strong></td>
+<td>The documentation file describing the project</td>
+</tr>
+<tr>
+<td><strong>Commit</strong></td>
+<td>A saved change, with a message describing it</td>
+</tr>
+<tr>
+<td><strong>Push (to origin)</strong></td>
+<td>Uploading commits to GitHub</td>
+</tr>
+<tr>
+<td><strong>Branch</strong></td>
+<td>A parallel line of development</td>
+</tr>
+<tr>
+<td><strong>Merge</strong></td>
+<td>Combining changes from one branch into another</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-distributed-vs-centralised">5.2 Distributed vs Centralised</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Distributed</strong></th>
+<th><strong>Centralised</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Examples</td>
+<td><strong>Git, GitHub, GitLab</strong></td>
+<td><strong>SVN</strong></td>
+</tr>
+<tr>
+<td>Structure</td>
+<td>Every developer has a <strong>full copy</strong> of the history</td>
+<td>One central server holds the history</td>
+</tr>
+<tr>
+<td>Offline work</td>
+<td>Possible</td>
+<td>Requires server access</td>
+</tr>
+</tbody></table>
+<h3 id="5-3-why-version-control-matters-the-class-scenario">5.3 Why Version Control Matters — the class scenario</h3>
+<blockquote>
+<p>The &quot;<strong>Missing Feature Disaster</strong>&quot; shows the failure modes without version control: USB-stick version confusion, merge chaos, accidental deletion, and no backup.</p>
+</blockquote>
+<h3 id="5-4-open-source-development-tools">5.4 Open-Source Development Tools</h3>
+<blockquote>
+<p>&quot;<strong>Source code is publicly available.</strong> Anyone can view, modify, improve, share and build tools on top of it.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Front-end</strong></td>
+<td>React, Vue, Angular, Svelte, Tailwind, Bootstrap</td>
+</tr>
+<tr>
+<td><strong>Back-end</strong></td>
+<td>Node, Express, Django, Flask, Rails, PHP/Laravel</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>MySQL, PostgreSQL, MongoDB, SQLite</td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Linux, Docker, Nginx, Apache</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-server-side-programming-and-content-management-systems">6. Server-Side Programming and Content Management Systems</h2>
+<h3 id="6-1-the-web-server">6.1 The Web Server</h3>
+<blockquote>
+<p>&quot;A web server is a giant computer that holds all the website&#39;s content. <strong>Dynamic behaviour is handled by server-side programming.</strong>&quot;</p>
+</blockquote>
+<p>Server-side languages — Python, PHP, Java — &quot;interact with the database and <strong>generate the HTML the browser sees</strong>.&quot;</p>
+<h3 id="6-2-mvc-architecture">6.2 MVC Architecture</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Model</strong></td>
+<td>The <strong>data</strong> and business logic</td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td>What the <strong>user sees</strong> — the interface</td>
+</tr>
+<tr>
+<td><strong>Controller</strong></td>
+<td><strong>Handling requests</strong> and coordinating between model and view</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The flow</strong>: a request hits the <strong>Controller</strong> → the Controller asks the <strong>Model</strong> for data → the Model returns it → the Controller passes it to the <strong>View</strong> → the View renders the page.
+<strong>Why separate them?</strong> Each part can be changed independently — you can redesign the interface without touching the data logic.</p>
+</blockquote>
+<h3 id="6-3-content-management-systems">6.3 Content Management Systems</h3>
+<blockquote>
+<p>A <strong>CMS</strong> is &quot;like a website builder — templates, tools and features to add pages, images and text.&quot;</p>
+</blockquote>
+<p><strong>Examples</strong>: WordPress, Drupal, Joomla</p>
+<p><strong>Advantage</strong>: &quot;Easier to create and manage content, <strong>even without extensive programming experience</strong>.&quot;</p>
+<h3 id="6-4-framework-comparison-pmi">6.4 Framework Comparison (PMI)</h3>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Language</th>
+<th>Plus</th>
+<th>Minus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>React</strong></td>
+<td>JavaScript (Meta)</td>
+<td>Component-based, <strong>Virtual DOM</strong></td>
+<td>Steep learning curve; &quot;just a library&quot; — usually paired with Next.js</td>
+</tr>
+<tr>
+<td><strong>Angular</strong></td>
+<td>JS/TypeScript (Google)</td>
+<td><strong>Strong typing</strong>, enterprise-grade</td>
+<td>Steep, verbose</td>
+</tr>
+<tr>
+<td><strong>Express.js</strong></td>
+<td>JavaScript (Node)</td>
+<td>Minimalist, flexible, fast; the &quot;E&quot; in MEAN/MERN</td>
+<td>Unopinionated; callback hell</td>
+</tr>
+<tr>
+<td><strong>Django</strong></td>
+<td>Python</td>
+<td>Rapid, secure, scalable; built-in <strong>ORM</strong></td>
+<td>Steep, monolithic, not ideal for real-time</td>
+</tr>
+<tr>
+<td><strong>Flask</strong></td>
+<td>Python</td>
+<td>Lightweight, easy to learn</td>
+<td>Not ideal for complex projects; lacks built-in DB and auth</td>
+</tr>
+<tr>
+<td><strong>WordPress</strong></td>
+<td>PHP</td>
+<td>Easy, huge community</td>
+<td>Security concerns; not ideal for complex apps</td>
+</tr>
+<tr>
+<td><strong>Joomla</strong></td>
+<td>PHP</td>
+<td>Secure, scalable, multi-language</td>
+<td>Steep; fewer themes</td>
+</tr>
+</tbody></table>
+<h3 id="6-5-database-connectivity-worked-example">6.5 Database Connectivity — worked example</h3>
+<p>Node + Express + MySQL:</p>
+<pre><code class="language-javascript">const connection = mysql.createConnection({ /* credentials */ });
+
+app.get(&#39;/&#39;, (req, res) =&gt; {
+    connection.query(&#39;SELECT name, address FROM customers&#39;, (err, rows) =&gt; {
+        res.render(&#39;index&#39;, { customers: rows });   // rendered via EJS
+    });
+});
+</code></pre>
+<hr>
+<h2 id="7-relational-databases-and-sql">7. Relational Databases and SQL</h2>
+<blockquote>
+<p><strong>NESA syntax for the HSC Software Engineering course.</strong></p>
+</blockquote>
+<pre><code class="language-sql">SELECT    the field(s) or calculated values to be displayed
+FROM      the table(s) to be used
+WHERE     the search criteria
+GROUP BY  the field(s) used to group the returned rows
+ORDER BY  the field(s) that determine the sequence of displayed results
+</code></pre>
+<p>The keyword <strong><code>AS</code></strong> may be used within a <code>SELECT</code> statement to <strong>rename fields</strong> for display.</p>
+<h3 id="7-1-relational-operators">7.1 Relational Operators</h3>
+<p><code>CONTAINS</code> · <code>DOES NOT CONTAIN</code> · <code>EQUALS</code> · <code>NOT EQUAL TO</code> · <code>GREATER THAN</code> · <code>GREATER THAN OR EQUAL TO</code> · <code>LESS THAN</code> · <code>LESS THAN OR EQUAL TO</code></p>
+<h3 id="7-2-logical-operators">7.2 Logical Operators</h3>
+<p><code>AND</code> · <code>OR</code> · <code>NOT</code></p>
+<h3 id="7-3-aggregate-functions-used-with-group-by">7.3 Aggregate Functions (used with <code>GROUP BY</code>)</h3>
+<p><code>SUM(attribute)</code> · <code>AVG(attribute)</code> · <code>COUNT(attribute)</code> · <code>MAX(attribute)</code> · <code>MIN(attribute)</code></p>
+<h3 id="7-4-sort-order">7.4 Sort Order</h3>
+<p><code>ASC</code> (ascending: A–Z or 0–9) · <code>DEC</code> (descending: Z–A or 9–0)</p>
+<h3 id="7-5-worked-queries">7.5 Worked Queries</h3>
+<p><strong>Query 1</strong> — display the name and release date of all games released from 1 March 2022 to 31 March 2023, in ascending alphabetical order by name:</p>
+<pre><code class="language-sql">SELECT Name, Release_date
+FROM Games
+WHERE Release_date &gt;= &#39;01/03/2022&#39; AND Release_date &lt;= &#39;31/03/2023&#39;
+ORDER BY Name ASC
+</code></pre>
+<p><strong>Query 2</strong> — display each developer with the total cost of games they developed for the publisher &#39;Games Inc&#39;, in descending order of developer name:</p>
+<pre><code class="language-sql">SELECT Developers.First_name, Developers.Last_name, SUM(Games.cost) AS Totalcost
+FROM Games, Publishers, Developers
+WHERE Publishers.Name = &#39;Games Inc&#39;
+AND Publishers.Publisher_ID = Games.Publisher_ID
+AND Developers.Developer_ID = Games.Developer_ID
+GROUP BY Developers.Developer_ID
+ORDER BY Developers.Last_name DESC
+</code></pre>
+<blockquote>
+<p><strong>Reading query 2</strong>: The <code>WHERE</code> clause does two different jobs. <code>Publishers.Name = &#39;Games Inc&#39;</code> <strong>filters</strong>; the two <code>ID = ID</code> lines <strong>join</strong> the three tables together. Without the join conditions, the query would pair every game with every publisher and every developer.</p>
+</blockquote>
+<h3 id="7-6-object-relational-mapping-orm">7.6 Object-Relational Mapping (ORM)</h3>
+<blockquote>
+<p>&quot;ORM provides a <strong>layer of abstraction between the database and the programming language</strong>. In an object-oriented language, an ORM will usually represent database <strong>items (rows) as objects</strong> and the <strong>attributes of that item (columns) as properties</strong> of the object.&quot;</p>
+</blockquote>
+<p><strong>Students are expected to interpret code fragments used in an ORM framework.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Database concept</th>
+<th>ORM equivalent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Table</td>
+<td>Class</td>
+</tr>
+<tr>
+<td>Row</td>
+<td>Object</td>
+</tr>
+<tr>
+<td>Column</td>
+<td>Property / attribute</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why use an ORM?</strong> You write normal object code instead of SQL strings, it reduces SQL injection risk, and it makes the code portable between database systems. The cost is a performance overhead and less control over the exact query.</p>
+</blockquote>
+<hr>
+<h2 id="8-secure-web-services">8. Secure Web Services</h2>
+<h3 id="8-1-ssl-and-tls">8.1 SSL and TLS</h3>
+<ul>
+<li><strong>SSL</strong> (Netscape, 1995) encrypts data between the site and the user, and verifies identity via a <strong>handshake</strong> (&quot;like a digital signature&quot;)</li>
+<li><strong>TLS</strong> replaced SSL and is <strong>more secure</strong></li>
+<li>&quot;Websites that use SSL or TLS have <strong>HTTPS</strong>&quot;</li>
+</ul>
+<h3 id="8-2-the-tls-handshake">8.2 The TLS Handshake</h3>
+<pre><code>1. TCP connection established
+2. Client sends &quot;client hello&quot;  → cipher suites + TLS version
+   Server sends &quot;server hello&quot;  → SSL certificate (public key, hostname, expiry)
+   Client validates the certificate
+3. Client generates a SESSION KEY, encrypts it with the server&#39;s PUBLIC key
+   Server decrypts it with its PRIVATE key
+4. Both now hold the same symmetric SESSION KEY → encrypted channel
+</code></pre>
+<blockquote>
+<p><strong>Why the switch from asymmetric to symmetric?</strong> Asymmetric encryption is <strong>slow</strong> but solves the problem of exchanging a key safely. Symmetric encryption is <strong>fast</strong> but needs both sides to already share a key. TLS uses asymmetric encryption <strong>once</strong>, to deliver the symmetric session key — then uses fast symmetric encryption for the rest of the conversation. Best of both.</p>
+</blockquote>
+<h3 id="8-3-encryption-types">8.3 Encryption Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Key</th>
+<th>Use</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hash functions</strong></td>
+<td><strong>No key</strong></td>
+<td>Integrity, digital signatures. Produces a fixed-length fingerprint; changes completely on a tiny input change</td>
+<td>MD5, SHA-256</td>
+</tr>
+<tr>
+<td><strong>Symmetric-key</strong></td>
+<td><strong>Same key</strong> both ways</td>
+<td>Fast bulk encryption; problem is <strong>secure key distribution</strong></td>
+<td><strong>AES</strong> — the &quot;gold standard&quot;, 128-bit blocks</td>
+</tr>
+<tr>
+<td><strong>Asymmetric / public-key</strong></td>
+<td><strong>Public + private</strong> pair</td>
+<td>Secure communication and digital signatures</td>
+<td>RSA</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Encryption</strong> = scrambling data into unreadable <strong>ciphertext</strong>, decipherable only with a key.
+<strong>Hashing is one-way</strong> — you cannot un-hash a value. That is why it is used for integrity and password storage, not for sending secret messages.</p>
+</blockquote>
+<h3 id="8-4-authentication-vs-authorisation">8.4 Authentication vs Authorisation</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Authentication</strong></td>
+<td>&quot;Checking access <strong>credentials</strong> against a database or list&quot; — proving <em>who you are</em></td>
+</tr>
+<tr>
+<td><strong>Authorisation</strong></td>
+<td>&quot;Permits certain usernames/passwords <strong>access to connect</strong>&quot; — determining <em>what you may do</em></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>&quot;You can have <strong>authentication without authorisation</strong>, but you <strong>cannot have authorisation without authentication</strong>.&quot;
+You must know who someone is before you can decide what they&#39;re allowed to do.</p>
+</blockquote>
+<h3 id="8-5-digital-signatures">8.5 Digital Signatures</h3>
+<pre><code>SENDER:    hash the message  →  encrypt the hash with the sender&#39;s PRIVATE key
+                             →  send message + signature
+
+RECEIVER:  decrypt the signature with the sender&#39;s PUBLIC key
+           hash the received message independently
+           if the two hashes match  →  INTEGRITY + AUTHENTICITY confirmed
+</code></pre>
+<blockquote>
+<p><strong>Note the key order is reversed from encryption.</strong> To keep a message <strong>secret</strong> you encrypt with the recipient&#39;s <strong>public</strong> key. To <strong>sign</strong> a message you encrypt with your own <strong>private</strong> key — because only you have it, anyone decrypting successfully with your public key proves it came from you.</p>
+</blockquote>
+<h3 id="8-6-cross-site-scripting-xss">8.6 Cross-Site Scripting (XSS)</h3>
+<blockquote>
+<p><strong>NESA definition</strong>: &quot;Cross-site scripting (XSS) involves <strong>injecting malicious code into an otherwise safe website</strong>. It is usually done through <strong>user input that is not sufficiently sanitised</strong> before being processed and stored on the server.&quot;</p>
+</blockquote>
+<p><strong>Students should be able to interpret fragments of JavaScript related to cross-site scripting.</strong></p>
+<p><strong>The defence</strong>: <strong>input sanitisation and validation</strong> — never trust user input; escape or strip anything that could be interpreted as code before storing or displaying it.</p>
+<hr>
+<h2 id="9-web-algorithm-description">9. Web Algorithm Description</h2>
+<h3 id="9-1-the-ipo-model">9.1 The IPO Model</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Input</strong></td>
+<td>Keyboard, mouse, files</td>
+</tr>
+<tr>
+<td><strong>Process</strong></td>
+<td>Maths, decisions</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Pictures, graphs, changed data</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>IPSO</strong> adds <strong>Storage</strong> — used for PWAs that persist data between sessions.</p>
+</blockquote>
+<h3 id="9-2-methods-of-algorithm-description">9.2 Methods of Algorithm Description</h3>
+<ul>
+<li><strong>Structured English</strong> — numbered steps in plain language</li>
+<li><strong>Flowcharts</strong> — Start/Stop, Process, Decision, Input/Output, Flow line</li>
+</ul>
+<h3 id="9-3-control-structures-in-javascript">9.3 Control Structures in JavaScript</h3>
+<table>
+<thead>
+<tr>
+<th>Structure</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sequence</strong></td>
+<td>Logical steps one after another</td>
+</tr>
+<tr>
+<td><strong>Selection</strong></td>
+<td>Binary (two options) or multiway (more than two): <code>if / else if / else</code></td>
+</tr>
+<tr>
+<td><strong>Repetition</strong></td>
+<td>Pre-test (condition at top) or post-test (condition at bottom): <code>for</code> (fixed count), <code>while</code> (while true)</td>
+</tr>
+</tbody></table>
+<p><strong>Operators</strong>: <code>==</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>!=</code> <code>!</code> <code>&amp;&amp;</code> <code>||</code></p>
+<h3 id="9-4-javascript-data-and-storage">9.4 JavaScript Data and Storage</h3>
+<p><strong>Variables</strong>: <code>let</code>, constants, arrays. <strong>Types</strong>: String, Integer, Float.</p>
+<table>
+<thead>
+<tr>
+<th>Web storage</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong><code>localStorage</code></strong></td>
+<td>Small text and numbers; persists indefinitely</td>
+</tr>
+<tr>
+<td><strong><code>sessionStorage</code></strong></td>
+<td>Persists only <strong>until the tab is closed</strong></td>
+</tr>
+<tr>
+<td><strong><code>IndexedDB</code></strong></td>
+<td>Large <strong>structured</strong> data; works offline</td>
+</tr>
+<tr>
+<td><strong><code>Cache API</code></strong></td>
+<td>Cached resources for offline use</td>
+</tr>
+</tbody></table>
+<h3 id="9-5-output-types">9.5 Output Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Text</strong></td>
+<td><code>console.log</code>, <code>alert</code></td>
+</tr>
+<tr>
+<td><strong>Visual</strong></td>
+<td><code>textContent</code></td>
+</tr>
+<tr>
+<td><strong>Sound</strong></td>
+<td><code>new Audio().play()</code></td>
+</tr>
+<tr>
+<td><strong>Haptic</strong></td>
+<td><code>navigator.vibrate</code></td>
+</tr>
+<tr>
+<td><strong>Notification</strong></td>
+<td>Notification API</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>API response</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-caesar-cipher">10. Caesar Cipher</h2>
+<h3 id="10-1-the-definition-as-given">10.1 The Definition as Given</h3>
+<blockquote>
+<p>&quot;A Caesar cipher is a type of <strong>substitution cipher</strong> in which each letter in the plaintext is replaced by a letter some fixed number of positions <strong>down the alphabet</strong>. For example, with a <strong>left shift of 3</strong>, D would be replaced by A, E would become B.&quot;</p>
+</blockquote>
+<h3 id="10-2-known-error-in-the-starter-document">10.2 ⚠️ Known Error in the Starter Document</h3>
+<blockquote>
+<p><strong>Your <code>Software Links.txt</code> flags this</strong>: <em>&quot;Starter 2 — Caesar Cipher and Terminology Revision — THE DOCUMENT IS WRITTEN WRONG. In order to decrypt a left shift of 1 you would move 1 to the right…&quot;</em></p>
+</blockquote>
+<p><strong>The specific inconsistency</strong>: the text calls it a &quot;<strong>left shift of 3</strong>&quot; and the example (D→A, E→B) is <strong>correct for a left/backward shift</strong>, but it describes the substitution as moving &quot;<strong>down the alphabet</strong>&quot; — which normally means <em>forward</em> toward Z (D→G), the opposite direction.</p>
+<p><strong>The word &quot;down&quot; should read &quot;up&quot; or &quot;back.&quot;</strong></p>
+<blockquote>
+<p><strong>The rule to actually use</strong>
+<strong>Encrypt</strong> with a left shift of <em>n</em> → move each letter <em>n</em> places <strong>backwards</strong> (toward A).
+<strong>Decrypt</strong> a left shift of <em>n</em> → move each letter <em>n</em> places <strong>forwards</strong> (toward Z).
+Encryption and decryption always move in <strong>opposite</strong> directions.</p>
+</blockquote>
+<h3 id="10-3-implementation">10.3 Implementation</h3>
+<pre><code class="language-python">def decrypt_left_shift_1(ch):
+    return chr((ord(ch) - ord(&#39;a&#39;) - 1) % 26 + ord(&#39;a&#39;))
+</code></pre>
+<blockquote>
+<p>The <code>% 26</code> handles <strong>wrap-around</strong> — so that shifting back from &#39;a&#39; lands on &#39;z&#39; rather than a non-letter character.</p>
+</blockquote>
+<h3 id="10-4-worked-decryption-table-left-shift-of-1">10.4 Worked Decryption Table (left shift of 1)</h3>
+<p>The decrypted words are all networking terminology — this doubles as revision for §2.</p>
+<table>
+<thead>
+<tr>
+<th>Ciphertext</th>
+<th>Plaintext</th>
+<th>Ciphertext</th>
+<th>Plaintext</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ivc</td>
+<td><strong>Hub</strong></td>
+<td>Upqpmphz</td>
+<td><strong>Topology</strong></td>
+</tr>
+<tr>
+<td>Txjudi</td>
+<td><strong>Switch</strong></td>
+<td>Qbdlfu txjudijoh</td>
+<td><strong>Packet Switching</strong></td>
+</tr>
+<tr>
+<td>Spvufs</td>
+<td><strong>Router</strong></td>
+<td>Ifbe</td>
+<td><strong>Head</strong></td>
+</tr>
+<tr>
+<td>Csjehf</td>
+<td><strong>Bridge</strong></td>
+<td>Cpez</td>
+<td><strong>Body</strong></td>
+</tr>
+<tr>
+<td>Hbufxbz</td>
+<td><strong>Gateway</strong></td>
+<td>Gppufs</td>
+<td><strong>Footer</strong></td>
+</tr>
+<tr>
+<td>Tubs</td>
+<td><strong>Star</strong></td>
+<td>Ubjm</td>
+<td><strong>Tail</strong></td>
+</tr>
+<tr>
+<td>Sjoh</td>
+<td><strong>Ring</strong></td>
+<td>IUUQT</td>
+<td><strong>HTTPS</strong></td>
+</tr>
+<tr>
+<td>Cvt</td>
+<td><strong>Bus</strong></td>
+<td>GUQ</td>
+<td><strong>FTP</strong></td>
+</tr>
+<tr>
+<td>Xjsfmftt</td>
+<td><strong>Wireless</strong></td>
+<td>TNUQ</td>
+<td><strong>SMTP</strong></td>
+</tr>
+<tr>
+<td>QPQ</td>
+<td><strong>POP</strong></td>
+<td>TTM</td>
+<td><strong>SSL</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><em>One row in the source (&quot;Python → Tail&quot;) is misaligned; the correct mapping is <code>Ubjm</code> → Tail.</em></p>
+</blockquote>
+<p><strong>Consistency check</strong>: the W3 activities use the same convention — <code>Uifsf jt b tfdsfu dpef!</code> → &quot;There is a secret code!&quot; (shift 1); <code>Khoor Zruog!</code> → &quot;Hello World!&quot; (shift 3).</p>
+<hr>
+<h2 id="11-hsc-exam-response-structures">11. HSC Exam Response Structures</h2>
+<h3 id="common-question-types">Common Question Types</h3>
+<table>
+<thead>
+<tr>
+<th>Question type</th>
+<th>How to answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Distinguish client-side from server-side&quot;</strong></td>
+<td>Define both → name languages for each → give a worked division of labour for a real site</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain the TLS handshake&quot;</strong></td>
+<td>Four numbered stages → emphasise the asymmetric-to-symmetric switch and <strong>why</strong></td>
+</tr>
+<tr>
+<td><strong>&quot;Interpret this SQL query&quot;</strong></td>
+<td>Read clause by clause: what&#39;s displayed (SELECT) → from where (FROM) → filters vs joins (WHERE) → grouping → sort order</td>
+</tr>
+<tr>
+<td><strong>&quot;Interpret this CSS fragment&quot;</strong></td>
+<td>Identify each selector type by its punctuation → state which HTML elements it targets → state the styling applied</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain how XSS occurs and how to prevent it&quot;</strong></td>
+<td>Define XSS → unsanitised user input stored and re-served → defence is input sanitisation and validation</td>
+</tr>
+<tr>
+<td><strong>&quot;Justify the use of version control in a team&quot;</strong></td>
+<td>Define commits → name the failure modes without it → link to collaboration factors</td>
+</tr>
+<tr>
+<td><strong>&quot;Evaluate the six V&#39;s for [scenario]&quot;</strong></td>
+<td>Take each V, apply it to the specific data described, then judge which pose the biggest challenge</td>
+</tr>
+</tbody></table>
+<h3 id="paragraph-scaffold">Paragraph Scaffold</h3>
+<pre><code>Topic sentence (define the term)
+  → explain the mechanism (how the protocol/technology actually works)
+  → apply to a scenario (your project, or the case in the question)
+  → link to a syllabus concept (security, standards, accessibility, scalability)
+</code></pre>
+<hr>
+<h2 id="12-glossary-terms-students-mix-up">12. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Client-side</strong></td>
+<td>Runs in the <strong>browser</strong></td>
+<td><strong>Server-side</strong> — runs on the server</td>
+</tr>
+<tr>
+<td><strong>Hub</strong></td>
+<td>Broadcasts to every device</td>
+<td><strong>Switch</strong> — sends only to the target</td>
+</tr>
+<tr>
+<td><strong>Bridge</strong></td>
+<td>Joins two <strong>same</strong> networks</td>
+<td><strong>Gateway</strong> — joins <strong>different</strong> networks</td>
+</tr>
+<tr>
+<td><strong>MAC address</strong></td>
+<td><strong>Permanent</strong> hardware identifier</td>
+<td><strong>IP address</strong> — changes with connection</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td>Translates names to IP addresses</td>
+<td>DHCP (assigns IP addresses)</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td><strong>Sends</strong> mail (port 25)</td>
+<td><strong>POP</strong> — <strong>collects</strong> mail</td>
+</tr>
+<tr>
+<td><strong>HTTP (80)</strong></td>
+<td>Unencrypted</td>
+<td><strong>HTTPS (443)</strong> — encrypted with TLS</td>
+</tr>
+<tr>
+<td><strong>Veracity</strong></td>
+<td>Can the data be <strong>trusted</strong>?</td>
+<td><strong>Variability</strong> — does its meaning change?</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>Raw facts, no context</td>
+<td><strong>Information</strong> — processed to make meaning</td>
+</tr>
+<tr>
+<td><strong>Knowledge</strong></td>
+<td>Insight from analysing information</td>
+<td><strong>Understanding</strong> — applying it to decide</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td>Data <strong>about</strong> data</td>
+<td>The data itself</td>
+</tr>
+<tr>
+<td><strong>Structure mining</strong></td>
+<td>How pages <strong>link</strong> (Google ranking)</td>
+<td><strong>Content mining</strong> — the page contents</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>About <strong>rights</strong> — who <em>should</em> see data</td>
+<td><strong>Security</strong> — technical measures enforcing it</td>
+</tr>
+<tr>
+<td><strong>i18n</strong></td>
+<td>Supporting many languages/scripts</td>
+<td>Localisation (adapting to one specific locale)</td>
+</tr>
+<tr>
+<td><strong><code>#id</code> selector</strong></td>
+<td>Targets <strong>one</strong> unique element</td>
+<td><strong><code>.class</code></strong> — reusable, many elements</td>
+</tr>
+<tr>
+<td><strong>Fork</strong></td>
+<td>Copy of a repo in your account</td>
+<td><strong>Branch</strong> — a parallel line in the same repo</td>
+</tr>
+<tr>
+<td><strong>Commit</strong></td>
+<td>A saved snapshot with a message</td>
+<td><strong>Push</strong> — uploading commits to the remote</td>
+</tr>
+<tr>
+<td><strong>Distributed VCS</strong></td>
+<td>Everyone has full history (Git)</td>
+<td><strong>Centralised</strong> — one server (SVN)</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>Data and logic</td>
+<td><strong>View</strong> — the interface; <strong>Controller</strong> — request handling</td>
+</tr>
+<tr>
+<td><strong>CMS</strong></td>
+<td>Website builder for non-programmers</td>
+<td>Framework (a coding toolkit)</td>
+</tr>
+<tr>
+<td><strong>Symmetric encryption</strong></td>
+<td>Same key both ways; <strong>fast</strong></td>
+<td><strong>Asymmetric</strong> — public/private pair; slow</td>
+</tr>
+<tr>
+<td><strong>Hashing</strong></td>
+<td><strong>One-way</strong>, no key, for integrity</td>
+<td>Encryption (reversible with a key)</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Proving <strong>who you are</strong></td>
+<td><strong>Authorisation</strong> — what you&#39;re <strong>allowed</strong> to do</td>
+</tr>
+<tr>
+<td><strong>Digital signature</strong></td>
+<td>Encrypt hash with <strong>private</strong> key</td>
+<td>Encryption for secrecy uses the <strong>public</strong> key</td>
+</tr>
+<tr>
+<td><strong>SSL</strong></td>
+<td>The original protocol (1995)</td>
+<td><strong>TLS</strong> — its more secure replacement</td>
+</tr>
+<tr>
+<td><strong>XSS</strong></td>
+<td>Injecting malicious script via unsanitised input</td>
+<td>SQL injection (targets the database)</td>
+</tr>
+<tr>
+<td><strong>ORM</strong></td>
+<td>Maps tables to classes, rows to objects</td>
+<td>Raw SQL</td>
+</tr>
+<tr>
+<td><strong><code>localStorage</code></strong></td>
+<td>Persists indefinitely</td>
+<td><strong><code>sessionStorage</code></strong> — cleared when tab closes</td>
+</tr>
+<tr>
+<td><strong>CORS</strong></td>
+<td>Browser rule on cross-origin requests</td>
+<td>A server firewall</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="13-key-definitions-quick-reference">13. Key Definitions Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-Line Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>The user&#39;s device that displays the page and handles interaction</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>A powerful computer that stores data, processes requests and generates content</td>
+</tr>
+<tr>
+<td>Full-stack</td>
+<td>Browser + server + database development</td>
+</tr>
+<tr>
+<td>PWA</td>
+<td>Web app with offline capability via service workers</td>
+</tr>
+<tr>
+<td>Hub</td>
+<td>Connects devices via one cable, broadcasting to all</td>
+</tr>
+<tr>
+<td>Switch</td>
+<td>Directs data only to the intended device</td>
+</tr>
+<tr>
+<td>Router</td>
+<td>Finds the best path for data; connects to the internet</td>
+</tr>
+<tr>
+<td>Bridge</td>
+<td>Connects two networks of the same type</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Connects two different networks</td>
+</tr>
+<tr>
+<td>MAC address</td>
+<td>Permanent hardware identifier</td>
+</tr>
+<tr>
+<td>IP address</td>
+<td>Network address that changes with connection</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>Translates domain names into IP addresses</td>
+</tr>
+<tr>
+<td>Packet switching</td>
+<td>Sending data in packets that can arrive out of sequence</td>
+</tr>
+<tr>
+<td>Big data</td>
+<td>Data characterised by the six V&#39;s</td>
+</tr>
+<tr>
+<td>Data mining</td>
+<td>Automatically analysing large data sets to detect patterns</td>
+</tr>
+<tr>
+<td>Metadata</td>
+<td>Data about data</td>
+</tr>
+<tr>
+<td>Web content mining</td>
+<td>Analysing text, images, audio and video</td>
+</tr>
+<tr>
+<td>Web structure mining</td>
+<td>Analysing how pages link together</td>
+</tr>
+<tr>
+<td>Web usage mining</td>
+<td>Analysing clicks, time and navigation paths</td>
+</tr>
+<tr>
+<td>W3C</td>
+<td>Body developing open, consistent web standards</td>
+</tr>
+<tr>
+<td>WCAG</td>
+<td>Web Content Accessibility Guidelines</td>
+</tr>
+<tr>
+<td>WAI</td>
+<td>Web Accessibility Initiative</td>
+</tr>
+<tr>
+<td>i18n</td>
+<td>Internationalisation — supporting many languages and scripts</td>
+</tr>
+<tr>
+<td>Version control</td>
+<td>Tracking changes to files over time through commits</td>
+</tr>
+<tr>
+<td>Commit</td>
+<td>A saved change with a descriptive message</td>
+</tr>
+<tr>
+<td>Repository</td>
+<td>A project folder plus its complete history</td>
+</tr>
+<tr>
+<td>Open source</td>
+<td>Source code publicly available to view, modify and share</td>
+</tr>
+<tr>
+<td>MVC</td>
+<td>Model (data), View (interface), Controller (requests)</td>
+</tr>
+<tr>
+<td>CMS</td>
+<td>A website builder requiring little programming experience</td>
+</tr>
+<tr>
+<td>SQL</td>
+<td>Language used to access and manipulate relational databases</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>Abstraction layer mapping database rows to program objects</td>
+</tr>
+<tr>
+<td>SSL / TLS</td>
+<td>Protocols encrypting data between site and user</td>
+</tr>
+<tr>
+<td>TLS handshake</td>
+<td>Exchange establishing a shared symmetric session key</td>
+</tr>
+<tr>
+<td>Hash function</td>
+<td>One-way, keyless transformation used for integrity</td>
+</tr>
+<tr>
+<td>Symmetric encryption</td>
+<td>Same key to encrypt and decrypt; fast (AES)</td>
+</tr>
+<tr>
+<td>Asymmetric encryption</td>
+<td>Public and private key pair</td>
+</tr>
+<tr>
+<td>Digital signature</td>
+<td>Hash encrypted with the sender&#39;s private key</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Checking credentials to prove identity</td>
+</tr>
+<tr>
+<td>Authorisation</td>
+<td>Determining permitted level of access</td>
+</tr>
+<tr>
+<td>XSS</td>
+<td>Injecting malicious code via unsanitised user input</td>
+</tr>
+<tr>
+<td>Caesar cipher</td>
+<td>Substitution cipher shifting each letter a fixed number of places</td>
+</tr>
+<tr>
+<td>IPO / IPSO</td>
+<td>Input–Process–Output, plus Storage</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="14-quick-revision-checklist">14. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Client vs server, with languages and a worked division of labour</li>
+<li><input disabled="" type="checkbox"> MERN and MEAN stacks</li>
+<li><input disabled="" type="checkbox"> Five network devices, especially bridge vs gateway and hub vs switch</li>
+<li><input disabled="" type="checkbox"> Six topologies with an example each</li>
+<li><input disabled="" type="checkbox"> MAC vs IP; DNS primary and secondary</li>
+<li><input disabled="" type="checkbox"> The three things every packet contains</li>
+<li><input disabled="" type="checkbox"> All eight protocols and their port numbers</li>
+<li><input disabled="" type="checkbox"> The five-step browser–server request lifecycle</li>
+<li><input disabled="" type="checkbox"> The six V&#39;s, with veracity vs variability distinguished</li>
+<li><input disabled="" type="checkbox"> Data → information → knowledge → understanding, with examples</li>
+<li><input disabled="" type="checkbox"> Three types of web mining</li>
+<li><input disabled="" type="checkbox"> W3C purpose, WCAG, WAI tools, i18n</li>
+<li><input disabled="" type="checkbox"> Interpret a CSS fragment — element, <code>#id</code> and <code>.class</code> selectors</li>
+<li><input disabled="" type="checkbox"> Git terms; distributed vs centralised</li>
+<li><input disabled="" type="checkbox"> MVC and what each component does</li>
+<li><input disabled="" type="checkbox"> Write and interpret SQL with SELECT/FROM/WHERE/GROUP BY/ORDER BY</li>
+<li><input disabled="" type="checkbox"> Aggregate functions and the AS keyword</li>
+<li><input disabled="" type="checkbox"> Explain ORM and the table/row/column → class/object/property mapping</li>
+<li><input disabled="" type="checkbox"> The four-stage TLS handshake and why it switches asymmetric → symmetric</li>
+<li><input disabled="" type="checkbox"> Three encryption types; hashing is one-way</li>
+<li><input disabled="" type="checkbox"> Authentication vs authorisation, and the one-way dependency</li>
+<li><input disabled="" type="checkbox"> Digital signature steps and the reversed key order</li>
+<li><input disabled="" type="checkbox"> XSS definition and prevention</li>
+<li><input disabled="" type="checkbox"> Four web storage options</li>
+<li><input disabled="" type="checkbox"> Caesar cipher, including the flagged error in the starter document</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Software_Automation.html">Software Automation</a> | <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> | <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-client-side-vs-server-side-programming" data-target="1-client-side-vs-server-side-programming">1. Client-Side vs Server-Side Programming</a><ul class="sub"><li><a href="#1-1-the-core-distinction" data-target="1-1-the-core-distinction" data-parent="1-client-side-vs-server-side-programming">1.1 The Core Distinction</a></li><li><a href="#1-2-full-stack-development" data-target="1-2-full-stack-development" data-parent="1-client-side-vs-server-side-programming">1.2 Full-Stack Development</a></li><li><a href="#1-3-progressive-web-apps-pwas" data-target="1-3-progressive-web-apps-pwas" data-parent="1-client-side-vs-server-side-programming">1.3 Progressive Web Apps (PWAs)</a></li><li><a href="#1-4-front-end-web-development-frameworks" data-target="1-4-front-end-web-development-frameworks" data-parent="1-client-side-vs-server-side-programming">1.4 Front-End Web Development Frameworks</a></li></ul></li><li><a href="#2-networking" data-target="2-networking">2. Networking</a><ul class="sub"><li><a href="#2-1-hardware" data-target="2-1-hardware" data-parent="2-networking">2.1 Hardware</a></li><li><a href="#2-2-topologies" data-target="2-2-topologies" data-parent="2-networking">2.2 Topologies</a></li><li><a href="#2-3-mac-vs-ip-addresses" data-target="2-3-mac-vs-ip-addresses" data-parent="2-networking">2.3 MAC vs IP Addresses</a></li><li><a href="#2-4-dns" data-target="2-4-dns" data-parent="2-networking">2.4 DNS</a></li><li><a href="#2-5-packets-and-packet-switching" data-target="2-5-packets-and-packet-switching" data-parent="2-networking">2.5 Packets and Packet Switching</a></li><li><a href="#2-6-protocols-and-ports" data-target="2-6-protocols-and-ports" data-parent="2-networking">2.6 Protocols and Ports</a></li><li><a href="#2-7-the-browser-server-request-lifecycle" data-target="2-7-the-browser-server-request-lifecycle" data-parent="2-networking">2.7 The Browser–Server Request Lifecycle</a></li><li><a href="#2-8-tcpdump" data-target="2-8-tcpdump" data-parent="2-networking">2.8 tcpdump</a></li></ul></li><li><a href="#3-big-data" data-target="3-big-data">3. Big Data</a><ul class="sub"><li><a href="#3-1-the-six-v-s" data-target="3-1-the-six-v-s" data-parent="3-big-data">3.1 The Six V's</a></li><li><a href="#3-2-the-data-hierarchy" data-target="3-2-the-data-hierarchy" data-parent="3-big-data">3.2 The Data Hierarchy</a></li><li><a href="#3-3-web-mining" data-target="3-3-web-mining" data-parent="3-big-data">3.3 Web Mining</a></li><li><a href="#3-4-what-social-media-collects" data-target="3-4-what-social-media-collects" data-parent="3-big-data">3.4 What Social Media Collects</a></li><li><a href="#3-5-social-and-ethical-issues" data-target="3-5-social-and-ethical-issues" data-parent="3-big-data">3.5 Social and Ethical Issues</a></li><li><a href="#3-6-effect-on-web-architecture" data-target="3-6-effect-on-web-architecture" data-parent="3-big-data">3.6 Effect on Web Architecture</a></li></ul></li><li><a href="#4-w3c-and-web-standards" data-target="4-w3c-and-web-standards">4. W3C and Web Standards</a><ul class="sub"><li><a href="#4-1-the-need-for-standards-the-class-scenario" data-target="4-1-the-need-for-standards-the-class-scenario" data-parent="4-w3c-and-web-standards">4.1 The Need for Standards — the class scenario</a></li><li><a href="#4-2-web-accessibility-initiative-wai" data-target="4-2-web-accessibility-initiative-wai" data-parent="4-w3c-and-web-standards">4.2 Web Accessibility Initiative (WAI)</a></li><li><a href="#4-3-internationalisation-i18n" data-target="4-3-internationalisation-i18n" data-parent="4-w3c-and-web-standards">4.3 Internationalisation (i18n)</a></li><li><a href="#4-4-privacy-vs-security" data-target="4-4-privacy-vs-security" data-parent="4-w3c-and-web-standards">4.4 Privacy vs Security</a></li><li><a href="#4-5-validation" data-target="4-5-validation" data-parent="4-w3c-and-web-standards">4.5 Validation</a></li><li><a href="#4-6-css-syntax" data-target="4-6-css-syntax" data-parent="4-w3c-and-web-standards">4.6 CSS Syntax</a></li></ul></li><li><a href="#5-version-control-and-open-source-development-tools" data-target="5-version-control-and-open-source-development-tools">5. Version Control and Open-Source Development Tools</a><ul class="sub"><li><a href="#5-1-version-control" data-target="5-1-version-control" data-parent="5-version-control-and-open-source-development-tools">5.1 Version Control</a></li><li><a href="#5-2-distributed-vs-centralised" data-target="5-2-distributed-vs-centralised" data-parent="5-version-control-and-open-source-development-tools">5.2 Distributed vs Centralised</a></li><li><a href="#5-3-why-version-control-matters-the-class-scenario" data-target="5-3-why-version-control-matters-the-class-scenario" data-parent="5-version-control-and-open-source-development-tools">5.3 Why Version Control Matters — the class scenario</a></li><li><a href="#5-4-open-source-development-tools" data-target="5-4-open-source-development-tools" data-parent="5-version-control-and-open-source-development-tools">5.4 Open-Source Development Tools</a></li></ul></li><li><a href="#6-server-side-programming-and-content-management-systems" data-target="6-server-side-programming-and-content-management-systems">6. Server-Side Programming and Content Management Systems</a><ul class="sub"><li><a href="#6-1-the-web-server" data-target="6-1-the-web-server" data-parent="6-server-side-programming-and-content-management-systems">6.1 The Web Server</a></li><li><a href="#6-2-mvc-architecture" data-target="6-2-mvc-architecture" data-parent="6-server-side-programming-and-content-management-systems">6.2 MVC Architecture</a></li><li><a href="#6-3-content-management-systems" data-target="6-3-content-management-systems" data-parent="6-server-side-programming-and-content-management-systems">6.3 Content Management Systems</a></li><li><a href="#6-4-framework-comparison-pmi" data-target="6-4-framework-comparison-pmi" data-parent="6-server-side-programming-and-content-management-systems">6.4 Framework Comparison (PMI)</a></li><li><a href="#6-5-database-connectivity-worked-example" data-target="6-5-database-connectivity-worked-example" data-parent="6-server-side-programming-and-content-management-systems">6.5 Database Connectivity — worked example</a></li></ul></li><li><a href="#7-relational-databases-and-sql" data-target="7-relational-databases-and-sql">7. Relational Databases and SQL</a><ul class="sub"><li><a href="#7-1-relational-operators" data-target="7-1-relational-operators" data-parent="7-relational-databases-and-sql">7.1 Relational Operators</a></li><li><a href="#7-2-logical-operators" data-target="7-2-logical-operators" data-parent="7-relational-databases-and-sql">7.2 Logical Operators</a></li><li><a href="#7-3-aggregate-functions-used-with-group-by" data-target="7-3-aggregate-functions-used-with-group-by" data-parent="7-relational-databases-and-sql">7.3 Aggregate Functions (used with GROUP BY)</a></li><li><a href="#7-4-sort-order" data-target="7-4-sort-order" data-parent="7-relational-databases-and-sql">7.4 Sort Order</a></li><li><a href="#7-5-worked-queries" data-target="7-5-worked-queries" data-parent="7-relational-databases-and-sql">7.5 Worked Queries</a></li><li><a href="#7-6-object-relational-mapping-orm" data-target="7-6-object-relational-mapping-orm" data-parent="7-relational-databases-and-sql">7.6 Object-Relational Mapping (ORM)</a></li></ul></li><li><a href="#8-secure-web-services" data-target="8-secure-web-services">8. Secure Web Services</a><ul class="sub"><li><a href="#8-1-ssl-and-tls" data-target="8-1-ssl-and-tls" data-parent="8-secure-web-services">8.1 SSL and TLS</a></li><li><a href="#8-2-the-tls-handshake" data-target="8-2-the-tls-handshake" data-parent="8-secure-web-services">8.2 The TLS Handshake</a></li><li><a href="#8-3-encryption-types" data-target="8-3-encryption-types" data-parent="8-secure-web-services">8.3 Encryption Types</a></li><li><a href="#8-4-authentication-vs-authorisation" data-target="8-4-authentication-vs-authorisation" data-parent="8-secure-web-services">8.4 Authentication vs Authorisation</a></li><li><a href="#8-5-digital-signatures" data-target="8-5-digital-signatures" data-parent="8-secure-web-services">8.5 Digital Signatures</a></li><li><a href="#8-6-cross-site-scripting-xss" data-target="8-6-cross-site-scripting-xss" data-parent="8-secure-web-services">8.6 Cross-Site Scripting (XSS)</a></li></ul></li><li><a href="#9-web-algorithm-description" data-target="9-web-algorithm-description">9. Web Algorithm Description</a><ul class="sub"><li><a href="#9-1-the-ipo-model" data-target="9-1-the-ipo-model" data-parent="9-web-algorithm-description">9.1 The IPO Model</a></li><li><a href="#9-2-methods-of-algorithm-description" data-target="9-2-methods-of-algorithm-description" data-parent="9-web-algorithm-description">9.2 Methods of Algorithm Description</a></li><li><a href="#9-3-control-structures-in-javascript" data-target="9-3-control-structures-in-javascript" data-parent="9-web-algorithm-description">9.3 Control Structures in JavaScript</a></li><li><a href="#9-4-javascript-data-and-storage" data-target="9-4-javascript-data-and-storage" data-parent="9-web-algorithm-description">9.4 JavaScript Data and Storage</a></li><li><a href="#9-5-output-types" data-target="9-5-output-types" data-parent="9-web-algorithm-description">9.5 Output Types</a></li></ul></li><li><a href="#10-caesar-cipher" data-target="10-caesar-cipher">10. Caesar Cipher</a><ul class="sub"><li><a href="#10-1-the-definition-as-given" data-target="10-1-the-definition-as-given" data-parent="10-caesar-cipher">10.1 The Definition as Given</a></li><li><a href="#10-2-known-error-in-the-starter-document" data-target="10-2-known-error-in-the-starter-document" data-parent="10-caesar-cipher">10.2 ⚠️ Known Error in the Starter Document</a></li><li><a href="#10-3-implementation" data-target="10-3-implementation" data-parent="10-caesar-cipher">10.3 Implementation</a></li><li><a href="#10-4-worked-decryption-table-left-shift-of-1" data-target="10-4-worked-decryption-table-left-shift-of-1" data-parent="10-caesar-cipher">10.4 Worked Decryption Table (left shift of 1)</a></li></ul></li><li><a href="#11-hsc-exam-response-structures" data-target="11-hsc-exam-response-structures">11. HSC Exam Response Structures</a><ul class="sub"><li><a href="#common-question-types" data-target="common-question-types" data-parent="11-hsc-exam-response-structures">Common Question Types</a></li><li><a href="#paragraph-scaffold" data-target="paragraph-scaffold" data-parent="11-hsc-exam-response-structures">Paragraph Scaffold</a></li></ul></li><li><a href="#12-glossary-terms-students-mix-up" data-target="12-glossary-terms-students-mix-up">12. Glossary — Terms Students Mix Up</a></li><li><a href="#13-key-definitions-quick-reference" data-target="13-key-definitions-quick-reference">13. Key Definitions Quick Reference</a></li><li><a href="#14-quick-revision-checklist" data-target="14-quick-revision-checklist">14. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

@@ -1,0 +1,424 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Year 11 Software Engineering Summary — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="active" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Year 11 Software Engineering Summary</h1><p class="meta">Software Engineering · Software_Engineering/Year_11_Software_Engineering_Summary.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-programming-fundamentals">1. Programming Fundamentals</a></li><li><a href="#2-the-object-oriented-paradigm">2. The Object-Oriented Paradigm</a></li><li><a href="#3-programming-mechatronics">3. Programming Mechatronics</a></li><li><a href="#4-high-value-distinctions">4. High-value distinctions</a></li><li><a href="#5-exam-response-approach">5. Exam response approach</a></li><li><a href="#6-quick-revision-checklist">6. Quick revision checklist</a></li><li><a href="#sources-and-related-notes">Sources and related notes</a></li><li><a href="#glossary-confusing-terms-quick-reference">Glossary: Confusing Terms Quick Reference</a></li></ul></div><h1>Year 11 Software Engineering Summary</h1>
+<blockquote>
+<p><strong>Scope:</strong> The three Year 11 focus areas in the NESA Software Engineering 11-12 Syllabus (2022): Programming Fundamentals, The Object-Oriented Paradigm, and Programming Mechatronics. This is a revision summary, not a prediction of exact HSC marks. Your estimate of roughly 15% in a typical paper and up to 30% is useful for prioritising revision, but do not treat it as a guaranteed weighting. No specific exam notification was provided, so this covers the broad Year 11 scope.</p>
+</blockquote>
+<p>The main skill linking all three areas is turning a real need into a working solution: understand the problem, model the data and behaviour, design and code an algorithm, test it, then evaluate how well the complete system works. If revision time is short, start with those connected skills, then review the individual facts and definitions. That is a study order, not a claim about which questions will appear.</p>
+<h2 id="1-programming-fundamentals">1. Programming Fundamentals</h2>
+<h3 id="1-1-software-development-process">1.1 Software development process</h3>
+<p>A software development process breaks a project into stages so the team can move from a user need to a tested and maintained system.</p>
+<ol>
+<li><b>Requirements definition:</b> identify the problem, users and what they need.</li>
+<li><b>Determining specifications:</b> translate needs into precise, testable system requirements.</li>
+<li><b>Design:</b> plan the algorithm, data, interfaces and system structure.</li>
+<li><b>Development:</b> write and refine the program code.</li>
+<li><b>Integration:</b> combine components and check that they work together.</li>
+<li><b>Testing and debugging:</b> find faults, correct them, and check the revised solution.</li>
+<li><b>Installation:</b> put the system into use, with a suitable conversion or deployment plan.</li>
+<li><b>Maintenance:</b> fix faults and update the system as users, technology or requirements change.</li>
+</ol><blockquote>
+<p><strong>Requirements vs specifications:</strong> a requirement describes what the user needs; a specification states what the system must do in a measurable, testable way. For example, “staff can find a booking” is a need, while “show matching bookings within two seconds” is a testable specification.</p>
+</blockquote>
+<p>A <strong>functional requirement</strong> describes an action the system performs, such as saving a booking. A <strong>non-functional requirement</strong> describes a quality or constraint, such as security, usability, speed or reliability.</p>
+<h3 id="1-2-collaboration-tools-and-project-models">1.2 Collaboration tools and project models</h3>
+<p>Online code collaboration tools let developers share code, track changes and coordinate work. Tools such as GitHub and GitLab can provide repositories, version histories, branches, code reviews and issue tracking. To evaluate their use, consider how widely they are used in the relevant context, how they support teamwork and recovery of earlier versions, and risks such as access control, merge conflicts, accidental sharing or dependence on internet access. Do not claim a tool is “the most common” unless you have evidence for that context.</p>
+<details><summary><b>Waterfall and Agile comparison</b></summary>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;"></th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Waterfall</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Agile</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Structure</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Linear stages, completed in sequence.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Short repeated cycles of design, development, testing and feedback.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Best fit</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Requirements are stable and clear from the start.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Requirements may change and users can give ongoing feedback.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Trade-off</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Easy to plan, but late changes can be costly.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Adapts quickly, but scope and total time can be harder to predict.</td></tr>
+</tbody></table>
+</details><h3 id="1-3-algorithms-and-computational-thinking">1.3 Algorithms and computational thinking</h3>
+<p>An <strong>algorithm</strong> is a precise sequence of steps for solving a problem. Before coding, identify the inputs, outputs, processing steps, conditions, repeated actions and data that must be stored.</p>
+<ul>
+<li><strong>Sequence:</strong> steps run in order.</li>
+<li><strong>Selection:</strong> a condition chooses a path, such as <code>IF / ELSE</code>.</li>
+<li><strong>Iteration:</strong> a loop repeats steps while or until a condition is met.</li>
+</ul>
+<p>Use <strong>pseudocode</strong> or a <strong>flowchart</strong> to plan logic before writing code. Flowcharts commonly use an oval for start/stop, a parallelogram for input/output, a rectangle for processing, and a diamond for a decision. Structured algorithms should be indented clearly and use named subprograms for separate tasks.</p>
+<p><strong>Divide and conquer</strong> breaks a large problem into smaller parts, solves those parts, then combines their results. <strong>Backtracking</strong> explores a possible choice, then reverses that choice if it leads to a dead end. For example, a maze solver can try a path and backtrack when blocked.</p>
+<p>A <strong>structure chart</strong> shows how modules or subprograms are organised. <strong>Abstraction/refinement diagrams</strong> show a task at different levels of detail: abstraction hides detail that is not needed at the current level; refinement adds detail in stages. A top-down design starts with the overall task and breaks it into parts. A bottom-up design builds or selects smaller components and combines them into a whole.</p>
+<p>To analyse an algorithm, state its purpose, identify inputs and outputs, trace how values change, and check how it connects to other procedures or functions. A <strong>desk check</strong> traces the algorithm by hand; a <strong>peer check</strong> asks another person to review the logic. A procedure carries out a task; a function returns a value.</p>
+<p><strong>Worked desk check:</strong> this algorithm adds the integers from 1 to 3. Make a row for every executed line and every condition check, including the final false check.</p>
+<pre><code class="language-text">total = 0
+count = 1
+WHILE count &lt;= 3
+    total = total + count
+    count = count + 1
+OUTPUT total
+</code></pre>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Step</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Line executed</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">total</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">count</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Output / note</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>total = 0</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">0</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">initialise</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">2</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>count = 1</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">0</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">initialise</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">check <code>count &lt;= 3</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">0</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">TRUE</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">4</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>total = total + count</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">5</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>count = count + 1</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">2</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">check <code>count &lt;= 3</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">1</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">2</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">TRUE</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">7</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>total = total + count</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">2</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">8</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>count = count + 1</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">9</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">check <code>count &lt;= 3</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">TRUE</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">10</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>total = total + count</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">3</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">11</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>count = count + 1</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">4</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">-</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">12</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">check <code>count &lt;= 3</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">4</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">FALSE, exit</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">13</td><td style="border:1px solid #bdc1c6;padding:6px 10px;"><code>OUTPUT total</code></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">4</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">6</td></tr>
+</tbody></table><p>The loop runs three times and outputs 6. In an exam trace, include every variable, condition and output, and show the final false condition that exits the loop.</p>
+<h3 id="1-4-data-number-systems-and-data-structures">1.4 Data, number systems and data structures</h3>
+<p>A <strong>data dictionary</strong> documents the data used by a system so developers agree on its names, types, formats, validation rules and relationships. A useful entry includes a variable name, data type, permitted values or format, description and example.</p>
+<p>Common types include <strong>character</strong> and <strong>string</strong> (text), <strong>Boolean</strong> (true/false), <strong>integer</strong> (whole number), <strong>real</strong> and <strong>single-precision floating point</strong> (numbers that can include fractions), and <strong>date/time</strong>. Choose a type that can represent the values the system actually needs.</p>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Structure</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">What it stores / how it is used</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Useful point</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Array / list</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">An ordered collection of values. Arrays may be single- or multidimensional; lists can grow or shrink in many languages.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Use an index to select an item.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Record</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">A group of related fields describing one item, for example a student record with ID, name and date of birth.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Fields can have different data types.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Tree</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Hierarchical data made of connected nodes, such as a folder structure.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Useful when parent-child relationships matter.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Sequential file</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Records stored and read in order, one after another.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">To reach a later record, earlier data may need to be read first.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Stack / hash table</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">A stack uses last-in, first-out access. A hash table stores key-value entries using a hash function.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Choose the structure to fit the access pattern.</td></tr>
+</tbody></table><p><strong>Number systems:</strong> decimal is base 10, binary is base 2, and hexadecimal is base 16. Binary uses 0 and 1. Hex uses 0-9 and A-F. Each hexadecimal digit represents exactly four binary bits.</p>
+<ul>
+<li><strong>Binary to decimal:</strong> multiply each bit by its place value, then add. <code>1010₂ = 1×8 + 0×4 + 1×2 + 0×1 = 10₁₀</code>. A second example: <code>1101₂ = 8 + 4 + 0 + 1 = 13₁₀</code>.</li>
+<li><strong>Decimal to binary:</strong> turn on the powers of 2 that add to the target. <code>13 = 8 + 4 + 1</code>, so <code>13₁₀ = 1101₂</code>. Similarly, <code>10 = 8 + 2</code>, so <code>10₁₀ = 1010₂</code>.</li>
+<li><strong>Binary to hexadecimal:</strong> group from the right into sets of four bits, then convert each group. <code>1010 1100₂</code> becomes <code>A C</code>, so <code>AC₁₆</code>.</li>
+<li><strong>Two&#39;s complement:</strong> to represent a negative integer at a fixed bit-width, write the positive value in binary, invert every bit, then add 1. For 8-bit <code>-5</code>: <code>00000101</code> → invert to <code>11111010</code> → add 1 to get <code>11111011</code>. Keep the specified bit-width throughout.</li>
+</ul>
+<h3 id="1-5-programming-paradigms">1.5 Programming paradigms</h3>
+<p>A <strong>programming paradigm</strong> is a general way of organising a solution. Be able to experiment with the paradigms and explain how a problem or data structure fits the approach.</p>
+<ul>
+<li><strong>Object-oriented:</strong> organises code around objects that combine data and methods.</li>
+<li><strong>Imperative / procedural:</strong> describes a sequence of instructions and procedures that change or use data.</li>
+<li><strong>Logic:</strong> describes facts and rules, then uses inference to answer a query. <strong>Forward chaining</strong> starts with facts and derives conclusions; <strong>backward chaining</strong> starts with a goal and looks for supporting facts.</li>
+<li><strong>Functional:</strong> organises computation around functions and their results.</li>
+</ul>
+<h3 id="1-6-developing-solutions-testing-and-debugging">1.6 Developing solutions, testing and debugging</h3>
+<p>To turn an algorithm into code, preserve its sequence, decisions and loops, select data structures that suit the data, and use standard modules where they solve a common task. Break larger logic into subprograms. Pass required data through parameters, and make each subprogram responsible for one logical task.</p>
+<p>The Year 11 structures include single- and multidimensional arrays, lists, trees, stacks and hash tables. Select by how the data needs to be organised or accessed: an array stores indexed items, a stack serves the most recently added item first, and a hash table associates keys with values. Records and sequential files are also important ways of organising and storing related data.</p>
+<p>Test data should include <strong>boundary values</strong> at the edges of an allowed range, <strong>faulty or abnormal values</strong> that should be rejected or handled, and cases that exercise each decision path. For example, if an input must be from 0 to 120, test 0 and 120, values just outside the range, and a non-number. <strong>Path coverage</strong> checks that each important branch or route through the code has been tested.</p>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Test / tool</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">What it checks</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Unit, subsystem, system testing</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">One component / a group of connected components / the complete solution.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Black, white, grey box</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Test with no knowledge of internal code / with access to internal code / with partial knowledge of it.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Breakpoint and single-line stepping</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Pause execution at a chosen place and follow code one line at a time.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Watch and function-interface checks</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Track variable values and check that functions receive and return the expected data.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Debug output and IDE tools</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Print temporary state information or use the integrated debugger to locate a fault.</td></tr>
+</tbody></table><p>Typical errors have different causes: a <strong>syntax error</strong> breaks language rules, for example a missing bracket or misspelled keyword; a <strong>logic error</strong> uses incorrect reasoning, a condition or a formula, so the code runs but returns the wrong result; a <strong>runtime error</strong> occurs during execution, for example when the program tries to divide by zero or access unavailable data. Test and evaluate the solution against its required functionality, performance, code readability and documentation. <strong>Quality assurance</strong> is the planned checking that helps maintain reliable development and testing, not just one final test.</p>
+<h2 id="2-the-object-oriented-paradigm">2. The Object-Oriented Paradigm</h2>
+<h3 id="2-1-classes-objects-and-the-oop-concepts">2.1 Classes, objects and the OOP concepts</h3>
+<p>A <strong>class</strong> is a blueprint; an <strong>object</strong> is an instance created from that blueprint. An object&#39;s <strong>attributes</strong> hold its data and its <strong>methods</strong> define actions. <strong>Instantiation</strong> means creating the object.</p>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Concept</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">What it means</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Why it matters</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Encapsulation</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Bundle related data and methods in a class, and control access to internal state.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Limits unwanted changes and keeps related logic together.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Abstraction</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Show the essential features while hiding implementation detail.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Users or other classes can use a simpler interface.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Inheritance</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">A child class receives and can extend features of a parent class.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Shared code can be reused instead of duplicated.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Generalisation</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Identify shared features and place them in a more general parent class.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Makes common properties and behaviours explicit.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Polymorphism</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Different objects can respond differently to the same method call.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">One interface can work with several related object types.</td></tr>
+</tbody></table><p><strong>Confusing pair:</strong> encapsulation is how related data and methods are organised and protected; abstraction is what detail is hidden from the user. They often work together, but they are not the same thing.</p>
+<pre><code class="language-python">class Sensor:
+    def __init__(self, name):
+        self.name = name
+
+    def read(self):
+        return 0
+
+class LightSensor(Sensor):
+    def read(self):
+        return 42
+
+sensor = LightSensor(&quot;room light&quot;)  # instantiate an object
+value = sensor.read()               # message/method call
+</code></pre>
+<p><code>Sensor</code> is a class, <code>sensor</code> is an object, <code>name</code> is an attribute, and <code>read()</code> is a method. <code>LightSensor</code> inherits from <code>Sensor</code> and overrides <code>read()</code>. This is an example of polymorphism because the same <code>read()</code> call can produce behaviour appropriate to the object&#39;s class.</p>
+<h3 id="2-2-procedural-programming-design-models-and-message-passing">2.2 Procedural programming, design models and message passing</h3>
+<p>Procedural code organises a solution around procedures and a sequence of actions. OOP organises it around interacting objects. OOP can suit a system with many entities that have their own data and behaviour; a procedural approach can be simpler for a small, linear task. Choose by considering modularity, data management, maintenance and the complexity of the system.</p>
+<ul>
+<li>A <strong>data flow diagram (DFD)</strong> shows data moving between processes, data stores and external entities.</li>
+<li>A <strong>structure chart</strong> shows the hierarchy of modules and the data or control passed between them.</li>
+<li>A <strong>class diagram</strong> shows classes, their attributes and methods, and relationships such as inheritance.</li>
+</ul>
+<p>A useful design mapping is: the system in a high-level model suggests the main class; process names suggest methods; data items suggest attributes. Refine the model before coding, then check that the code still matches the original need. <strong>Message passing</strong> is how objects communicate, typically by calling another object&#39;s method and supplying any required data.</p>
+<p><strong>Design approaches:</strong> define the task first. Top-down design breaks the whole task into smaller tasks. Bottom-up design combines working components into a larger system. A <strong>façade</strong> provides a simple front-facing interface to a more complex subsystem. <strong>Agility</strong> means working in small design-build-test cycles and improving the solution from feedback.</p>
+<h3 id="2-3-code-quality-optimisation-and-teamwork">2.3 Code quality, optimisation and teamwork</h3>
+<p>When assessing code that implements an algorithm, use evidence and relevant criteria: <strong>functionality/correctness</strong>, performance and resource use, readability, documentation, maintainability, robustness, scalability, portability, security and testability. Link each judgement to a specific feature of the code, not just the criterion&#39;s name.</p>
+<p><strong>Code optimisation</strong> changes code to improve performance or resource use. Optimise only when there is a reason and test the result, because changes made for speed can make code harder to read or maintain.</p>
+<p>Good OOP development uses a clear mainline, with one logical task per subroutine. <strong>Stubs</strong> are temporary placeholders used to test a larger program before every component is complete. Use appropriate control and data structures, version control, regular backups and safe handling of data. Test components, their combinations and the complete system.</p>
+<p>Collaboration improves when a team uses consistent naming and style, useful comments, version control and regular feedback. These practices reduce conflicting changes and make it easier to understand, review, restore and extend code.</p>
+<h3 id="2-4-oop-implementation-and-evaluation">2.4 OOP implementation and evaluation</h3>
+<p>An OOP program still uses branching, iteration and functions or methods. When implementing it, keep the mainline clear, use one logical task per subroutine, use stubs while parts are unfinished, and back up code regularly. Evaluate the classes and the complete program through unit, subsystem and system tests, using suitable black-box, white-box or grey-box methods. Check the interfaces between methods as well as the methods themselves.</p>
+<h2 id="3-programming-mechatronics">3. Programming Mechatronics</h2>
+<h3 id="3-1-how-a-mechatronic-system-works">3.1 How a mechatronic system works</h3>
+<p><strong>Mechatronics</strong> combines mechanical systems, electronics, computing and control. A system senses a real-world condition, processes data in a controller, and produces an action through an actuator or end effector.</p>
+<pre><code class="language-text">Physical condition -&gt; Sensor -&gt; Controller / program -&gt; Actuator -&gt; Physical action
+                         ^                                       |
+                         +----------- feedback, if measured ------+
+</code></pre>
+<p>Applications include manufacturing, transport, agriculture, healthcare and assistive technology. When designing a system for a person with disability, begin with the specific user&#39;s abilities, environment, safety and control needs; these can affect the sensors, interface, movement and feedback the system should provide.</p>
+<h3 id="3-2-cpu-microcontroller-and-registers">3.2 CPU, microcontroller and registers</h3>
+<p>A <strong>CPU</strong> is the processor that executes instructions and usually relies on other components for memory and input/output. A <strong>microcontroller</strong> integrates a processor, memory and input/output on one chip, which suits dedicated embedded tasks such as reading a sensor and controlling a motor.</p>
+<p>The CPU uses an instruction set. An instruction&#39;s <strong>opcode</strong> identifies the operation; its <strong>operand</strong> identifies the data or address involved. Registers temporarily hold information during processing.</p>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Register</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Holds</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Memory cue</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>PC</b>, Program Counter</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Address of the next instruction.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Next instruction.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>MAR</b>, Memory Address Register</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Address of the memory location being accessed.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Where.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>MDR</b>, Memory Data Register</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Data being read from or written to memory.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">What.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>CIR</b>, Current Instruction Register</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Instruction currently being decoded or executed.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Current instruction.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>ACC</b>, Accumulator</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Intermediate or final results of operations.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Calculation result.</td></tr>
+</tbody></table><p>In a simplified <strong>fetch-decode-execute cycle</strong>, the processor fetches an instruction from memory using its address, places it in the instruction register, decodes the opcode and operand, executes the instruction, stores any result, then advances to the next instruction. Be able to explain how this hardware affects the way code and data are processed.</p>
+<h3 id="3-3-sensors-actuators-data-and-physical-constraints">3.3 Sensors, actuators, data and physical constraints</h3>
+<p>A <strong>sensor</strong> converts a physical condition into data a controller can process. An <strong>actuator</strong> converts a controller&#39;s electrical output into movement or another physical action. An <strong>end effector</strong> or <strong>manipulator</strong> is the tool at the end of a mechanism that interacts with an object, such as a robotic gripper.</p>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Component / data</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Role or example</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Design point</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Motion sensor</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Detects movement, acceleration, tilt or distance.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Consider range, accuracy and update speed.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Light-level sensor</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Measures light, for example with an LDR or photodiode.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">An analogue output may need conversion to digital data.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Hydraulic actuator</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Uses fluid pressure to create high-force movement.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Check force, movement range and safety.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Robotic gripper</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">An end effector that grasps, holds or releases an object.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Match grip strength and shape to the object and user.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Operational data</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Current sensor readings while the system runs.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Supports real-time decisions.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Diagnostic / optimisation data</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Diagnostic data helps identify faults; optimisation data helps improve performance over time.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Use data to improve reliability without collecting unnecessary information.</td></tr>
+</tbody></table><p>A mechatronic system must respect <strong>motion constraints</strong> such as the available range, speed, load and risk of collision. <strong>Degrees of freedom</strong> describe the independent ways a mechanism can move. Use code and simulation to experiment with how components depend on each other, then combine compatible subsystems, sensors, actuators and end effectors so each part interacts correctly with the rest.</p>
+<h3 id="3-4-control-algorithms-and-feedback">3.4 Control algorithms and feedback</h3>
+<p>A control algorithm reads sensor data, compares the current state with a target or rule, and sends an output to an actuator. An autonomous system repeats this process without a person making each control decision.</p>
+<ul>
+<li><strong>Open-loop control</strong> follows a set instruction without measuring the result. It is simpler, but cannot automatically correct for disturbances.</li>
+<li><strong>Closed-loop control</strong> measures the result and uses feedback to adjust the output. It can be more accurate, but needs sensors and additional processing.</li>
+<li><strong>On/off control</strong> switches between two states. It is simple but can overshoot or oscillate.</li>
+<li><strong>Proportional control</strong> changes the output in proportion to the difference between the target and measured value. It can leave a small steady-state error.</li>
+<li><strong>PID control</strong> combines proportional response, accumulated error over time (integral), and response to the rate of change (derivative). The terms can reduce residual error and overshoot when correctly tuned.</li>
+</ul>
+<p>For a design answer, state the sensor input, target or decision rule, repeated control steps, actuator output, and how feedback is used. A line-following robot, for example, reads a sensor, estimates whether it is left or right of the line, then adjusts the motors to reduce that error.</p>
+<h3 id="3-5-building-wiring-and-testing-a-system">3.5 Building, wiring and testing a system</h3>
+<p>A real-world mechatronics solution combines software control, mechanical design, electronics and mathematics. Select components by checking their data and power requirements, battery capacity, material strength, motion limits and how the parts will connect. Wiring diagrams should clearly show both the data connections and the power supply. A resistor can limit current through an LED; a pull-up or pull-down arrangement can give a digital input a defined state when a switch is open.</p>
+<p>Use a <strong>simulation</strong> or <strong>prototype</strong> to test code and component interactions before committing to the final physical build. A user interface should let the intended user control the system clearly and safely. Unit-test each component&#39;s control algorithm, then repeat tests to check that behaviour is effective and consistent. A successful test of one component does not prove that the integrated system works, so test the combined subsystems too.</p>
+<p>Ohm&#39;s law links voltage, current and resistance: <code>V = I × R</code>. In a circuit, an ammeter measures current in series and a voltmeter measures potential difference in parallel. In a question, show the formula, substitute the values with units, and state the result.</p>
+<h2 id="4-high-value-distinctions">4. High-value distinctions</h2>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Do not mix up</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">The difference</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Requirement / specification</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">User need / measurable system statement.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Syntax / logic / runtime error</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Invalid language rules / wrong result / fault while executing.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Procedure / function</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Performs a task / returns a value.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Class / object</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Blueprint / instance created from it.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Encapsulation / abstraction</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Organise and protect internal state / hide unnecessary detail from the user.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Open-loop / closed-loop</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Does not measure the result / uses feedback to adjust.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Sensor / actuator</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Reads a physical condition / causes a physical action.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;">Unit / subsystem / system test</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Test one component / a connected group / the complete solution.</td></tr>
+</tbody></table><h2 id="5-exam-response-approach">5. Exam response approach</h2>
+<p>For “explain”, describe the mechanism and its consequence. For “justify” or “assess”, make a judgement that fits the scenario, support it with specific evidence, and acknowledge an important limitation where relevant. For code-quality questions, name a criterion, point to the feature being assessed, and explain the effect on the user or system.</p>
+<p>For a mechatronics design question, connect the chain clearly: <strong>user need -&gt; sensor/data -&gt; algorithm -&gt; controller -&gt; actuator/action -&gt; test result</strong>. For an OOP question, explain how the class, object, attribute, method or relationship helps implement that need. Avoid listing terms without showing how they apply.</p>
+<h2 id="6-quick-revision-checklist">6. Quick revision checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Recall the eight software development steps and explain how requirements differ from specifications.</li>
+<li><input disabled="" type="checkbox"> Compare Waterfall and Agile, and explain benefits and risks of online code collaboration.</li>
+<li><input disabled="" type="checkbox"> Design and trace algorithms using sequence, selection, iteration and subprograms.</li>
+<li><input disabled="" type="checkbox"> Use divide and conquer and backtracking appropriately; identify inputs, outputs and stored data.</li>
+<li><input disabled="" type="checkbox"> Convert binary and hexadecimal values, use two&#39;s complement at a stated bit-width, and select suitable data types.</li>
+<li><input disabled="" type="checkbox"> Explain data dictionaries, arrays, records, trees, sequential files, lists, stacks and hash tables.</li>
+<li><input disabled="" type="checkbox"> Find and correct errors using testing, test data, debugging tools and clear evaluation criteria.</li>
+<li><input disabled="" type="checkbox"> Explain classes, objects, encapsulation, abstraction, inheritance, generalisation and polymorphism.</li>
+<li><input disabled="" type="checkbox"> Read DFDs, structure charts and class diagrams, and connect a model to code.</li>
+<li><input disabled="" type="checkbox"> Explain message passing, optimisation, stubs, version control, backup and collaborative practices.</li>
+<li><input disabled="" type="checkbox"> Distinguish CPU and microcontroller; explain the fetch-decode-execute cycle and key registers.</li>
+<li><input disabled="" type="checkbox"> Identify sensors, actuators and end effectors, and describe the data and physical constraints of a system.</li>
+<li><input disabled="" type="checkbox"> Design an open- or closed-loop control algorithm; distinguish on/off, proportional and PID control.</li>
+<li><input disabled="" type="checkbox"> Explain how wiring, power, simulation, prototyping, UI and repeatable unit tests contribute to a working system.</li>
+</ul>
+<h2 id="sources-and-related-notes">Sources and related notes</h2>
+<ul>
+<li><a href="https://curriculum.nsw.edu.au/learning-areas/tas/software-engineering-11-12-2022/content/year-11/fac3c86ce1">NESA Software Engineering 11-12 Syllabus (2022), Year 11 Programming Fundamentals</a></li>
+<li><a href="https://curriculum.nsw.edu.au/learning-areas/tas/software-engineering-11-12-2022/content/year-11/fa332a6f82">NESA Software Engineering 11-12 Syllabus (2022), The Object-Oriented Paradigm</a></li>
+<li><a href="https://curriculum.nsw.edu.au/learning-areas/tas/software-engineering-11-12-2022/content/year-11/fa70b5c187">NESA Software Engineering 11-12 Syllabus (2022), Programming Mechatronics</a></li>
+<li>Detailed revision notes: <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a></li>
+</ul>
+<h2 id="glossary-confusing-terms-quick-reference">Glossary: Confusing Terms Quick Reference</h2>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;">
+<thead><tr><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Term</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Meaning</th><th style="border:1px solid #bdc1c6;padding:6px 10px;text-align:left;background:#e8eaed;color:#000000;font-weight:600;">Do not confuse with</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Requirement</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">What the user needs.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Specification, the testable system statement.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Syntax error</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Code breaks language rules.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Logic error, which runs but produces the wrong answer.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Procedure</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">A subprogram that performs a task.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Function, which returns a value.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Class</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Blueprint for objects.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Object, one instance created from the blueprint.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Encapsulation</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Organises related data and methods, controlling access to internal state.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Abstraction, hiding detail behind an essential interface.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Sensor</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Reads a physical condition as data.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Actuator, which creates a physical action.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>Open loop</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Acts without measuring its result.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Closed loop, which uses feedback to adjust.</td></tr>
+<tr><td style="border:1px solid #bdc1c6;padding:6px 10px;"><b>MAR</b></td><td style="border:1px solid #bdc1c6;padding:6px 10px;">Holds the memory address being accessed.</td><td style="border:1px solid #bdc1c6;padding:6px 10px;">MDR, which holds the data being transferred.</td></tr>
+</tbody></table><blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+<p><em>This summary follows the NESA Year 11 focus areas and condenses the existing class revision notes into one document. Use the linked detailed notes for extra examples and full worked explanations.</em></p>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-programming-fundamentals" data-target="1-programming-fundamentals">1. Programming Fundamentals</a><ul class="sub"><li><a href="#1-1-software-development-process" data-target="1-1-software-development-process" data-parent="1-programming-fundamentals">1.1 Software development process</a></li><li><a href="#1-2-collaboration-tools-and-project-models" data-target="1-2-collaboration-tools-and-project-models" data-parent="1-programming-fundamentals">1.2 Collaboration tools and project models</a></li><li><a href="#1-3-algorithms-and-computational-thinking" data-target="1-3-algorithms-and-computational-thinking" data-parent="1-programming-fundamentals">1.3 Algorithms and computational thinking</a></li><li><a href="#1-4-data-number-systems-and-data-structures" data-target="1-4-data-number-systems-and-data-structures" data-parent="1-programming-fundamentals">1.4 Data, number systems and data structures</a></li><li><a href="#1-5-programming-paradigms" data-target="1-5-programming-paradigms" data-parent="1-programming-fundamentals">1.5 Programming paradigms</a></li><li><a href="#1-6-developing-solutions-testing-and-debugging" data-target="1-6-developing-solutions-testing-and-debugging" data-parent="1-programming-fundamentals">1.6 Developing solutions, testing and debugging</a></li></ul></li><li><a href="#2-the-object-oriented-paradigm" data-target="2-the-object-oriented-paradigm">2. The Object-Oriented Paradigm</a><ul class="sub"><li><a href="#2-1-classes-objects-and-the-oop-concepts" data-target="2-1-classes-objects-and-the-oop-concepts" data-parent="2-the-object-oriented-paradigm">2.1 Classes, objects and the OOP concepts</a></li><li><a href="#2-2-procedural-programming-design-models-and-message-passing" data-target="2-2-procedural-programming-design-models-and-message-passing" data-parent="2-the-object-oriented-paradigm">2.2 Procedural programming, design models and message passing</a></li><li><a href="#2-3-code-quality-optimisation-and-teamwork" data-target="2-3-code-quality-optimisation-and-teamwork" data-parent="2-the-object-oriented-paradigm">2.3 Code quality, optimisation and teamwork</a></li><li><a href="#2-4-oop-implementation-and-evaluation" data-target="2-4-oop-implementation-and-evaluation" data-parent="2-the-object-oriented-paradigm">2.4 OOP implementation and evaluation</a></li></ul></li><li><a href="#3-programming-mechatronics" data-target="3-programming-mechatronics">3. Programming Mechatronics</a><ul class="sub"><li><a href="#3-1-how-a-mechatronic-system-works" data-target="3-1-how-a-mechatronic-system-works" data-parent="3-programming-mechatronics">3.1 How a mechatronic system works</a></li><li><a href="#3-2-cpu-microcontroller-and-registers" data-target="3-2-cpu-microcontroller-and-registers" data-parent="3-programming-mechatronics">3.2 CPU, microcontroller and registers</a></li><li><a href="#3-3-sensors-actuators-data-and-physical-constraints" data-target="3-3-sensors-actuators-data-and-physical-constraints" data-parent="3-programming-mechatronics">3.3 Sensors, actuators, data and physical constraints</a></li><li><a href="#3-4-control-algorithms-and-feedback" data-target="3-4-control-algorithms-and-feedback" data-parent="3-programming-mechatronics">3.4 Control algorithms and feedback</a></li><li><a href="#3-5-building-wiring-and-testing-a-system" data-target="3-5-building-wiring-and-testing-a-system" data-parent="3-programming-mechatronics">3.5 Building, wiring and testing a system</a></li></ul></li><li><a href="#4-high-value-distinctions" data-target="4-high-value-distinctions">4. High-value distinctions</a></li><li><a href="#5-exam-response-approach" data-target="5-exam-response-approach">5. Exam response approach</a></li><li><a href="#6-quick-revision-checklist" data-target="6-quick-revision-checklist">6. Quick revision checklist</a></li><li><a href="#sources-and-related-notes" data-target="sources-and-related-notes">Sources and related notes</a></li><li><a href="#glossary-confusing-terms-quick-reference" data-target="glossary-confusing-terms-quick-reference">Glossary: Confusing Terms Quick Reference</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

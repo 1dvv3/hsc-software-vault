@@ -1,0 +1,1366 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Software Automation — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="active" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Software Automation</h1><p class="meta">Software Engineering · Software_Engineering/Software_Automation.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-ai-vs-machine-learning">1. AI vs Machine Learning</a></li><li><a href="#2-mlops-machine-learning-automation-through-devops">2. MLOps — Machine Learning Automation Through DevOps</a></li><li><a href="#3-regression-algorithms">3. Regression Algorithms</a></li><li><a href="#4-neural-networks-and-decision-trees">4. Neural Networks and Decision Trees</a></li><li><a href="#5-psychology-and-human-behaviour">5. Psychology and Human Behaviour</a></li><li><a href="#6-ethics-and-the-limits-of-automation">6. Ethics and the Limits of Automation</a></li><li><a href="#7-hsc-exam-response-structures">7. HSC Exam Response Structures</a></li><li><a href="#8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-key-definitions-quick-reference">9. Key Definitions Quick Reference</a></li><li><a href="#10-quick-revision-checklist">10. Quick Revision Checklist</a></li></ul></div><h1>Software Automation — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 12, Unit 6</strong> | AI vs ML, types of machine learning, MLOps, regression algorithms with worked calculations, neural networks and decision trees, and the ethics of automation.</p>
+</blockquote>
+<hr>
+<h2 id="1-ai-vs-machine-learning">1. AI vs Machine Learning</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Artificial Intelligence (AI)</strong></td>
+<td>&quot;A <strong>broad field</strong> of computer science focused on creating systems that can perform tasks requiring human-like intelligence. AI encompasses reasoning, problem-solving, perception, language understanding, and learning. It includes <strong>rule-based systems, expert systems, robotics, and machine learning</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Machine Learning (ML)</strong></td>
+<td>&quot;A <strong>subset of AI</strong> that enables computers to <strong>learn from data</strong> and improve their performance over time <strong>without being explicitly programmed</strong>. It involves algorithms that identify patterns, make decisions, and adapt based on experience&quot;</td>
+</tr>
+</tbody></table>
+<pre><code>┌─────────────────────────────────────────┐
+│  ARTIFICIAL INTELLIGENCE                │
+│  reasoning · perception · robotics ·    │
+│  expert systems · rule-based systems    │
+│   ┌───────────────────────────────┐     │
+│   │  MACHINE LEARNING             │     │
+│   │  learns from data, no explicit│     │
+│   │  programming                  │     │
+│   │   ┌─────────────────────┐     │     │
+│   │   │  NEURAL NETWORKS /  │     │     │
+│   │   │  DEEP LEARNING      │     │     │
+│   │   └─────────────────────┘     │     │
+│   └───────────────────────────────┘     │
+└─────────────────────────────────────────┘
+</code></pre>
+<blockquote>
+<p><strong>The relationship to state in an exam</strong>: ML is a <strong>subset</strong> of AI. AI is the broader concept; ML is one <strong>data-driven</strong> way of achieving it. Not all AI is ML — a rule-based expert system is AI but is explicitly programmed, so it is not ML.</p>
+</blockquote>
+<h3 id="1-1-types-of-machine-learning">1.1 Types of Machine Learning</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Supervised</strong></td>
+<td>&quot;Taught using <strong>labeled examples</strong> — finds patterns from past examples to make predictions&quot;</td>
+</tr>
+<tr>
+<td><strong>Unsupervised</strong></td>
+<td>&quot;Given a lot of data but <strong>no answers</strong>. It figures out patterns by itself&quot;</td>
+</tr>
+<tr>
+<td><strong>Semi-supervised</strong></td>
+<td>&quot;<strong>Some</strong> labeled examples but also a lot of <strong>unlabeled</strong> data&quot;</td>
+</tr>
+<tr>
+<td><strong>Reinforcement</strong></td>
+<td>&quot;Learns by <strong>trial and error</strong> and gets <strong>rewards or penalties</strong> based on its actions&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Supervised vs Unsupervised</strong>
+<strong>Supervised</strong> = you give the machine the <strong>answers</strong> during training (&quot;this photo is a cat&quot;). Used for <strong>prediction and classification</strong>.
+<strong>Unsupervised</strong> = you give it <strong>no answers</strong> and it finds structure itself. Used for <strong>clustering and grouping</strong>.
+The word &quot;supervised&quot; refers to whether a human supervised the <em>labelling</em>, not the <em>training</em>.</p>
+</blockquote>
+<p><strong>Worked classifications:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>ML type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Grouping fruit with no labels given</td>
+<td><strong>Unsupervised</strong></td>
+</tr>
+<tr>
+<td>Maths problems supplied with their answers</td>
+<td><strong>Supervised</strong></td>
+</tr>
+<tr>
+<td>A note-taking task with some labelled examples</td>
+<td><strong>Semi-supervised</strong></td>
+</tr>
+<tr>
+<td>A game-playing agent improving through rewards</td>
+<td><strong>Reinforcement</strong></td>
+</tr>
+<tr>
+<td>Spam filter trained on emails marked spam/not spam</td>
+<td><strong>Supervised</strong></td>
+</tr>
+</tbody></table>
+<h3 id="1-2-automation-that-ml-supports">1.2 Automation That ML Supports</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DevOps</strong></td>
+<td>Combines software <strong>dev</strong>elopment and IT <strong>op</strong>erations. Automation manages deployment, monitors systems and fixes errors; ML predicts failures</td>
+</tr>
+<tr>
+<td><strong>RPA</strong> (Robotic Process Automation)</td>
+<td>Automates <strong>repetitive tasks</strong> — data entry, invoices, customer responses. Bots learn from past actions</td>
+</tr>
+<tr>
+<td><strong>BPA</strong> (Business Process Automation)</td>
+<td>Automates <strong>entire workflows</strong>, integrating multiple systems and departments</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — RPA vs BPA</strong>
+<strong>RPA</strong> automates individual <strong>tasks</strong> (a bot copying data between two screens).
+<strong>BPA</strong> automates the whole <strong>process</strong> end to end (the entire invoice approval workflow across departments).
+RPA is narrow and bolts onto existing systems; BPA is broad and usually requires system integration.</p>
+</blockquote>
+<hr>
+<h2 id="2-mlops-machine-learning-automation-through-devops">2. MLOps — Machine Learning Automation Through DevOps</h2>
+<blockquote>
+<p><strong>NESA definition</strong>: &quot;<strong>MLOps</strong> is the automated process of <strong>designing, training and deploying</strong> machine learning models. It borrows many of the same principles and practices used in DevOps, bringing together the teams involved in developing machine learning models and the operational teams involved in deploying and supporting the models in production.&quot;</p>
+</blockquote>
+<blockquote>
+<p><strong>Students should know the three stages of MLOps.</strong></p>
+</blockquote>
+<h3 id="stage-1-design">Stage 1 — Design</h3>
+<ul>
+<li>Defining the <strong>business problem</strong> to be solved</li>
+<li><strong>Refactoring</strong> the business problem into a <strong>machine learning problem</strong></li>
+<li>Defining <strong>success metrics</strong></li>
+<li>Researching <strong>available data</strong></li>
+</ul>
+<h3 id="stage-2-model-development">Stage 2 — Model Development</h3>
+<ul>
+<li><strong>Data wrangling</strong></li>
+<li><strong>Feature engineering</strong></li>
+<li><strong>Model training</strong></li>
+<li><strong>Model testing and validation</strong></li>
+</ul>
+<h3 id="stage-3-operations">Stage 3 — Operations</h3>
+<ul>
+<li><strong>Model deployment</strong></li>
+<li>Supporting operations and use</li>
+<li><strong>Monitoring model performance</strong></li>
+</ul>
+<pre><code>DESIGN                  MODEL DEVELOPMENT          OPERATIONS
+business problem   →    data wrangling        →    deployment
+ML problem              feature engineering        support
+success metrics         training                   monitoring
+available data          testing &amp; validation
+</code></pre>
+<blockquote>
+<p><strong>Key vocabulary</strong>
+<strong>Data wrangling</strong> = cleaning and restructuring raw data into a usable form (handling missing values, fixing formats, removing duplicates).
+<strong>Feature engineering</strong> = choosing and constructing the input variables (&quot;features&quot;) the model will learn from. Often matters more to accuracy than the choice of algorithm.
+<strong>Validation</strong> = testing the model on data it has <strong>never seen</strong> during training, to check it generalises rather than memorises.</p>
+</blockquote>
+<hr>
+<h2 id="3-regression-algorithms">3. Regression Algorithms</h2>
+<blockquote>
+<p><strong>NESA scope</strong>: &quot;Linear regression and polynomial regression algorithms are used to <strong>predict values in a continuous range</strong>. <strong>Logistic regression is used for classification problems.</strong> Students should know how to <strong>design programs which use and apply</strong> these algorithms but are <strong>not expected to implement (or code) these complex algorithms.</strong>&quot;</p>
+</blockquote>
+<p><strong>Regression generally</strong>: &quot;Using past and present mathematical data to predict future values. Also known as finding the <strong>Line of Best Fit</strong>.&quot;</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+<th>Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Linear</strong></td>
+<td>&quot;Drawing a straight line that helps guess&quot; a value; good where one thing increases as another increases</td>
+<td>Straight line</td>
+</tr>
+<tr>
+<td><strong>Polynomial</strong></td>
+<td>&quot;Finds patterns that aren&#39;t straight — draws a <strong>curvy</strong> line&quot;</td>
+<td>Curve</td>
+</tr>
+<tr>
+<td><strong>Logistic</strong></td>
+<td>&quot;Helps computers make <strong>yes/no</strong> decisions, like &#39;Will it rain?&#39;&quot;</td>
+<td>S-curve (sigmoid)</td>
+</tr>
+<tr>
+<td><strong>K-Nearest Neighbours (KNN)</strong></td>
+<td>&quot;Group things by looking at what&#39;s <strong>nearby</strong>&quot;</td>
+<td>Not smooth</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The choice rule</strong>: plot the data first. <strong>Curvy → polynomial. Straight → linear. Yes/no outcome → logistic.</strong></p>
+</blockquote>
+<h3 id="3-1-linear-regression-the-least-squares-method">3.1 Linear Regression — the Least Squares Method</h3>
+<p><strong>Goal</strong>: find the equation of the straight line of best fit, <strong>y = mx + b</strong></p>
+<p><strong>Method</strong>: build a table of <code>x | y | xy | x²</code>, sum each column, then:</p>
+<pre><code>      n·Σxy − Σx·Σy                  Σy − m·Σx
+m = ───────────────            b = ─────────────
+      n·Σx² − (Σx)²                       n
+</code></pre>
+<h4>Worked Example 1</h4>
+<p>Data: x = [1, 2, 3, 4, 5], y = [2, 3, 5, 6, 8]</p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>y</th>
+<th>xy</th>
+<th>x²</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5</td>
+<td>15</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6</td>
+<td>24</td>
+<td>16</td>
+</tr>
+<tr>
+<td>5</td>
+<td>8</td>
+<td>40</td>
+<td>25</td>
+</tr>
+<tr>
+<td><strong>Σ = 15</strong></td>
+<td><strong>Σ = 24</strong></td>
+<td><strong>Σ = 87</strong></td>
+<td><strong>Σ = 55</strong></td>
+</tr>
+</tbody></table>
+<p>n = 5</p>
+<pre><code>m = (5 × 87 − 15 × 24) / (5 × 55 − 15²)
+  = (435 − 360) / (275 − 225)
+  = 75 / 50
+  = 1.5
+
+b = (24 − 1.5 × 15) / 5
+  = (24 − 22.5) / 5
+  = 1.5 / 5
+  = 0.3
+</code></pre>
+<blockquote>
+<p><strong>y = 1.5x + 0.3</strong></p>
+</blockquote>
+<p><strong>Function table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>y</td>
+<td>1.8</td>
+<td>3.3</td>
+<td>4.8</td>
+<td>6.3</td>
+<td>7.8</td>
+</tr>
+</tbody></table>
+<h4>Worked Example 2 — ⚠️ correcting an error in the class worksheet</h4>
+<p>Data: x = [2, 4, 6, 8], y = [3, 4, 7, 9]</p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>y</th>
+<th>xy</th>
+<th>x²</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>3</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>16</td>
+<td>16</td>
+</tr>
+<tr>
+<td>6</td>
+<td>7</td>
+<td>42</td>
+<td>36</td>
+</tr>
+<tr>
+<td>8</td>
+<td>9</td>
+<td>72</td>
+<td>64</td>
+</tr>
+<tr>
+<td><strong>Σ = 20</strong></td>
+<td><strong>Σ = 23</strong></td>
+<td><strong>Σ = 136</strong></td>
+<td><strong>Σ = 120</strong></td>
+</tr>
+</tbody></table>
+<p>n = 4</p>
+<blockquote>
+<p><strong>⚠️ The worksheet recorded Σx = 22. The correct value is Σx = 20</strong> (2 + 4 + 6 + 8 = 20). That single error produced the answers <strong>m = −9.5, b = 58</strong>, which are internally consistent with Σx = 22 but wrong for this data.</p>
+<p><strong>Why you should have caught it</strong>: the y values <strong>rise</strong> (3 → 9) as x rises, so the slope <strong>must be positive</strong>. A line predicting y = 39 down to y = −18 cannot be a line of best fit for data running 3 to 9. <strong>Always sanity-check the sign of your slope against the trend of the data.</strong></p>
+</blockquote>
+<p><strong>Correct working:</strong></p>
+<pre><code>m = (4 × 136 − 20 × 23) / (4 × 120 − 20²)
+  = (544 − 460) / (480 − 400)
+  = 84 / 80
+  = 1.05
+
+b = (23 − 1.05 × 20) / 4
+  = (23 − 21) / 4
+  = 2 / 4
+  = 0.5
+</code></pre>
+<blockquote>
+<p><strong>y = 1.05x + 0.5</strong></p>
+</blockquote>
+<p><strong>Function table (correct):</strong></p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>2</th>
+<th>4</th>
+<th>6</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>y</td>
+<td>2.6</td>
+<td>4.7</td>
+<td>6.8</td>
+<td>8.9</td>
+</tr>
+<tr>
+<td><em>actual</em></td>
+<td><em>3</em></td>
+<td><em>4</em></td>
+<td><em>7</em></td>
+<td><em>9</em></td>
+</tr>
+</tbody></table>
+<p>The fitted values now sit close to the actual data, which is what a line of best fit should do.</p>
+<h3 id="3-2-polynomial-regression-the-least-squares-matrix-method">3.2 Polynomial Regression — the Least Squares Matrix Method</h3>
+<p><strong>Goal</strong>: find the equation of the curve <strong>y = ax² + bx + c</strong></p>
+<p>Build the LHS matrix (<code>x, x², x³, x⁴</code>) and RHS matrix (<code>y, xy, x²y</code>), sum each column, then solve the three simultaneous equations:</p>
+<pre><code>Σy    = a·Σx² + b·Σx  + c·n
+Σxy   = a·Σx³ + b·Σx² + c·Σx
+Σx²y  = a·Σx⁴ + b·Σx³ + c·Σx²
+</code></pre>
+<p>Eliminate <strong>c</strong> first (it is normally the easiest), solve for <strong>a</strong> and <strong>b</strong>, then substitute back.</p>
+<h4>Worked Example 3</h4>
+<p>Data: x = [1, 2, 3, 4, 5], y = [2, 5, 10, 17, 26], n = 5</p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>x²</th>
+<th>x³</th>
+<th>x⁴</th>
+<th></th>
+<th>y</th>
+<th>xy</th>
+<th>x²y</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>8</td>
+<td>16</td>
+<td></td>
+<td>5</td>
+<td>10</td>
+<td>20</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9</td>
+<td>27</td>
+<td>81</td>
+<td></td>
+<td>10</td>
+<td>30</td>
+<td>90</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16</td>
+<td>64</td>
+<td>256</td>
+<td></td>
+<td>17</td>
+<td>68</td>
+<td>272</td>
+</tr>
+<tr>
+<td>5</td>
+<td>25</td>
+<td>125</td>
+<td>625</td>
+<td></td>
+<td>26</td>
+<td>130</td>
+<td>650</td>
+</tr>
+<tr>
+<td><strong>Σ 15</strong></td>
+<td><strong>Σ 55</strong></td>
+<td><strong>Σ 225</strong></td>
+<td><strong>Σ 979</strong></td>
+<td></td>
+<td><strong>Σ 60</strong></td>
+<td><strong>Σ 240</strong></td>
+<td><strong>Σ 1034</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>⚠️ The worksheet recorded Σx³ = 255. The correct value is 225</strong> (1 + 8 + 27 + 64 + 125 = 225).</p>
+</blockquote>
+<p><strong>Answer: y = x² + 1</strong></p>
+<p><strong>Verification</strong> — substitute a = 1, b = 0, c = 1 into all three equations:</p>
+<table>
+<thead>
+<tr>
+<th>Equation</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>60 = 55(1) + 15(0) + 5(1)</td>
+<td>55 + 0 + 5 = <strong>60</strong> ✓</td>
+</tr>
+<tr>
+<td>240 = 225(1) + 55(0) + 15(1)</td>
+<td>225 + 0 + 15 = <strong>240</strong> ✓</td>
+</tr>
+<tr>
+<td>1034 = 979(1) + 225(0) + 55(1)</td>
+<td>979 + 0 + 55 = <strong>1034</strong> ✓</td>
+</tr>
+</tbody></table>
+<p>All three hold exactly, so <strong>y = x² + 1</strong> is correct.</p>
+<p><strong>Function table:</strong></p>
+<blockquote>
+<p><strong>⚠️ The worksheet&#39;s table was filled in using x² + x + 1</strong> (giving 3, 7, 13, 21, 31), not the derived equation x² + 1. Use the equation you actually solved for.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>y = x² + 1</strong></td>
+<td><strong>2</strong></td>
+<td><strong>5</strong></td>
+<td><strong>10</strong></td>
+<td><strong>17</strong></td>
+<td><strong>26</strong></td>
+</tr>
+</tbody></table>
+<p>This is a <strong>perfect fit</strong> — the curve passes exactly through every data point.</p>
+<h4>Worked Example 4</h4>
+<p>Data: x = [2, 4, 6, 8, 10], y = [4, 12, 18, 22, 25], n = 5</p>
+<table>
+<thead>
+<tr>
+<th>Σx</th>
+<th>Σx²</th>
+<th>Σx³</th>
+<th>Σx⁴</th>
+<th>Σy</th>
+<th>Σxy</th>
+<th>Σx²y</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>30</td>
+<td>220</td>
+<td>1800</td>
+<td>15664</td>
+<td>81</td>
+<td>590</td>
+<td>4764</td>
+</tr>
+</tbody></table>
+<p><em>(These sums in the worksheet are all correct.)</em></p>
+<p><strong>Simultaneous equations:</strong></p>
+<pre><code> 81  = 220a  +   30b  +   5c
+590  = 1800a +  220b  +  30c
+4764 = 15664a + 1800b + 220c
+</code></pre>
+<p><strong>Solving gives:</strong></p>
+<blockquote>
+<p><strong>y = −0.2143x² + 5.1714x − 5.4</strong></p>
+</blockquote>
+<p><strong>Function table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>2</th>
+<th>4</th>
+<th>6</th>
+<th>8</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>fitted y</strong></td>
+<td>4.09</td>
+<td>11.86</td>
+<td>17.91</td>
+<td>22.26</td>
+<td>24.89</td>
+</tr>
+<tr>
+<td><em>actual y</em></td>
+<td><em>4</em></td>
+<td><em>12</em></td>
+<td><em>18</em></td>
+<td><em>22</em></td>
+<td><em>25</em></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Note the <strong>negative <code>a</code></strong> — the curve bends downward, matching data that rises steeply then flattens off. A negative coefficient on x² is entirely normal and indicates a concave-down curve.</p>
+</blockquote>
+<h3 id="3-3-logistic-regression">3.3 Logistic Regression</h3>
+<p><strong>Aim</strong>: &quot;Calculate the <strong>probability</strong> of something being a <strong>yes (1) or no (0)</strong>.&quot;</p>
+<p>Produces a <strong>sigmoid / S-curve running from 0 to 1</strong>.</p>
+<p><strong>Worked example — passing grade:</strong></p>
+<ul>
+<li>The passing grade is approximately <strong>3.5</strong>, where the curve crosses the <strong>0.5 probability threshold</strong></li>
+<li>A mark of <strong>4.5</strong> → approximately <strong>50%</strong> probability</li>
+<li>A mark of <strong>7</strong> → approximately <strong>95%</strong> probability</li>
+</ul>
+<blockquote>
+<p><strong>Why an S-curve and not a straight line?</strong> A straight line would eventually predict probabilities above 1 and below 0, which are meaningless. The sigmoid <strong>asymptotes</strong> — it approaches 0 and 1 but never exceeds them.</p>
+</blockquote>
+<blockquote>
+<p><strong>The 0.5 threshold</strong> is the decision boundary: above it the model predicts &quot;yes&quot;, below it &quot;no&quot;.</p>
+</blockquote>
+<h3 id="3-4-k-nearest-neighbours-knn">3.4 K-Nearest Neighbours (KNN)</h3>
+<blockquote>
+<p>&quot;KNN regression <strong>does not make data fit a formula</strong>. Instead, it highlights <strong>K points within range</strong> of the Line of Best Fit. The line <strong>will not be smooth</strong>.&quot;</p>
+</blockquote>
+<p><strong>How it works</strong>: to predict a value, find the <strong>K nearest</strong> data points and <strong>average</strong> them.</p>
+<p><strong>Effect of K</strong>: increasing K changes which points are considered near the line — a larger K gives a smoother but less locally sensitive result; a smaller K follows the data closely but is more affected by noise.</p>
+<blockquote>
+<p><strong>The key contrast</strong>: linear and polynomial regression produce an <strong>equation</strong>. KNN produces <strong>no equation at all</strong> — it just looks at neighbours each time it is asked. That is why the output line is not smooth.</p>
+</blockquote>
+<h3 id="3-5-programming-regression">3.5 Programming Regression</h3>
+<p><strong>Linear (Python, from first principles):</strong></p>
+<pre><code class="language-python">n   = len(x)
+Sx  = sum(x);  Sy = sum(y)
+Sxy = sum(a*b for a, b in zip(x, y))
+Sx2 = sum(a*a for a in x)
+
+m = (n*Sxy - Sx*Sy) / (n*Sx2 - Sx**2)
+b = (Sy - m*Sx) / n
+print(f&quot;y = {m}x + {b}&quot;)
+</code></pre>
+<p><strong>Polynomial (using a library):</strong></p>
+<pre><code class="language-python">import numpy
+a, b, c = numpy.polyfit(x, y, 2)      # 2 = degree of the polynomial
+</code></pre>
+<p><strong>Linear regression using ML frameworks (NESA example):</strong></p>
+<pre><code class="language-python">import numpy as np
+from sklearn.linear_model import LinearRegression
+
+x = np.array([[2], [4], [6], [8], [10], [12], [14], [16]])
+y = np.array([1, 3, 5, 7, 9, 11, 13, 15])
+
+model = LinearRegression()
+model.fit(x, y)                 # determine the line of best fit
+
+y_prediction = model.predict(4)     # known data      → 3
+y_prediction = model.predict(4.5)   # unknown data    → 3.5
+</code></pre>
+<blockquote>
+<p>Note the pattern: <strong>create the model → <code>fit()</code> it to the data → <code>predict()</code> new values.</strong> This three-step pattern is what &quot;designing a program that applies the algorithm&quot; means — you are not expected to code the maths itself.</p>
+</blockquote>
+<hr>
+<h2 id="4-neural-networks-and-decision-trees">4. Neural Networks and Decision Trees</h2>
+<h3 id="4-1-neural-networks">4.1 Neural Networks</h3>
+<blockquote>
+<p>&quot;A type of machine learning model <strong>inspired by the human brain</strong>. Layers of interconnected neurons — effective for recognising patterns in large, complex datasets.&quot;</p>
+</blockquote>
+<p><strong>NESA description</strong>: &quot;Neural networks were designed to <strong>mimic the processing inside the human brain</strong>. They consist of a series of <strong>interconnected nodes (artificial neurones)</strong>. Each neurone can accept a binary input signal and potentially output another signal to connected nodes.&quot;</p>
+<p><strong>Architecture:</strong></p>
+<pre><code>INPUT LAYER  →  HIDDEN LAYER(S)  →  OUTPUT LAYER
+</code></pre>
+<h4>The Training Cycle</h4>
+<blockquote>
+<p>&quot;Internal <strong>weightings</strong> and <strong>threshold values</strong> for each node are determined in the initial <strong>training cycle</strong>. The system is exposed to a series of inputs with <strong>known responses</strong>. <strong>Linear regression with backward chaining</strong> is used to iteratively determine the set of unique values required for output. Regular exposure to the training cycle results in <strong>improved accuracy and pattern matching</strong>.&quot;</p>
+</blockquote>
+<h4>The Execution Cycle</h4>
+<blockquote>
+<p>&quot;Signal strength between nodes with the strongest weightings are <strong>thicker</strong>, representing a <strong>higher priority</strong> in determining the final output. The execution cycle <strong>follows the training cycle</strong> and utilises the internal values developed during training to determine the output.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Training cycle</strong></th>
+<th><strong>Execution cycle</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Purpose</td>
+<td><strong>Determine</strong> the weightings and thresholds</td>
+<td><strong>Use</strong> them to produce an output</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>Data with <strong>known responses</strong></td>
+<td>New, unseen data</td>
+</tr>
+<tr>
+<td>When</td>
+<td>First, and repeatedly</td>
+<td>After training</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Weighting vs Threshold</strong>
+A <strong>weighting</strong> is how much <strong>importance</strong> a connection carries — strong connections have high weights.
+A <strong>threshold</strong> is the value an accumulated signal must <strong>exceed</strong> before the neurone fires.</p>
+</blockquote>
+<p><strong>Strengths and weaknesses:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Strengths</th>
+<th>Weaknesses</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Excel at <strong>image recognition</strong> and NLP</td>
+<td>Need <strong>lots of data</strong> and compute</td>
+</tr>
+<tr>
+<td>Handle very complex patterns</td>
+<td>Often &quot;<strong>black boxes</strong>&quot; — lack interpretability</td>
+</tr>
+<tr>
+<td>Improve with more training</td>
+<td>Hard to explain a decision to a regulator or user</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-decision-trees">4.2 Decision Trees</h3>
+<blockquote>
+<p>&quot;Splits data into <strong>branches based on feature-based rules</strong>, forming a <strong>tree-like structure</strong>.&quot;</p>
+</blockquote>
+<ul>
+<li>Used for <strong>classification and regression</strong></li>
+<li>&quot;<strong>Clear and interpretable</strong>&quot;</li>
+<li>&quot;Can suffer from <strong>overfitting</strong> if not properly pruned&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Overfitting</strong> = the model learns the training data <em>too</em> precisely, including its noise and quirks, so it performs brilliantly on data it has seen and badly on anything new. <strong>Pruning</strong> cuts back branches that only exist to fit noise.</p>
+</blockquote>
+<h3 id="4-3-choosing-between-them">4.3 Choosing Between Them</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Best suited to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Neural networks</strong></td>
+<td>Self-driving cars, recommendation engines, face recognition, image classification, spam detection</td>
+</tr>
+<tr>
+<td><strong>Decision trees</strong></td>
+<td>Tasks needing transparent reasoning — the semi-supervised note task, fruit grouping, maths-with-answers, spam filtering</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The trade-off to state in an exam</strong>: neural networks give <strong>higher accuracy on complex data</strong> but are <strong>black boxes</strong>. Decision trees are <strong>less powerful</strong> but <strong>interpretable</strong> — you can trace exactly why a decision was made. Where accountability matters (medicine, lending, law), interpretability may outweigh raw accuracy.</p>
+</blockquote>
+<h3 id="4-4-application-areas">4.4 Application Areas</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Algorithms used</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data analysis and forecasting</strong></td>
+<td><strong>KNN regression</strong> averages similar points; <strong>decision trees</strong> give transparent decisions</td>
+</tr>
+<tr>
+<td><strong>Virtual personal assistants</strong></td>
+<td><strong>Logistic regression</strong> classifies intent; <strong>neural networks</strong> power NLP</td>
+</tr>
+<tr>
+<td><strong>Image recognition</strong></td>
+<td><strong>Logistic regression</strong> for binary classification; <strong>neural networks (CNNs)</strong> detect edges and shapes</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-psychology-and-human-behaviour">5. Psychology and Human Behaviour</h2>
+<blockquote>
+<p>The syllabus requires exploring &quot;how patterns in <strong>human behaviour</strong> influence ML and AI.&quot;</p>
+</blockquote>
+<p><strong>Core terms</strong>: Stimulus · Response · Arousal · Impulse · Regulation</p>
+<p><strong>Psychological responses</strong>: Regression · Conditioning · Habituation · Sensitisation · Flight-Fight-Fawn · Stress</p>
+<blockquote>
+<p><strong>The &quot;Goldilocks Zone&quot;</strong>: the band &quot;between complete <strong>impulsivity</strong> and total <strong>regulation</strong>&quot; — the state IT companies design their products to exploit. Too impulsive and the user acts erratically; too regulated and they close the app. The engagement sweet spot sits between.</p>
+</blockquote>
+<p><strong>Four ways human behaviour influences AI:</strong></p>
+<ol>
+<li><strong>Psychological response</strong></li>
+<li><strong>Acute stress response</strong></li>
+<li><strong>Cultural protocols</strong></li>
+<li><strong>Belief systems</strong></li>
+</ol>
+<blockquote>
+<p><strong>Why this matters technically</strong>: training data is generated by humans, so human bias, cultural assumptions and belief systems are <strong>encoded into the dataset</strong>. The model then reproduces and amplifies them.</p>
+</blockquote>
+<hr>
+<h2 id="6-ethics-and-the-limits-of-automation">6. Ethics and the Limits of Automation</h2>
+<blockquote>
+<p><strong>The driving question</strong>: &quot;To what extent should software automation rule the world?&quot;</p>
+</blockquote>
+<p><strong>Required impacts to address:</strong></p>
+<ul>
+<li><strong>Safety of workers</strong></li>
+<li><strong>People with disability</strong></li>
+<li><strong>Nature and skills of employment</strong></li>
+<li><strong>Production efficiency, waste and the environment</strong></li>
+<li><strong>Economy and wealth distribution</strong></li>
+</ul>
+<p>Plus: &quot;how patterns in human behaviour influence ML and AI — psychological responses; acute stress response; cultural protocols; belief systems.&quot;</p>
+<h3 id="6-1-benefits">6.1 Benefits</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Worker safety</strong></td>
+<td>AI image recognition detects <strong>hazards</strong> on construction sites and <strong>defects</strong> in manufacturing</td>
+</tr>
+<tr>
+<td><strong>Disability access</strong></td>
+<td>Screen readers; self-driving cars providing mobility</td>
+</tr>
+<tr>
+<td><strong>Employment</strong></td>
+<td>Repetitive tasks automated → demand rises for <strong>data analysis, AI programming and tech-ethics</strong> skills. Upskilling required</td>
+</tr>
+<tr>
+<td><strong>Efficiency and environment</strong></td>
+<td>ML catches errors early (less waste); AI energy management lowers carbon footprint</td>
+</tr>
+<tr>
+<td><strong>Economy</strong></td>
+<td>&quot;AI can boost <strong>productivity</strong>, but raises concerns about <strong>job displacement</strong>. Wealth distribution may become <strong>more unequal</strong> unless governments invest in retraining&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="6-2-risks-and-manipulation">6.2 Risks and Manipulation</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fake news — 2016 US election</strong></td>
+<td>Bot accounts and fake-news sites; algorithms &quot;<strong>amplified content aligned with existing views</strong>&quot;; social engineering exploited <strong>cognitive biases</strong></td>
+</tr>
+<tr>
+<td><strong>COVID vaccine misinformation</strong></td>
+<td>Clickbait and fabricated testimony driving <strong>vaccine hesitancy</strong></td>
+</tr>
+<tr>
+<td><strong>Astroturfing</strong></td>
+<td>Fake &quot;grassroots&quot; campaigns and fake accounts used to discredit or promote</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>The syllabus requires investigating &quot;the effect of <strong>human and dataset source bias</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Job displacement</strong></td>
+<td>Automation removing roles faster than retraining can replace them</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Astroturfing</strong> = manufacturing the appearance of spontaneous public support. The name is a joke on &quot;grassroots&quot; — it looks like grass, but it&#39;s fake.</p>
+</blockquote>
+<h3 id="6-3-the-judgement">6.3 The Judgement</h3>
+<p><strong>Human oversight is required.</strong> Automation should be <strong>bounded by human judgement</strong>, not unchecked. A top-band answer weighs the ethical implications, acknowledges bias, and argues for safeguards and retraining rather than either uncritical enthusiasm or blanket rejection.</p>
+<blockquote>
+<p><strong>Note on the class task</strong>: the SA4 assessment specified &quot;<strong>Do not use AI in this classroom task.</strong>&quot;</p>
+</blockquote>
+<hr>
+<h2 id="7-hsc-exam-response-structures">7. HSC Exam Response Structures</h2>
+<h3 id="extended-response-scaffold-to-what-extent-should-software-automation-rule-the-world">Extended Response Scaffold — &quot;To what extent should software automation rule the world?&quot;</h3>
+<pre><code>1. Define the concept          (AI / ML / automation, and their relationship)
+2. Explain the mechanism       (how the system learns, how it is built)
+3. Present benefits            with a concrete example
+4. Present risks and limits    (bias, displacement, manipulation)
+5. Judge &quot;to what extent&quot;      argue a balanced position with human oversight
+</code></pre>
+<blockquote>
+<p>&quot;<strong>To what extent</strong>&quot; is asking for a <strong>degree</strong>, not a yes/no. Your thesis should contain a qualifier: <em>&quot;Software automation should govern routine, high-volume and hazardous processes, but decisions affecting human rights, employment and safety must remain under human oversight.&quot;</em></p>
+</blockquote>
+<h3 id="common-question-types">Common Question Types</h3>
+<table>
+<thead>
+<tr>
+<th>Question type</th>
+<th>How to answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Distinguish AI from ML&quot;</strong></td>
+<td>Define both → state the subset relationship → give an example of AI that is <strong>not</strong> ML (rule-based expert system)</td>
+</tr>
+<tr>
+<td><strong>&quot;Classify this scenario&#39;s ML type&quot;</strong></td>
+<td>Ask: are the training examples <strong>labelled</strong>? Are there <strong>rewards</strong>? Then justify</td>
+</tr>
+<tr>
+<td><strong>&quot;Describe the three stages of MLOps&quot;</strong></td>
+<td>Design → Model development → Operations, with the four bullet points under each</td>
+</tr>
+<tr>
+<td><strong>&quot;Calculate the line of best fit&quot;</strong></td>
+<td>Build the <code>x, y, xy, x²</code> table → sum → apply the m and b formulas → <strong>sanity-check the slope sign</strong></td>
+</tr>
+<tr>
+<td><strong>&quot;Compare neural networks and decision trees&quot;</strong></td>
+<td>Accuracy vs interpretability → data requirements → overfitting → judge by context</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain the training and execution cycles&quot;</strong></td>
+<td>Training determines weightings/thresholds from known responses; execution uses them on new data</td>
+</tr>
+<tr>
+<td><strong>&quot;Discuss the ethics of automation&quot;</strong></td>
+<td>Cover all five required impact areas, then judge with human oversight</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AI</strong></td>
+<td>Broad field of human-like intelligent systems</td>
+<td><strong>ML</strong> — a data-driven <strong>subset</strong> of AI</td>
+</tr>
+<tr>
+<td><strong>Machine learning</strong></td>
+<td>Learns from data without explicit programming</td>
+<td>Rule-based AI (explicitly programmed)</td>
+</tr>
+<tr>
+<td><strong>Supervised</strong></td>
+<td>Trained on <strong>labelled</strong> examples</td>
+<td><strong>Unsupervised</strong> — no labels, finds patterns</td>
+</tr>
+<tr>
+<td><strong>Semi-supervised</strong></td>
+<td>Some labelled, mostly unlabelled</td>
+<td>Supervised (all labelled)</td>
+</tr>
+<tr>
+<td><strong>Reinforcement</strong></td>
+<td>Learns by trial, error and reward</td>
+<td>Supervised (learns from given answers)</td>
+</tr>
+<tr>
+<td><strong>DevOps</strong></td>
+<td>Development + IT operations</td>
+<td><strong>MLOps</strong> — the same idea applied to ML models</td>
+</tr>
+<tr>
+<td><strong>RPA</strong></td>
+<td>Automates individual repetitive <strong>tasks</strong></td>
+<td><strong>BPA</strong> — automates whole <strong>workflows</strong></td>
+</tr>
+<tr>
+<td><strong>Data wrangling</strong></td>
+<td>Cleaning and restructuring raw data</td>
+<td><strong>Feature engineering</strong> — choosing the inputs</td>
+</tr>
+<tr>
+<td><strong>Feature engineering</strong></td>
+<td>Constructing the input variables</td>
+<td>Data wrangling (cleaning)</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Testing on data never seen in training</td>
+<td>Testing during training</td>
+</tr>
+<tr>
+<td><strong>Linear regression</strong></td>
+<td>Straight line; continuous prediction</td>
+<td><strong>Logistic</strong> — S-curve; classification</td>
+</tr>
+<tr>
+<td><strong>Polynomial regression</strong></td>
+<td>Curve; continuous prediction</td>
+<td>Linear (straight line)</td>
+</tr>
+<tr>
+<td><strong>Logistic regression</strong></td>
+<td>Probability 0–1 for <strong>yes/no</strong> classification</td>
+<td>Linear regression (continuous values)</td>
+</tr>
+<tr>
+<td><strong>KNN</strong></td>
+<td>No equation — averages nearby points</td>
+<td>Linear/polynomial (produce an equation)</td>
+</tr>
+<tr>
+<td><strong>Line of best fit</strong></td>
+<td>The fitted equation</td>
+<td>The raw data points</td>
+</tr>
+<tr>
+<td><strong>Sigmoid</strong></td>
+<td>S-shaped curve bounded by 0 and 1</td>
+<td>A straight line (unbounded)</td>
+</tr>
+<tr>
+<td><strong>Neural network</strong></td>
+<td>Layered interconnected nodes; black box</td>
+<td><strong>Decision tree</strong> — interpretable branching rules</td>
+</tr>
+<tr>
+<td><strong>Weighting</strong></td>
+<td>Importance of a connection</td>
+<td><strong>Threshold</strong> — the firing level</td>
+</tr>
+<tr>
+<td><strong>Training cycle</strong></td>
+<td>Determines weightings from known data</td>
+<td><strong>Execution cycle</strong> — applies them to new data</td>
+</tr>
+<tr>
+<td><strong>Overfitting</strong></td>
+<td>Memorises training data; fails on new data</td>
+<td>Underfitting (too simple to capture the pattern)</td>
+</tr>
+<tr>
+<td><strong>Pruning</strong></td>
+<td>Cutting back tree branches to reduce overfitting</td>
+<td>Training</td>
+</tr>
+<tr>
+<td><strong>Astroturfing</strong></td>
+<td>Fake grassroots campaigns</td>
+<td>Genuine organic support</td>
+</tr>
+<tr>
+<td><strong>Dataset bias</strong></td>
+<td>Skew present in the training data</td>
+<td><strong>Human bias</strong> — skew in the people labelling it</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-key-definitions-quick-reference">9. Key Definitions Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-Line Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Artificial intelligence</td>
+<td>Broad field creating systems performing tasks requiring human-like intelligence</td>
+</tr>
+<tr>
+<td>Machine learning</td>
+<td>Subset of AI that learns from data without explicit programming</td>
+</tr>
+<tr>
+<td>Supervised learning</td>
+<td>Trained using labelled examples</td>
+</tr>
+<tr>
+<td>Unsupervised learning</td>
+<td>Finds patterns in data with no answers supplied</td>
+</tr>
+<tr>
+<td>Semi-supervised learning</td>
+<td>Some labelled examples plus much unlabelled data</td>
+</tr>
+<tr>
+<td>Reinforcement learning</td>
+<td>Learns by trial and error with rewards and penalties</td>
+</tr>
+<tr>
+<td>DevOps</td>
+<td>Combining software development with IT operations</td>
+</tr>
+<tr>
+<td>MLOps</td>
+<td>Automated process of designing, training and deploying ML models</td>
+</tr>
+<tr>
+<td>Data wrangling</td>
+<td>Cleaning and restructuring raw data for use</td>
+</tr>
+<tr>
+<td>Feature engineering</td>
+<td>Selecting and constructing the model&#39;s input variables</td>
+</tr>
+<tr>
+<td>RPA</td>
+<td>Automation of repetitive individual tasks</td>
+</tr>
+<tr>
+<td>BPA</td>
+<td>Automation of entire business workflows</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>Using past and present data to predict future values</td>
+</tr>
+<tr>
+<td>Line of best fit</td>
+<td>The equation minimising the distance to all data points</td>
+</tr>
+<tr>
+<td>Linear regression</td>
+<td>Fitting a straight line, y = mx + b</td>
+</tr>
+<tr>
+<td>Polynomial regression</td>
+<td>Fitting a curve, y = ax² + bx + c</td>
+</tr>
+<tr>
+<td>Logistic regression</td>
+<td>Producing a 0–1 probability for classification</td>
+</tr>
+<tr>
+<td>Sigmoid</td>
+<td>The S-shaped curve produced by logistic regression</td>
+</tr>
+<tr>
+<td>KNN</td>
+<td>Predicting by averaging the K nearest data points</td>
+</tr>
+<tr>
+<td>Least squares</td>
+<td>Method minimising the sum of squared distances to the line</td>
+</tr>
+<tr>
+<td>Neural network</td>
+<td>Layers of interconnected nodes mimicking the brain</td>
+</tr>
+<tr>
+<td>Training cycle</td>
+<td>Determining weightings and thresholds from known responses</td>
+</tr>
+<tr>
+<td>Execution cycle</td>
+<td>Using trained values to determine output for new data</td>
+</tr>
+<tr>
+<td>Weighting</td>
+<td>The importance assigned to a connection between nodes</td>
+</tr>
+<tr>
+<td>Threshold</td>
+<td>The value an accumulated signal must exceed for a node to fire</td>
+</tr>
+<tr>
+<td>Decision tree</td>
+<td>Splits data into branches using feature-based rules</td>
+</tr>
+<tr>
+<td>Overfitting</td>
+<td>Fitting training data so closely the model fails on new data</td>
+</tr>
+<tr>
+<td>Pruning</td>
+<td>Removing branches to reduce overfitting</td>
+</tr>
+<tr>
+<td>Astroturfing</td>
+<td>Fake grassroots campaigns using fabricated accounts</td>
+</tr>
+<tr>
+<td>Dataset bias</td>
+<td>Systematic skew present in the training data</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-quick-revision-checklist">10. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Define AI and ML, and explain the subset relationship with an example of AI that isn&#39;t ML</li>
+<li><input disabled="" type="checkbox"> All four ML types, and classify a given scenario</li>
+<li><input disabled="" type="checkbox"> DevOps, RPA and BPA — and RPA vs BPA</li>
+<li><input disabled="" type="checkbox"> The <strong>three stages of MLOps</strong> and the four bullet points under each</li>
+<li><input disabled="" type="checkbox"> Choose between linear, polynomial and logistic for given data</li>
+<li><input disabled="" type="checkbox"> Compute a linear regression by hand — table, sums, m, b</li>
+<li><input disabled="" type="checkbox"> <strong>Sanity-check the slope sign against the data trend</strong></li>
+<li><input disabled="" type="checkbox"> Set up the polynomial least-squares matrix and three simultaneous equations</li>
+<li><input disabled="" type="checkbox"> Explain the logistic sigmoid and the 0.5 threshold</li>
+<li><input disabled="" type="checkbox"> Explain why KNN produces no equation and an unsmooth line</li>
+<li><input disabled="" type="checkbox"> The create → fit → predict programming pattern</li>
+<li><input disabled="" type="checkbox"> Neural network architecture; training vs execution cycle</li>
+<li><input disabled="" type="checkbox"> Weighting vs threshold</li>
+<li><input disabled="" type="checkbox"> Decision trees, overfitting and pruning</li>
+<li><input disabled="" type="checkbox"> Accuracy vs interpretability trade-off</li>
+<li><input disabled="" type="checkbox"> The Goldilocks Zone and four behavioural influences on AI</li>
+<li><input disabled="" type="checkbox"> All five required ethical impact areas</li>
+<li><input disabled="" type="checkbox"> Fake news, astroturfing, dataset and human bias</li>
+<li><input disabled="" type="checkbox"> Argue a qualified &quot;to what extent&quot; judgement with human oversight</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> | <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> | <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-ai-vs-machine-learning" data-target="1-ai-vs-machine-learning">1. AI vs Machine Learning</a><ul class="sub"><li><a href="#1-1-types-of-machine-learning" data-target="1-1-types-of-machine-learning" data-parent="1-ai-vs-machine-learning">1.1 Types of Machine Learning</a></li><li><a href="#1-2-automation-that-ml-supports" data-target="1-2-automation-that-ml-supports" data-parent="1-ai-vs-machine-learning">1.2 Automation That ML Supports</a></li></ul></li><li><a href="#2-mlops-machine-learning-automation-through-devops" data-target="2-mlops-machine-learning-automation-through-devops">2. MLOps — Machine Learning Automation Through DevOps</a><ul class="sub"><li><a href="#stage-1-design" data-target="stage-1-design" data-parent="2-mlops-machine-learning-automation-through-devops">Stage 1 — Design</a></li><li><a href="#stage-2-model-development" data-target="stage-2-model-development" data-parent="2-mlops-machine-learning-automation-through-devops">Stage 2 — Model Development</a></li><li><a href="#stage-3-operations" data-target="stage-3-operations" data-parent="2-mlops-machine-learning-automation-through-devops">Stage 3 — Operations</a></li></ul></li><li><a href="#3-regression-algorithms" data-target="3-regression-algorithms">3. Regression Algorithms</a><ul class="sub"><li><a href="#3-1-linear-regression-the-least-squares-method" data-target="3-1-linear-regression-the-least-squares-method" data-parent="3-regression-algorithms">3.1 Linear Regression — the Least Squares Method</a></li><li><a href="#3-2-polynomial-regression-the-least-squares-matrix-method" data-target="3-2-polynomial-regression-the-least-squares-matrix-method" data-parent="3-regression-algorithms">3.2 Polynomial Regression — the Least Squares Matrix Method</a></li><li><a href="#3-3-logistic-regression" data-target="3-3-logistic-regression" data-parent="3-regression-algorithms">3.3 Logistic Regression</a></li><li><a href="#3-4-k-nearest-neighbours-knn" data-target="3-4-k-nearest-neighbours-knn" data-parent="3-regression-algorithms">3.4 K-Nearest Neighbours (KNN)</a></li><li><a href="#3-5-programming-regression" data-target="3-5-programming-regression" data-parent="3-regression-algorithms">3.5 Programming Regression</a></li></ul></li><li><a href="#4-neural-networks-and-decision-trees" data-target="4-neural-networks-and-decision-trees">4. Neural Networks and Decision Trees</a><ul class="sub"><li><a href="#4-1-neural-networks" data-target="4-1-neural-networks" data-parent="4-neural-networks-and-decision-trees">4.1 Neural Networks</a></li><li><a href="#4-2-decision-trees" data-target="4-2-decision-trees" data-parent="4-neural-networks-and-decision-trees">4.2 Decision Trees</a></li><li><a href="#4-3-choosing-between-them" data-target="4-3-choosing-between-them" data-parent="4-neural-networks-and-decision-trees">4.3 Choosing Between Them</a></li><li><a href="#4-4-application-areas" data-target="4-4-application-areas" data-parent="4-neural-networks-and-decision-trees">4.4 Application Areas</a></li></ul></li><li><a href="#5-psychology-and-human-behaviour" data-target="5-psychology-and-human-behaviour">5. Psychology and Human Behaviour</a></li><li><a href="#6-ethics-and-the-limits-of-automation" data-target="6-ethics-and-the-limits-of-automation">6. Ethics and the Limits of Automation</a><ul class="sub"><li><a href="#6-1-benefits" data-target="6-1-benefits" data-parent="6-ethics-and-the-limits-of-automation">6.1 Benefits</a></li><li><a href="#6-2-risks-and-manipulation" data-target="6-2-risks-and-manipulation" data-parent="6-ethics-and-the-limits-of-automation">6.2 Risks and Manipulation</a></li><li><a href="#6-3-the-judgement" data-target="6-3-the-judgement" data-parent="6-ethics-and-the-limits-of-automation">6.3 The Judgement</a></li></ul></li><li><a href="#7-hsc-exam-response-structures" data-target="7-hsc-exam-response-structures">7. HSC Exam Response Structures</a><ul class="sub"><li><a href="#extended-response-scaffold-to-what-extent-should-software-automation-rule-the-world" data-target="extended-response-scaffold-to-what-extent-should-software-automation-rule-the-world" data-parent="7-hsc-exam-response-structures">Extended Response Scaffold — &quot;To what extent should software automation rule the world?&quot;</a></li><li><a href="#common-question-types" data-target="common-question-types" data-parent="7-hsc-exam-response-structures">Common Question Types</a></li></ul></li><li><a href="#8-glossary-terms-students-mix-up" data-target="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-key-definitions-quick-reference" data-target="9-key-definitions-quick-reference">9. Key Definitions Quick Reference</a></li><li><a href="#10-quick-revision-checklist" data-target="10-quick-revision-checklist">10. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

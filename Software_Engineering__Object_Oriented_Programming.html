@@ -1,0 +1,945 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Object-Oriented Programming — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="active" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Object-Oriented Programming</h1><p class="meta">Software Engineering · Software_Engineering/Object_Oriented_Programming.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-core-oop-concepts">1. Core OOP Concepts</a></li><li><a href="#2-oop-design-diagrams">2. OOP Design Diagrams</a></li><li><a href="#3-oop-design-processes-and-approaches">3. OOP Design Processes and Approaches</a></li><li><a href="#4-algorithm-effectiveness-criteria">4. Algorithm Effectiveness Criteria</a></li><li><a href="#5-collaboration-in-software-development">5. Collaboration in Software Development</a></li><li><a href="#6-hsc-exam-response-structures">6. HSC Exam Response Structures</a></li><li><a href="#7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</a></li><li><a href="#8-key-definitions-quick-reference">8. Key Definitions Quick Reference</a></li><li><a href="#9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></div><h1>Object-Oriented Programming — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 11, Unit 2</strong> | OOP concepts, design diagrams, design approaches, effectiveness criteria and collaboration.</p>
+</blockquote>
+<hr>
+<h2 id="1-core-oop-concepts">1. Core OOP Concepts</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Object</strong></td>
+<td>A self-contained unit consisting of both <strong>data (attributes)</strong> and <strong>functionality (methods)</strong>. It represents a real-world entity or concept</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>A <strong>blueprint or template</strong> for creating objects. It defines the properties and behaviours that objects of that type will have</td>
+</tr>
+<tr>
+<td><strong>Encapsulation</strong></td>
+<td>The <strong>bundling of data and methods</strong> that operate on that data into a single unit or class. It <strong>hides the internal state</strong> of an object from the outside world</td>
+</tr>
+<tr>
+<td><strong>Abstraction</strong></td>
+<td>The process of <strong>hiding complex implementation details</strong> and showing only the essential features of an object</td>
+</tr>
+<tr>
+<td><strong>Inheritance</strong></td>
+<td>A mechanism where a new class (<strong>derived / child class</strong>) is created from an existing class (<strong>base / parent class</strong>). The derived class inherits properties and behaviours from the base class</td>
+</tr>
+<tr>
+<td><strong>Generalisation</strong></td>
+<td>Extracting common properties and behaviours from multiple classes and creating a more general <strong>superclass</strong> to represent them</td>
+</tr>
+<tr>
+<td><strong>Polymorphism</strong></td>
+<td>Allows objects of <strong>different classes</strong> to be treated as objects of a common superclass. It enables methods to <strong>behave differently</strong> based on the object that calls them</td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td>A piece of data or property belonging to an object — typically represented by <strong>variables</strong> within a class</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>A function or subroutine defined <strong>within a class</strong> that operates on objects created from that class</td>
+</tr>
+<tr>
+<td><strong>Instantiation</strong></td>
+<td>The process of creating an <strong>instance</strong> of a class — creating an object from a blueprint</td>
+</tr>
+<tr>
+<td><strong>Message passing</strong></td>
+<td>Objects communicating by <strong>calling each other&#39;s methods</strong> and passing data between them</td>
+</tr>
+</tbody></table>
+<h3 id="1-1-the-four-pillars-how-they-connect">1.1 The Four Pillars — how they connect</h3>
+<blockquote>
+<p>This is what an exam question actually tests.</p>
+</blockquote>
+<p>You <strong>bundle</strong> data and methods into a class and <strong>hide</strong> the internals (<strong>encapsulation</strong>), you show only what the user needs to see (<strong>abstraction</strong>), you make a child class <strong>reuse</strong> a parent&#39;s code (<strong>inheritance</strong>), and you let different child classes <strong>respond differently</strong> to the same method call (<strong>polymorphism</strong>).</p>
+<pre><code>Encapsulation + Abstraction  →  about PROTECTING and HIDING
+Inheritance   + Polymorphism →  about REUSING and VARYING
+</code></pre>
+<blockquote>
+<p><strong>Confusing pair — Encapsulation vs Abstraction</strong>
+<strong>Encapsulation</strong> is the <em>mechanism</em>: physically bundling data with the methods that use it, and restricting outside access.
+<strong>Abstraction</strong> is the <em>outcome</em>: the user sees a simple interface and doesn&#39;t need to know how it works.
+A car: <strong>encapsulation</strong> is the engine being sealed under the bonnet; <strong>abstraction</strong> is you only needing the steering wheel and pedals.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing pair — Class vs Object</strong>
+A <strong>class</strong> is the blueprint. An <strong>object</strong> is one thing built from it.
+<code>Apple</code> is the class; <code>GrannySmithApple</code> is an object. One class, many objects.</p>
+</blockquote>
+<h3 id="1-2-worked-illustration-fruit-apple-orange">1.2 Worked Illustration — Fruit / Apple / Orange</h3>
+<pre><code class="language-python">class Fruit:
+    def __init__(self, shape, colour, taste):   # Constructor
+        self.shape = shape
+        self.colour = colour
+        self.taste = taste
+    def Eat(self): ...
+    def Drink(self): ...
+
+class Apple(Fruit):          # Inheritance
+    def __init__(self): ...
+    def Slice(self): ...
+
+class Orange(Fruit):         # Inheritance
+    def __init__(self): ...
+    def Peel(self): ...
+
+GrannySmithApple = Apple()   # Instantiation
+ValenciaOrange = Orange()    # Instantiation
+</code></pre>
+<blockquote>
+<p><strong>Classroom wording, clarified</strong>: your source states <em>&quot;redefinition of constructor is polymorphism&quot;</em> — each subclass redefines <code>__init__()</code>.
+Strictly, redefining an inherited method in a subclass is called <strong>method overriding</strong>, and overriding is <strong>one form of polymorphism</strong>. So the classroom statement is a simplification rather than an error. If asked to define polymorphism, use the full definition in §1: <em>different classes responding differently to the same method call.</em></p>
+</blockquote>
+<h3 id="1-3-javascript-mappings">1.3 JavaScript Mappings</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Object</strong></td>
+<td><code>const square = new Rectangle(10, 10);</code></td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td><code>class Student { constructor() { var name; var marks; } getName() {…} setName(name) {…} }</code> then <code>var stud = new Student(); stud.setName(&quot;John&quot;);</code></td>
+</tr>
+<tr>
+<td><strong>Inheritance</strong></td>
+<td><code>class secondClass extends firstClass { add() { console.log(30+40); } }</code></td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td><code>this.height</code>, <code>this.width</code> inside <code>class Rectangle</code></td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td><code>calcArea()</code> / <code>get area()</code> inside <code>class Rectangle</code></td>
+</tr>
+</tbody></table>
+<h3 id="1-4-benefit-of-instantiation-model-answer">1.4 Benefit of Instantiation — model answer</h3>
+<blockquote>
+<p>&quot;One benefit of instantiation in OOP is being able to create <strong>multiple objects from the same class, each with its own data</strong>. For example: <code>student1 = Student(&quot;Sashank&quot;)</code>, <code>student2 = Student(&quot;Fayez&quot;)</code>. Each student variable has its own name and can act <strong>independently</strong> while sharing the same class structure.&quot;</p>
+</blockquote>
+<h3 id="1-5-factors-influencing-choice-of-paradigm">1.5 Factors Influencing Choice of Paradigm</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Modularity</strong></td>
+<td>How easily the program can be broken into smaller, reusable modules</td>
+</tr>
+<tr>
+<td><strong>Data management</strong></td>
+<td>How data is stored, accessed and passed around</td>
+</tr>
+<tr>
+<td><strong>Maintainability</strong></td>
+<td>How simple it is to update, debug and scale without introducing errors</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The judgement to make</strong>: OOP is more suitable for <strong>complex systems with multiple interacting elements</strong>, while procedural programming may be more efficient for <strong>simpler, task-driven modules</strong>.</p>
+</blockquote>
+<hr>
+<h2 id="2-oop-design-diagrams">2. OOP Design Diagrams</h2>
+<p>Three diagram types are examinable: <strong>DFD</strong>, <strong>Structure Chart</strong> and <strong>Class Diagram</strong>.</p>
+<h3 id="2-1-data-flow-diagram-dfd">2.1 Data Flow Diagram (DFD)</h3>
+<blockquote>
+<p>&quot;A data flow diagram shows the flow of the data among a set of components. <strong>The actors are not included</strong> in the data flow diagram.&quot;</p>
+</blockquote>
+<p><strong>Rules that convert a DFD into OOP code:</strong></p>
+<table>
+<thead>
+<tr>
+<th>DFD element</th>
+<th>Becomes in code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Boxes are processes and must be verb phrases</strong></td>
+<td>Your <strong>classes</strong> and/or <strong>methods</strong></td>
+</tr>
+<tr>
+<td><strong>Arcs / data flows are noun phrases</strong></td>
+<td>Your <strong>variables or attributes</strong></td>
+</tr>
+<tr>
+<td><strong>Control is not shown</strong></td>
+<td>Some sequencing can be inferred from ordering</td>
+</tr>
+</tbody></table>
+<p><strong>Symbols</strong>: Process (transforms data) · Data Store (storage) · External Entity (outside the system) · Data Flow (movement of data)</p>
+<p><strong>Worked application — the Fruit system:</strong></p>
+<ul>
+<li><strong>Level 0</strong>: <code>Make Fruit</code></li>
+<li><strong>Level 1</strong>: <code>Process Apple</code> / <code>Process Orange</code></li>
+<li><strong>Level 2</strong>: <code>Initialise fruit</code> → <code>Eat</code> / <code>Drink</code> / <code>Slice</code> / <code>Peel</code></li>
+<li>Data flows labelled: <code>shape, colour, taste</code></li>
+</ul>
+<h3 id="2-2-structure-chart">2.2 Structure Chart</h3>
+<blockquote>
+<p>&quot;Used to model the <strong>hierarchy (top-down design)</strong> of processes. Data movements between processes are included. Decisions and repetitions are also indicated.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Filled circle</strong></td>
+<td>A <strong>flag or control variable</strong> sent between subroutines</td>
+</tr>
+<tr>
+<td><strong>Empty circle</strong></td>
+<td><strong>Data flow</strong> between subroutines (arguments/parameters)</td>
+</tr>
+<tr>
+<td><strong>Tiny diamond</strong></td>
+<td>A <strong>binary or multi-way selection</strong> — a choice</td>
+</tr>
+<tr>
+<td><strong>Curved arrow</strong></td>
+<td><strong>Repetition</strong></td>
+</tr>
+<tr>
+<td><strong>Box</strong></td>
+<td>A function / manageable section of code</td>
+</tr>
+<tr>
+<td><strong>Control box</strong></td>
+<td>The <strong>first box</strong> — tells which part of the program is being diagrammed (e.g. <code>Process invoices</code>)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Parameter vs Control parameter</strong>
+A <strong>parameter</strong> is ordinary <strong>data</strong> (empty circle).
+A <strong>control parameter</strong> is a <strong>flag</strong> (filled circle) that affects <strong>which path is taken</strong>.
+Example: <code>&quot;OK funds&quot;</code> is returned as a control flag so the parent module &quot;now knows that it can generate the cheque.&quot;</p>
+</blockquote>
+<h3 id="2-3-class-diagram">2.3 Class Diagram</h3>
+<blockquote>
+<p>&quot;Used to show the <strong>hierarchical relationship between classes</strong>, especially when there is inheritance, abstraction and/or polymorphism.&quot;</p>
+</blockquote>
+<p><strong>Notation — three compartments:</strong></p>
+<pre><code>┌─────────────────────┐
+│      ClassName      │   ← top:    class name
+├─────────────────────┤
+│  shape:    string   │   ← middle: attributes
+│  colour:   string   │
+│  taste:    string   │
+├─────────────────────┤
+│  __init__()         │   ← bottom: methods
+│  Eat()              │
+│  Drink()            │
+└─────────────────────┘
+</code></pre>
+<p><strong>Inheritance notation:</strong></p>
+<ul>
+<li>Pseudocode: <code>subclass VirtualLibrary is LibrarySystem { … }</code></li>
+<li>Python: <code>class VirtualLibrary(LibrarySystem):</code></li>
+</ul>
+<p><strong>Worked example — Library System:</strong></p>
+<p><code>LibrarySystem</code> is the parent. Two subclasses inherit from it:</p>
+<table>
+<thead>
+<tr>
+<th>Subclass</th>
+<th>Additional attributes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>VirtualLibrary</code></td>
+<td>website URL, copies, regional restrictions</td>
+</tr>
+<tr>
+<td><code>PortableLibrary</code></td>
+<td>vehicle registration, driver licence</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why subclass at all?</strong> &quot;Adding all these items to the <code>LibrarySystem</code> class would make it <strong>enormous</strong>. The solution is <strong>inheritance and polymorphism</strong>.&quot;</p>
+</blockquote>
+<p><strong>Multiplicity</strong>: In the NESA specifications, class diagrams may show relationships with multiplicity — e.g. a Student must study <strong>1 or more</strong> subjects, while a Subject can have <strong>0 or more</strong> students enrolled. In your class materials, multiplicity is handled instead by <strong>subclassing</strong>. Know both.</p>
+<h3 id="2-4-the-dfd-structure-chart-class-python-pipeline">2.4 The DFD → Structure Chart → Class → Python Pipeline</h3>
+<blockquote>
+<p>This mapping is directly examinable.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Becomes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>The name of the system on the <strong>Level 0 DFD</strong></td>
+<td>The <strong>class name</strong></td>
+</tr>
+<tr>
+<td>The <strong>Level 1 DFD</strong> process names</td>
+<td>The <strong>method names</strong></td>
+</tr>
+<tr>
+<td>The <strong>data items on the data flows</strong></td>
+<td>The <strong>attributes / variables</strong></td>
+</tr>
+<tr>
+<td>The <strong>control box</strong> of the structure chart</td>
+<td>The <strong>class name</strong></td>
+</tr>
+<tr>
+<td>The <strong>modules below</strong> the control box</td>
+<td>The <strong>methods</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Worked skeleton — LibrarySystem:</strong></p>
+<pre><code class="language-python">class LibrarySystem:
+    def __init__(self, admin, teachers, books):
+        self.adminstaff    = admin
+        self.teachingstaff = teachers
+        self.books         = books
+
+    def BorrowBook(self, BookNumber, StudentID, StudentName):
+        ...
+</code></pre>
+<blockquote>
+<p><strong>Deliberate error planted in the class materials</strong>: the source version reads <code>def __init__(admin, teachers, books):</code> — <strong>missing <code>self</code></strong>. In Python, the first parameter of an instance method must be <code>self</code>, which refers to the object being created. Without it, the first argument passed is bound to <code>admin</code> and the code fails. The corrected version is shown above.</p>
+</blockquote>
+<hr>
+<h2 id="3-oop-design-processes-and-approaches">3. OOP Design Processes and Approaches</h2>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Top-down</strong></td>
+<td>&quot;Starts with the <strong>general concept</strong> and repeatedly breaks it down into its component parts — from the <strong>abstract to the specific</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Bottom-up</strong></td>
+<td>&quot;Starts with the <strong>component parts</strong> and repeatedly combines them to achieve the general concept — from the <strong>specific to the abstract</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Façade pattern</strong></td>
+<td>&quot;An object that serves as a <strong>front-facing interface masking</strong> more complex underlying or structural code.&quot; Useful when a system is very complex, has many interdependent classes, or the source code is unavailable. Reduces complexity and dependencies; provides a <strong>single entry point</strong></td>
+</tr>
+<tr>
+<td><strong>Agility</strong></td>
+<td>&quot;Divide the problem into <strong>small chunks</strong>, tested both individually and together, added to the main program as they prove their stability&quot; — a rapid <strong>Design → Build → Test</strong> cycle</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>In practice, top-down and bottom-up are combined</strong>: identify domain objects and refine them (top-down), then compose them into the system (bottom-up).</p>
+</blockquote>
+<p><strong>Information hiding / encapsulation in design</strong>: &quot;You do not expose the implementation details of your code, but instead provide <strong>well-behaved methods</strong>.&quot;</p>
+<blockquote>
+<p><strong>Confusing pair — Façade vs Abstraction</strong>
+<strong>Abstraction</strong> is a <em>principle</em> — hide unnecessary detail.
+<strong>Façade</strong> is a specific <em>design pattern</em> — one object that provides a simplified interface to a whole subsystem.
+Façade is one way of achieving abstraction.</p>
+</blockquote>
+<hr>
+<h2 id="4-algorithm-effectiveness-criteria">4. Algorithm Effectiveness Criteria</h2>
+<blockquote>
+<p>Ten criteria. Expect to be asked to <strong>apply</strong> several to a given algorithm or project.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Correctness</strong></td>
+<td>Checking if the code does what it is supposed to do — it shouldn&#39;t break or give weird answers</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>How <strong>fast</strong> the code runs and how much <strong>memory</strong> it needs (time and space complexity)</td>
+</tr>
+<tr>
+<td><strong>Readability &amp; maintainability</strong></td>
+<td>Like a well-written story that is easy to understand, so other people can make changes without getting confused</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Whether the code can handle bigger and bigger tasks without getting slow or breaking</td>
+</tr>
+<tr>
+<td><strong>Robustness</strong></td>
+<td>The code can handle <strong>unexpected</strong> inputs and events without crashing</td>
+</tr>
+<tr>
+<td><strong>Portability</strong></td>
+<td>Works on different computers and platforms without needing lots of changes</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Trying out the code to make sure it does what it should and has no bugs</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Only the right people can see or change important information — input validation, injection prevention</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>A user manual for the code — how to use it and what everything does</td>
+</tr>
+<tr>
+<td><strong>Feedback and iteration</strong></td>
+<td>Making the code better over time with suggestions and changes</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Robustness vs Correctness</strong>
+<strong>Correctness</strong> = gives the right answer for <strong>valid</strong> input.
+<strong>Robustness</strong> = doesn&#39;t crash on <strong>invalid or unexpected</strong> input.
+A program can be correct but not robust: it calculates properly, then dies when someone types &quot;abc&quot; into an age field.</p>
+</blockquote>
+<h3 id="4-1-why-oop-is-effective">4.1 Why OOP Is Effective</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reusability</strong></td>
+<td>Methods and classes can be reused across the program and in other projects — saves time</td>
+</tr>
+<tr>
+<td><strong>Readability</strong></td>
+<td>Code organised around real-world entities is easier to read and understand</td>
+</tr>
+<tr>
+<td><strong>Maintainability</strong></td>
+<td>Changes are localised to one class rather than scattered</td>
+</tr>
+<tr>
+<td><strong>Code optimisation</strong></td>
+<td>&quot;A technique that helps make programs run faster and use fewer resources. Often performed at the <strong>end</strong> of the development stage. It <strong>reduces readability</strong> but improves performance&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The trade-off to state in an exam</strong>: optimisation improves <strong>efficiency</strong> at the cost of <strong>readability and maintainability</strong>. That is why it is done last.</p>
+</blockquote>
+<hr>
+<h2 id="5-collaboration-in-software-development">5. Collaboration in Software Development</h2>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>How it helps</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Consistency</strong></td>
+<td>&quot;Speaking the same language within a team&quot; — the same coding style and conventions (e.g. camel case <code>playerName</code>)</td>
+</tr>
+<tr>
+<td><strong>Code commenting</strong></td>
+<td>&quot;Helpful notes for your teammates&quot; — reduces the need for back-and-forth explanation</td>
+</tr>
+<tr>
+<td><strong>Version control</strong></td>
+<td>&quot;A shared timeline of your team&#39;s progress&quot; (Git) — track changes, collaborate, revert</td>
+</tr>
+<tr>
+<td><strong>Feedback</strong></td>
+<td>&quot;A support network within your team&quot; — catch errors, learn techniques</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>&quot;By promoting consistency, encouraging code commenting, utilising version control, and fostering a culture of feedback, teams can work more efficiently and deliver higher-quality software together.&quot;</p>
+</blockquote>
+<p><em>Version control is covered in depth in <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> §5.</em></p>
+<hr>
+<h2 id="6-hsc-exam-response-structures">6. HSC Exam Response Structures</h2>
+<h3 id="common-question-types">Common Question Types</h3>
+<table>
+<thead>
+<tr>
+<th>Question type</th>
+<th>How to answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Define [OOP term]&quot;</strong></td>
+<td>Give the definition from §1 <strong>plus</strong> a one-line code or real-world example</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain how inheritance improves maintainability&quot;</strong></td>
+<td>Define inheritance → mechanism (child reuses parent code) → effect (change once, applies everywhere) → link to an effectiveness criterion</td>
+</tr>
+<tr>
+<td><strong>&quot;Convert this DFD into a class structure&quot;</strong></td>
+<td>Level 0 name = class · Level 1 processes = methods · data flows = attributes</td>
+</tr>
+<tr>
+<td><strong>&quot;Assess the effectiveness of this algorithm&quot;</strong></td>
+<td>Pick 3–4 criteria from §4, apply each with evidence from the code, then judge</td>
+</tr>
+<tr>
+<td><strong>&quot;Justify the choice of OOP for this problem&quot;</strong></td>
+<td>Use modularity / data management / maintainability (§1.5), then contrast with procedural</td>
+</tr>
+</tbody></table>
+<h3 id="paragraph-scaffold">Paragraph Scaffold</h3>
+<pre><code>Topic sentence (define the term)
+  → explain the mechanism (how it actually works)
+  → apply to a scenario (your D&amp;D app / Wicked Problems project / given case)
+  → link to a syllabus concept (an effectiveness criterion, or maintainability)
+</code></pre>
+<hr>
+<h2 id="7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Class</strong></td>
+<td>The blueprint</td>
+<td><strong>Object</strong> — one instance built from it</td>
+</tr>
+<tr>
+<td><strong>Object</strong></td>
+<td>One instance with its own data</td>
+<td><strong>Class</strong> — the template</td>
+</tr>
+<tr>
+<td><strong>Instantiation</strong></td>
+<td>The <strong>act</strong> of creating an object</td>
+<td>The object itself</td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td>Data belonging to an object</td>
+<td><strong>Method</strong> — an action it can perform</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>A function inside a class</td>
+<td>A standalone function (not tied to a class)</td>
+</tr>
+<tr>
+<td><strong>Constructor</strong> (<code>__init__</code>)</td>
+<td>Runs automatically when an object is created</td>
+<td>An ordinary method (must be called)</td>
+</tr>
+<tr>
+<td><strong>Encapsulation</strong></td>
+<td>Bundling data + methods and hiding internals</td>
+<td><strong>Abstraction</strong> — showing only essentials</td>
+</tr>
+<tr>
+<td><strong>Abstraction</strong></td>
+<td>Hiding complexity from the user</td>
+<td><strong>Encapsulation</strong> — the mechanism that enables it</td>
+</tr>
+<tr>
+<td><strong>Inheritance</strong></td>
+<td>Child class reuses parent&#39;s properties/methods</td>
+<td><strong>Generalisation</strong> — extracting a superclass <em>from</em> existing classes</td>
+</tr>
+<tr>
+<td><strong>Generalisation</strong></td>
+<td>Creating a superclass from common features</td>
+<td><strong>Inheritance</strong> — using it</td>
+</tr>
+<tr>
+<td><strong>Polymorphism</strong></td>
+<td>Same method call, different behaviour by class</td>
+<td><strong>Overriding</strong> — one <em>form</em> of polymorphism</td>
+</tr>
+<tr>
+<td><strong>Overriding</strong></td>
+<td>Child redefines a parent&#39;s method</td>
+<td><strong>Overloading</strong> — same name, different parameters</td>
+</tr>
+<tr>
+<td><strong>Superclass / base / parent</strong></td>
+<td>The class being inherited <strong>from</strong></td>
+<td><strong>Subclass / derived / child</strong> — the one inheriting</td>
+</tr>
+<tr>
+<td><strong>Message passing</strong></td>
+<td>Objects calling each other&#39;s methods</td>
+<td>Data flow in a DFD</td>
+</tr>
+<tr>
+<td><strong><code>self</code></strong></td>
+<td>Reference to the current object instance</td>
+<td>The class itself</td>
+</tr>
+<tr>
+<td><strong>Empty circle</strong> (structure chart)</td>
+<td>A <strong>data</strong> parameter</td>
+<td><strong>Filled circle</strong> — a <strong>control</strong> flag</td>
+</tr>
+<tr>
+<td><strong>Level 0 DFD</strong></td>
+<td>Whole-system overview → <strong>class name</strong></td>
+<td><strong>Level 1</strong> — processes → <strong>method names</strong></td>
+</tr>
+<tr>
+<td><strong>Top-down</strong></td>
+<td>General → specific</td>
+<td><strong>Bottom-up</strong> — specific → general</td>
+</tr>
+<tr>
+<td><strong>Façade pattern</strong></td>
+<td>Simple interface over a complex subsystem</td>
+<td>Abstraction (the general principle)</td>
+</tr>
+<tr>
+<td><strong>Correctness</strong></td>
+<td>Right answer for valid input</td>
+<td><strong>Robustness</strong> — survives invalid input</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>Speed and memory use</td>
+<td><strong>Scalability</strong> — coping as size grows</td>
+</tr>
+<tr>
+<td><strong>Code optimisation</strong></td>
+<td>Making it faster; <strong>reduces readability</strong></td>
+<td>Refactoring (improves readability)</td>
+</tr>
+<tr>
+<td><strong>Modularity</strong></td>
+<td>How easily code splits into reusable parts</td>
+<td>Maintainability (ease of change)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-key-definitions-quick-reference">8. Key Definitions Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-Line Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Object</td>
+<td>Self-contained unit of data (attributes) and functionality (methods)</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>Blueprint or template for creating objects</td>
+</tr>
+<tr>
+<td>Encapsulation</td>
+<td>Bundling data and methods into one unit and hiding internal state</td>
+</tr>
+<tr>
+<td>Abstraction</td>
+<td>Hiding complex implementation and showing only essential features</td>
+</tr>
+<tr>
+<td>Inheritance</td>
+<td>A derived class inheriting properties and behaviours from a base class</td>
+</tr>
+<tr>
+<td>Generalisation</td>
+<td>Extracting common features into a more general superclass</td>
+</tr>
+<tr>
+<td>Polymorphism</td>
+<td>Different classes responding differently to the same method call</td>
+</tr>
+<tr>
+<td>Overriding</td>
+<td>A subclass redefining an inherited method</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td>A data property belonging to an object</td>
+</tr>
+<tr>
+<td>Method</td>
+<td>A function defined within a class</td>
+</tr>
+<tr>
+<td>Instantiation</td>
+<td>Creating an object from a class</td>
+</tr>
+<tr>
+<td>Message passing</td>
+<td>Objects communicating by calling each other&#39;s methods</td>
+</tr>
+<tr>
+<td>Constructor</td>
+<td>Method that runs automatically when an object is instantiated</td>
+</tr>
+<tr>
+<td>DFD</td>
+<td>Diagram showing the flow of data among components; excludes actors</td>
+</tr>
+<tr>
+<td>Structure chart</td>
+<td>Models the top-down hierarchy of processes and data movement</td>
+</tr>
+<tr>
+<td>Class diagram</td>
+<td>Shows hierarchical relationships between classes</td>
+</tr>
+<tr>
+<td>Control parameter</td>
+<td>A flag affecting which execution path is taken</td>
+</tr>
+<tr>
+<td>Top-down design</td>
+<td>From the abstract to the specific</td>
+</tr>
+<tr>
+<td>Bottom-up design</td>
+<td>From the specific to the abstract</td>
+</tr>
+<tr>
+<td>Façade pattern</td>
+<td>An interface masking more complex underlying code</td>
+</tr>
+<tr>
+<td>Agility</td>
+<td>Small chunks designed, built and tested in rapid cycles</td>
+</tr>
+<tr>
+<td>Modularity</td>
+<td>How easily a program breaks into reusable modules</td>
+</tr>
+<tr>
+<td>Maintainability</td>
+<td>How simply code can be updated, debugged and scaled</td>
+</tr>
+<tr>
+<td>Code optimisation</td>
+<td>Making programs faster at the cost of readability</td>
+</tr>
+<tr>
+<td>Version control</td>
+<td>A shared timeline of a team&#39;s changes</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-quick-revision-checklist">9. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Define all four pillars and explain how they group into protect/hide vs reuse/vary</li>
+<li><input disabled="" type="checkbox"> Class vs object vs instantiation</li>
+<li><input disabled="" type="checkbox"> Write a class with a constructor, attributes, methods and a subclass</li>
+<li><input disabled="" type="checkbox"> Explain why the missing <code>self</code> breaks the LibrarySystem constructor</li>
+<li><input disabled="" type="checkbox"> DFD symbols and the verb-phrase / noun-phrase rule</li>
+<li><input disabled="" type="checkbox"> Structure chart symbols — especially empty vs filled circle</li>
+<li><input disabled="" type="checkbox"> Class diagram three compartments and inheritance notation</li>
+<li><input disabled="" type="checkbox"> Run the DFD → class → method → attribute pipeline on a given diagram</li>
+<li><input disabled="" type="checkbox"> Four design approaches, including the façade pattern</li>
+<li><input disabled="" type="checkbox"> All 10 effectiveness criteria, and can apply 3–4 to a given algorithm</li>
+<li><input disabled="" type="checkbox"> Four collaboration factors</li>
+<li><input disabled="" type="checkbox"> Justify OOP vs procedural using modularity, data management, maintainability</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> | <a href="Software_Engineering__Software_Automation.html">Software Automation</a> | <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-core-oop-concepts" data-target="1-core-oop-concepts">1. Core OOP Concepts</a><ul class="sub"><li><a href="#1-1-the-four-pillars-how-they-connect" data-target="1-1-the-four-pillars-how-they-connect" data-parent="1-core-oop-concepts">1.1 The Four Pillars — how they connect</a></li><li><a href="#1-2-worked-illustration-fruit-apple-orange" data-target="1-2-worked-illustration-fruit-apple-orange" data-parent="1-core-oop-concepts">1.2 Worked Illustration — Fruit / Apple / Orange</a></li><li><a href="#1-3-javascript-mappings" data-target="1-3-javascript-mappings" data-parent="1-core-oop-concepts">1.3 JavaScript Mappings</a></li><li><a href="#1-4-benefit-of-instantiation-model-answer" data-target="1-4-benefit-of-instantiation-model-answer" data-parent="1-core-oop-concepts">1.4 Benefit of Instantiation — model answer</a></li><li><a href="#1-5-factors-influencing-choice-of-paradigm" data-target="1-5-factors-influencing-choice-of-paradigm" data-parent="1-core-oop-concepts">1.5 Factors Influencing Choice of Paradigm</a></li></ul></li><li><a href="#2-oop-design-diagrams" data-target="2-oop-design-diagrams">2. OOP Design Diagrams</a><ul class="sub"><li><a href="#2-1-data-flow-diagram-dfd" data-target="2-1-data-flow-diagram-dfd" data-parent="2-oop-design-diagrams">2.1 Data Flow Diagram (DFD)</a></li><li><a href="#2-2-structure-chart" data-target="2-2-structure-chart" data-parent="2-oop-design-diagrams">2.2 Structure Chart</a></li><li><a href="#2-3-class-diagram" data-target="2-3-class-diagram" data-parent="2-oop-design-diagrams">2.3 Class Diagram</a></li><li><a href="#2-4-the-dfd-structure-chart-class-python-pipeline" data-target="2-4-the-dfd-structure-chart-class-python-pipeline" data-parent="2-oop-design-diagrams">2.4 The DFD → Structure Chart → Class → Python Pipeline</a></li></ul></li><li><a href="#3-oop-design-processes-and-approaches" data-target="3-oop-design-processes-and-approaches">3. OOP Design Processes and Approaches</a></li><li><a href="#4-algorithm-effectiveness-criteria" data-target="4-algorithm-effectiveness-criteria">4. Algorithm Effectiveness Criteria</a><ul class="sub"><li><a href="#4-1-why-oop-is-effective" data-target="4-1-why-oop-is-effective" data-parent="4-algorithm-effectiveness-criteria">4.1 Why OOP Is Effective</a></li></ul></li><li><a href="#5-collaboration-in-software-development" data-target="5-collaboration-in-software-development">5. Collaboration in Software Development</a></li><li><a href="#6-hsc-exam-response-structures" data-target="6-hsc-exam-response-structures">6. HSC Exam Response Structures</a><ul class="sub"><li><a href="#common-question-types" data-target="common-question-types" data-parent="6-hsc-exam-response-structures">Common Question Types</a></li><li><a href="#paragraph-scaffold" data-target="paragraph-scaffold" data-parent="6-hsc-exam-response-structures">Paragraph Scaffold</a></li></ul></li><li><a href="#7-glossary-terms-students-mix-up" data-target="7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</a></li><li><a href="#8-key-definitions-quick-reference" data-target="8-key-definitions-quick-reference">8. Key Definitions Quick Reference</a></li><li><a href="#9-quick-revision-checklist" data-target="9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

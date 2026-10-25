@@ -1,0 +1,1137 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Secure Software Architecture — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="active" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Secure Software Architecture</h1><p class="meta">Software Engineering · Software_Engineering/Secure_Software_Architecture.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-designing-software-for-security">1. Designing Software for Security</a></li><li><a href="#2-developing-secure-code">2. Developing Secure Code</a></li><li><a href="#3-cryptography-and-encryption">3. Cryptography and Encryption</a></li><li><a href="#4-australian-legal-and-privacy-context">4. Australian Legal and Privacy Context</a></li><li><a href="#5-impact-of-safe-and-secure-software-development">5. Impact of Safe and Secure Software Development</a></li><li><a href="#6-hsc-exam-response-structures">6. HSC Exam Response Structures</a></li><li><a href="#7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</a></li><li><a href="#8-key-definitions-quick-reference">8. Key Definitions Quick Reference</a></li><li><a href="#9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></div><h1>Secure Software Architecture — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 12, Unit 7</strong> | Designing software for security, the six security concepts, secure coding practices, testing strategies, encryption and the Australian privacy context.</p>
+</blockquote>
+<hr>
+<h2 id="1-designing-software-for-security">1. Designing Software for Security</h2>
+<h3 id="1-1-security-from-the-start">1.1 Security From the Start</h3>
+<blockquote>
+<p>&quot;Secure Software Architecture begins <strong>when any software solution is proposed</strong>. It needs to be <strong>embedded right from the start</strong> of the first Software Development Steps.&quot;</p>
+</blockquote>
+<p>Security is a <strong>non-functional requirement</strong> &quot;embedded <strong>throughout</strong> the software development lifecycle rather than <strong>added as an afterthought</strong>.&quot;</p>
+<blockquote>
+<p><strong>This is the single most important idea in the topic.</strong> Almost every extended response should return to it: security designed in from step 1, not bolted on at the end.</p>
+</blockquote>
+<p><strong>Why bolting security on later fails:</strong></p>
+<ul>
+<li>Architectural decisions made early (how data is stored, how sessions work) are <strong>expensive or impossible</strong> to reverse later</li>
+<li>Vulnerabilities discovered after release require <strong>patching under pressure</strong>, with users already exposed</li>
+<li>Retrofitted controls tend to be <strong>inconsistent</strong> — some paths protected, others missed</li>
+</ul>
+<h3 id="1-2-benefits-of-developing-secure-software">1.2 Benefits of Developing Secure Software</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data protection</strong></td>
+<td>User and organisational data is kept confidential and intact</td>
+</tr>
+<tr>
+<td><strong>Minimising cyber attacks and vulnerabilities</strong></td>
+<td>Fewer exploitable weaknesses reduces the attack surface</td>
+</tr>
+<tr>
+<td><strong>Maintaining user trust and reputation</strong></td>
+<td>A breach damages the brand far beyond the technical cost</td>
+</tr>
+<tr>
+<td><strong>Legal and regulatory compliance</strong></td>
+<td>Meets obligations under privacy legislation</td>
+</tr>
+<tr>
+<td><strong>Lower long-term cost</strong></td>
+<td>Fixing a design flaw at design time is far cheaper than after deployment</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-the-six-fundamental-security-concepts">1.3 The Six Fundamental Security Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Definition</th>
+<th>Code illustration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Confidentiality</strong></td>
+<td>&quot;How <strong>secret</strong> your data is&quot;</td>
+<td>Fernet <strong>encryption</strong></td>
+</tr>
+<tr>
+<td><strong>Integrity</strong></td>
+<td>&quot;How <strong>whole</strong> or intact your data is&quot;</td>
+<td><strong>SHA-256</strong> hashing</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>&quot;How <strong>accessible</strong> your data is&quot;</td>
+<td><strong>Retry</strong> on <code>ConnectionError</code></td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>&quot;Method of <strong>accessing</strong> data e.g. usernames, passwords, <strong>Two Factor Authentication (2FA)</strong>&quot;</td>
+<td>Username/password check</td>
+</tr>
+<tr>
+<td><strong>Authorisation</strong></td>
+<td>&quot;<strong>Level of permission</strong> to view, edit, delete data&quot;</td>
+<td>Role branching (<code>admin</code> / <code>viewer</code>)</td>
+</tr>
+<tr>
+<td><strong>Accountability</strong></td>
+<td>&quot;<strong>Level of responsibility</strong> to view, edit, delete data&quot;</td>
+<td>Write <code>datetime</code> + user + action to <code>log.txt</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The CIA triad</strong> is the first three: <strong>C</strong>onfidentiality, <strong>I</strong>ntegrity, <strong>A</strong>vailability. The remaining three (Authentication, Authorisation, Accountability) are how you enforce them.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing trio — Authentication / Authorisation / Accountability</strong>
+<strong>Authentication</strong> — <em>who are you?</em> (proving identity)
+<strong>Authorisation</strong> — <em>what may you do?</em> (permission level)
+<strong>Accountability</strong> — <em>what did you do?</em> (logging and traceability)
+They run in that order: you identify, then permit, then record.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing pair — Confidentiality vs Integrity</strong>
+<strong>Confidentiality</strong> = nobody unauthorised can <strong>read</strong> it.
+<strong>Integrity</strong> = nobody unauthorised can <strong>change</strong> it, and you can detect if they did.
+Encryption protects confidentiality; hashing protects integrity.</p>
+</blockquote>
+<h3 id="1-4-worked-case-studies">1.4 Worked Case Studies</h3>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Concepts breached</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram (November 2024)</strong></td>
+<td><strong>Confidentiality</strong> + <strong>Authorisation</strong> — a public API exposed user emails through <em>Broken Object Property Level Authorization</em></td>
+</tr>
+<tr>
+<td><strong>TikTok (June 2024)</strong></td>
+<td><strong>Confidentiality</strong> + <strong>Integrity</strong> — hijacked accounts allowed attackers to modify content. <strong>Availability</strong> and <strong>Authorisation</strong> were also affected</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>How to use these in an exam</strong>: name the specific concept(s) breached, explain the mechanism, then state which control would have prevented it.</p>
+</blockquote>
+<h3 id="1-5-security-across-the-software-development-lifecycle">1.5 Security Across the Software Development Lifecycle</h3>
+<table>
+<thead>
+<tr>
+<th>SDLC step</th>
+<th>Security activity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Requirements</strong></td>
+<td>Capture <strong>security requirements</strong> alongside functional ones</td>
+</tr>
+<tr>
+<td><strong>Specifications</strong></td>
+<td>Define <strong>security specifications</strong> — measurable and testable</td>
+</tr>
+<tr>
+<td><strong>Design</strong></td>
+<td>Design the <strong>security controls</strong> into the architecture</td>
+</tr>
+<tr>
+<td><strong>Development</strong></td>
+<td>Apply secure coding practices</td>
+</tr>
+<tr>
+<td><strong>Integration</strong></td>
+<td>Verify components remain secure when combined</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Test for errors <strong>and vulnerabilities</strong></td>
+</tr>
+<tr>
+<td><strong>Installation</strong></td>
+<td>Deploy securely — configuration, permissions, secrets</td>
+</tr>
+<tr>
+<td><strong>Maintenance</strong></td>
+<td><strong>Patch vulnerabilities</strong> as they emerge</td>
+</tr>
+</tbody></table>
+<p><strong>Operating-system level</strong>: &quot;Secure software architecture aims to ensure that the operating system is secured so that <strong>one session doesn&#39;t override another one</strong>, nor <strong>adversely affect memory</strong>.&quot;</p>
+<hr>
+<h2 id="2-developing-secure-code">2. Developing Secure Code</h2>
+<h3 id="2-1-security-by-design-and-privacy-by-design">2.1 Security by Design and Privacy by Design</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Security by design</strong></td>
+<td>&quot;Software is designed to be <strong>secure from the beginning</strong> — i.e. in the <strong>needs analysis and quality criteria</strong> rather than as an afterthought&quot;</td>
+</tr>
+<tr>
+<td><strong>Privacy by design</strong></td>
+<td>&quot;Software is designed to <strong>control who has access to what data</strong> from the beginning&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Security by design vs Privacy by design</strong>
+<strong>Security</strong> by design = protecting data from <strong>attackers</strong> (can it be broken into?).
+<strong>Privacy</strong> by design = controlling access by <strong>legitimate users and the organisation itself</strong> (should this person see this data at all? should we even collect it?).
+A system can be perfectly secure and still violate privacy by collecting far more data than it needs.</p>
+</blockquote>
+<p><strong>Worked classification (from the class task):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Health Records App</td>
+<td><strong>Security by design</strong></td>
+</tr>
+<tr>
+<td>School Attendance system</td>
+<td><strong>Privacy by design</strong></td>
+</tr>
+<tr>
+<td>Student Portal</td>
+<td><strong>Both</strong></td>
+</tr>
+<tr>
+<td>Online Survey Tool</td>
+<td><strong>Neither / N/A</strong></td>
+</tr>
+</tbody></table>
+<h3 id="2-2-secure-coding-practices">2.2 Secure Coding Practices</h3>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>What it addresses</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Memory management</strong></td>
+<td>Preventing buffer overflows, memory leaks, and data persisting in memory after use</td>
+</tr>
+<tr>
+<td><strong>Session management</strong></td>
+<td>Secure session tokens, timeouts, invalidation on logout — preventing session hijacking</td>
+</tr>
+<tr>
+<td><strong>Exception management</strong></td>
+<td>Handling errors without leaking internal detail (stack traces, database structure) to the user</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why exception handling is a security issue</strong>: a raw error message can reveal the database type, table names, file paths and framework version — a roadmap for an attacker. Log the detail internally; show the user a generic message.</p>
+</blockquote>
+<h3 id="2-3-common-vulnerabilities">2.3 Common Vulnerabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Vulnerability</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cross-site scripting (XSS)</strong></td>
+<td>&quot;Injecting <strong>malicious code</strong> into an otherwise safe website. Usually done through <strong>user input that is not sufficiently sanitised</strong> before being processed and stored on the server&quot;</td>
+</tr>
+<tr>
+<td><strong>Broken authentication and session management</strong></td>
+<td>Weak credentials, exposed session IDs, sessions that don&#39;t expire</td>
+</tr>
+<tr>
+<td><strong>Invalid forwarding and redirecting</strong></td>
+<td>Redirecting users to attacker-controlled destinations via unvalidated URL parameters</td>
+</tr>
+<tr>
+<td><strong>Race conditions</strong></td>
+<td>Two operations accessing the same resource simultaneously, producing an unintended result depending on timing</td>
+</tr>
+<tr>
+<td><strong>Injection attacks</strong></td>
+<td>Untrusted input executed as a command — SQL injection targets the database</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Sandboxing</strong> = running code in an isolated environment with restricted access to the rest of the system, so that if it is compromised the damage is contained.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing pair — XSS vs SQL injection</strong>
+<strong>XSS</strong> injects script that runs in <strong>another user&#39;s browser</strong>.
+<strong>SQL injection</strong> injects commands that run on the <strong>database server</strong>.
+Both stem from the same root cause: <strong>unsanitised user input</strong>.</p>
+</blockquote>
+<h3 id="2-4-the-universal-defence-input-validation-and-sanitisation">2.4 The Universal Defence: Input Validation and Sanitisation</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Validation</strong></td>
+<td>Checking input <strong>conforms to expectations</strong> — right type, length, format, range</td>
+</tr>
+<tr>
+<td><strong>Sanitisation</strong></td>
+<td><strong>Neutralising</strong> dangerous content — escaping or stripping characters that could be interpreted as code</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Never trust user input.</strong> Validate on the <strong>server</strong>, not only in the browser — client-side checks can be bypassed entirely.</p>
+</blockquote>
+<h3 id="2-5-testing-strategies">2.5 Testing Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code review</strong></td>
+<td>Developers manually read each other&#39;s code looking for flaws</td>
+</tr>
+<tr>
+<td><strong>SAST</strong> (Static Application Security Testing)</td>
+<td>Analyses the <strong>source code</strong> <strong>without running</strong> it</td>
+</tr>
+<tr>
+<td><strong>DAST</strong> (Dynamic Application Security Testing)</td>
+<td>Tests the <strong>running application</strong> from the outside</td>
+</tr>
+<tr>
+<td><strong>Vulnerability assessment</strong></td>
+<td>Systematic scan identifying and ranking known weaknesses</td>
+</tr>
+<tr>
+<td><strong>Penetration testing</strong></td>
+<td>Authorised <strong>simulated attack</strong> to exploit weaknesses as a real attacker would</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — SAST vs DAST</strong>
+<strong>S</strong>tatic = <strong>S</strong>ource code, application <strong>stopped</strong>.
+<strong>D</strong>ynamic = application <strong>running</strong>.
+SAST finds flaws early and points to the exact line; DAST finds flaws that only appear at runtime, including configuration and deployment issues.</p>
+</blockquote>
+<blockquote>
+<p><strong>Confusing pair — Vulnerability assessment vs Penetration testing</strong>
+A <strong>vulnerability assessment</strong> produces a <strong>list</strong> of potential weaknesses (breadth).
+A <strong>penetration test</strong> actually <strong>exploits</strong> them to prove impact (depth).</p>
+</blockquote>
+<h3 id="2-6-worked-application-the-tram-timetable-system">2.6 Worked Application — the Tram Timetable System</h3>
+<p>From the class model answer:</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Control applied</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Goals</td>
+<td><strong>Confidentiality, integrity, availability</strong></td>
+</tr>
+<tr>
+<td>Access</td>
+<td><strong>Authentication + Access Control + RBAC + MFA</strong> — passwords alone are &quot;vulnerable to <strong>brute-force and phishing</strong>&quot;</td>
+</tr>
+<tr>
+<td>Legal</td>
+<td><strong>Australian Privacy Act 1988 + APPs</strong> — obligation to &quot;collect only necessary data, store it securely, and destroy it when no longer needed&quot;</td>
+</tr>
+<tr>
+<td>Design phase</td>
+<td>A <strong>privacy impact assessment</strong> should be conducted during design</td>
+</tr>
+<tr>
+<td>Coding</td>
+<td><strong>Input validation and error handling</strong> to prevent injection</td>
+</tr>
+<tr>
+<td>Process</td>
+<td>Code reviews, penetration tests, Agile sprints, <strong>SAST</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>RBAC (Role-Based Access Control)</strong> = permissions assigned to <strong>roles</strong> rather than individuals. A user gets a role (driver, scheduler, admin), and the role carries the permissions. Simpler to manage and audit than per-user permissions.</p>
+</blockquote>
+<blockquote>
+<p><strong>MFA (Multi-Factor Authentication)</strong> = requiring two or more independent factors: something you <strong>know</strong> (password), something you <strong>have</strong> (phone, token), something you <strong>are</strong> (biometric). Defeats stolen-password attacks because the password alone is insufficient.</p>
+</blockquote>
+<hr>
+<h2 id="3-cryptography-and-encryption">3. Cryptography and Encryption</h2>
+<h3 id="3-1-core-terms">3.1 Core Terms</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cryptography</strong></td>
+<td>&quot;The art and science of making data <strong>unreadable except to those who should be able to access it</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Scrambling data into unreadable <strong>ciphertext</strong>, decipherable only with a key</td>
+</tr>
+<tr>
+<td><strong>Plaintext</strong></td>
+<td>The readable original data</td>
+</tr>
+<tr>
+<td><strong>Ciphertext</strong></td>
+<td>The scrambled, unreadable output</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>&quot;How <strong>secret</strong> data is&quot;</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>&quot;How <strong>safe</strong> data is&quot;</td>
+</tr>
+<tr>
+<td><strong>Vulnerability</strong></td>
+<td>&quot;A <strong>security gap</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>&quot;A specific <strong>instance of an app and its data in memory</strong>&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-the-three-encryption-types">3.2 The Three Encryption Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Key</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hash functions</strong></td>
+<td><strong>No key</strong></td>
+<td><strong>Integrity</strong> and digital signatures. Produces a fixed-length fingerprint that changes completely on a tiny input change</td>
+<td>MD5, SHA-256</td>
+</tr>
+<tr>
+<td><strong>Symmetric-key</strong></td>
+<td><strong>Same key</strong> both ways</td>
+<td>Fast bulk encryption. Weakness: <strong>secure key distribution</strong></td>
+<td><strong>AES</strong> — &quot;gold standard&quot;, 128-bit blocks</td>
+</tr>
+<tr>
+<td><strong>Asymmetric / public-key</strong></td>
+<td><strong>Public</strong> (shareable) + <strong>private</strong> (secret)</td>
+<td>Secure communication and digital signatures</td>
+<td>RSA</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Hashing is one-way.</strong> You cannot reverse a hash to recover the original. That is precisely why it is used for <strong>password storage</strong> and <strong>integrity checking</strong> — not for sending secret messages you need to read later.</p>
+</blockquote>
+<h3 id="3-3-ssl-and-tls">3.3 SSL and TLS</h3>
+<ul>
+<li><strong>SSL</strong> (1995) encrypts data between site and user</li>
+<li>Replaced by <strong>TLS</strong>, which is more secure</li>
+<li>Identity is verified via a <strong>handshake</strong> (&quot;like a digital signature&quot;)</li>
+<li>Sites using them display <strong>HTTPS</strong></li>
+</ul>
+<p><em>The full four-stage TLS handshake is covered in <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> §8.2.</em></p>
+<h3 id="3-4-digital-signatures">3.4 Digital Signatures</h3>
+<pre><code>SENDER:    hash the message → encrypt the hash with the sender&#39;s PRIVATE key
+RECEIVER:  decrypt with the sender&#39;s PUBLIC key → compare against own hash
+           match → INTEGRITY + AUTHENTICITY confirmed
+</code></pre>
+<blockquote>
+<p><strong>The key order is the reverse of encryption for secrecy.</strong> To keep something <strong>secret</strong>, encrypt with the recipient&#39;s <strong>public</strong> key. To <strong>prove it came from you</strong>, encrypt with your own <strong>private</strong> key.</p>
+</blockquote>
+<hr>
+<h2 id="4-australian-legal-and-privacy-context">4. Australian Legal and Privacy Context</h2>
+<blockquote>
+<p><strong>Sourcing note</strong>: In your classroom materials, this appears only in the <strong>SSA2 student sample answer</strong>. The wider legislative framework below is standard HSC content — worth knowing, but <strong>confirm with your teacher</strong> which parts your class is accountable for.</p>
+</blockquote>
+<h3 id="4-1-from-your-class-materials">4.1 From Your Class Materials</h3>
+<ul>
+<li>&quot;Data protection and privacy must comply with the <strong>Australian Privacy Act 1988</strong> and its <strong>Australian Privacy Principles (APPs)</strong>&quot;</li>
+<li>&quot;Legal obligation under the APPs to <strong>collect only necessary data, store it securely, and destroy it when no longer needed</strong>&quot;</li>
+<li>&quot;A <strong>privacy impact assessment</strong> should be conducted during the <strong>design phase</strong>&quot;</li>
+</ul>
+<h3 id="4-2-wider-framework-standard-content-verify-with-your-teacher">4.2 Wider Framework (standard content — verify with your teacher)</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Privacy Act 1988 (Cth)</strong></td>
+<td>The principal Commonwealth privacy legislation</td>
+</tr>
+<tr>
+<td><strong>Australian Privacy Principles (APPs)</strong></td>
+<td>13 principles governing collection, use, disclosure, quality, security and access to personal information</td>
+</tr>
+<tr>
+<td><strong>OAIC</strong></td>
+<td>Office of the Australian Information Commissioner — the regulator</td>
+</tr>
+<tr>
+<td><strong>Notifiable Data Breaches (NDB) scheme</strong></td>
+<td>Requires notifying affected individuals and the OAIC of eligible data breaches</td>
+</tr>
+<tr>
+<td><strong>Privacy impact assessment (PIA)</strong></td>
+<td>A structured assessment of a project&#39;s privacy risks, conducted during design</td>
+</tr>
+</tbody></table>
+<h3 id="4-3-data-handling-principles">4.3 Data Handling Principles</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data minimisation</strong></td>
+<td>Collect only what is <strong>necessary</strong> for the stated purpose</td>
+</tr>
+<tr>
+<td><strong>Purpose limitation</strong></td>
+<td>Use data only for the purpose it was collected for</td>
+</tr>
+<tr>
+<td><strong>Storage limitation</strong></td>
+<td><strong>Destroy</strong> data when it is no longer needed</td>
+</tr>
+<tr>
+<td><strong>Least privilege</strong></td>
+<td>Give each user and process the <strong>minimum access</strong> required to do its job</td>
+</tr>
+<tr>
+<td><strong>Defence in depth</strong></td>
+<td>Layer multiple independent controls so no single failure exposes the system</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-impact-of-safe-and-secure-software-development">5. Impact of Safe and Secure Software Development</h2>
+<h3 id="5-1-benefits-of-collaboration">5.1 Benefits of Collaboration</h3>
+<p>Secure development is a team activity. Collaboration improves security through:</p>
+<ul>
+<li><strong>Code review</strong> catching flaws a single developer would miss</li>
+<li><strong>Shared standards</strong> ensuring consistent handling of input, sessions and errors</li>
+<li><strong>Version control</strong> providing traceability of who changed what and when</li>
+<li><strong>Diverse perspectives</strong> identifying threats an individual would not anticipate</li>
+</ul>
+<p><em>Collaboration factors are covered in <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> §5.</em></p>
+<h3 id="5-2-safe-and-secure-practices">5.2 Safe and Secure Practices</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Practice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data protection</strong></td>
+<td>Encryption at rest and in transit; access controls; backups</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Authentication, authorisation, logging, patching, testing</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>Data minimisation, consent, transparency, retention limits</td>
+</tr>
+</tbody></table>
+<h3 id="5-3-the-enterprise-benefit">5.3 The Enterprise Benefit</h3>
+<p>Secure software protects <strong>reputation</strong>, avoids <strong>regulatory penalties</strong>, maintains <strong>user trust</strong>, reduces <strong>incident response costs</strong>, and enables the business to operate in regulated markets.</p>
+<hr>
+<h2 id="6-hsc-exam-response-structures">6. HSC Exam Response Structures</h2>
+<h3 id="security-question-scaffold">Security Question Scaffold</h3>
+<pre><code>1. Name the security concept   (confidentiality / integrity / availability /
+                                authentication / authorisation / accountability)
+2. Explain what it means
+3. Give a code or real-world example
+4. Link to the SDLC stage      (by design, not as an afterthought)
+</code></pre>
+<h3 id="common-question-types">Common Question Types</h3>
+<table>
+<thead>
+<tr>
+<th>Question type</th>
+<th>How to answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Explain why security must be designed in from the start&quot;</strong></td>
+<td>Non-functional requirement → architectural decisions are expensive to reverse → retrofitting is inconsistent → cost rises with lateness</td>
+</tr>
+<tr>
+<td><strong>&quot;Identify the security concepts breached in this case study&quot;</strong></td>
+<td>Name each concept → explain the specific mechanism of the breach → state the control that would have prevented it</td>
+</tr>
+<tr>
+<td><strong>&quot;Distinguish security by design from privacy by design&quot;</strong></td>
+<td>Security = protection from attackers; privacy = controlling legitimate access and collection → give a scenario where a system is secure but not private</td>
+</tr>
+<tr>
+<td><strong>&quot;Compare SAST and DAST&quot;</strong></td>
+<td>Static/source/not running vs dynamic/running → what each catches → argue for using both</td>
+</tr>
+<tr>
+<td><strong>&quot;Explain how XSS occurs and how to prevent it&quot;</strong></td>
+<td>Unsanitised user input stored and re-served → executes in another user&#39;s browser → prevent with validation and sanitisation, server-side</td>
+</tr>
+<tr>
+<td><strong>&quot;Recommend security strategies for [system]&quot;</strong></td>
+<td>Use the tram model: authentication + RBAC + MFA → input validation → encryption → testing regime → legal obligation → PIA at design</td>
+</tr>
+<tr>
+<td><strong>&quot;Assess the impact of secure development practices&quot;</strong></td>
+<td>Benefits (trust, compliance, lower cost) vs costs (development time, complexity) → judge</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Confidentiality</strong></td>
+<td>Nobody unauthorised can <strong>read</strong> it</td>
+<td><strong>Integrity</strong> — nobody can <strong>alter</strong> it</td>
+</tr>
+<tr>
+<td><strong>Integrity</strong></td>
+<td>Data is whole and unaltered; changes detectable</td>
+<td>Confidentiality (secrecy)</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>Data is <strong>accessible</strong> when needed</td>
+<td>Confidentiality (restricting access)</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Proving <strong>who you are</strong></td>
+<td><strong>Authorisation</strong> — what you may do</td>
+</tr>
+<tr>
+<td><strong>Authorisation</strong></td>
+<td>Your <strong>permission level</strong></td>
+<td><strong>Accountability</strong> — the record of what you did</td>
+</tr>
+<tr>
+<td><strong>Accountability</strong></td>
+<td>Logging and traceability of actions</td>
+<td>Authorisation (the permission itself)</td>
+</tr>
+<tr>
+<td><strong>Security by design</strong></td>
+<td>Protection from <strong>attackers</strong></td>
+<td><strong>Privacy by design</strong> — controlling legitimate access</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>About <strong>rights</strong> — who <em>should</em> see data</td>
+<td><strong>Security</strong> — the technical measures</td>
+</tr>
+<tr>
+<td><strong>Vulnerability</strong></td>
+<td>A security <strong>gap</strong></td>
+<td>An <strong>exploit</strong> (the attack using it)</td>
+</tr>
+<tr>
+<td><strong>Threat</strong></td>
+<td>A potential source of harm</td>
+<td>A vulnerability (the weakness it targets)</td>
+</tr>
+<tr>
+<td><strong>XSS</strong></td>
+<td>Script injected, runs in another <strong>user&#39;s browser</strong></td>
+<td><strong>SQL injection</strong> — runs on the <strong>database</strong></td>
+</tr>
+<tr>
+<td><strong>Race condition</strong></td>
+<td>Timing-dependent conflict between operations</td>
+<td>A logic error (deterministic)</td>
+</tr>
+<tr>
+<td><strong>Sandboxing</strong></td>
+<td>Isolating code so damage is contained</td>
+<td>Encryption</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Input <strong>conforms</strong> to expectations</td>
+<td><strong>Sanitisation</strong> — neutralising dangerous content</td>
+</tr>
+<tr>
+<td><strong>SAST</strong></td>
+<td><strong>Static</strong> — source code, not running</td>
+<td><strong>DAST</strong> — <strong>dynamic</strong>, running application</td>
+</tr>
+<tr>
+<td><strong>Vulnerability assessment</strong></td>
+<td><strong>Lists</strong> weaknesses (breadth)</td>
+<td><strong>Penetration test</strong> — <strong>exploits</strong> them (depth)</td>
+</tr>
+<tr>
+<td><strong>Hashing</strong></td>
+<td><strong>One-way</strong>, no key, for integrity</td>
+<td><strong>Encryption</strong> — reversible with a key</td>
+</tr>
+<tr>
+<td><strong>Symmetric</strong></td>
+<td>One shared key; fast</td>
+<td><strong>Asymmetric</strong> — public/private pair; slow</td>
+</tr>
+<tr>
+<td><strong>Plaintext</strong></td>
+<td>Readable original</td>
+<td><strong>Ciphertext</strong> — scrambled output</td>
+</tr>
+<tr>
+<td><strong>Digital signature</strong></td>
+<td>Encrypt hash with your <strong>private</strong> key</td>
+<td>Encryption for secrecy uses the <strong>public</strong> key</td>
+</tr>
+<tr>
+<td><strong>SSL</strong></td>
+<td>The original 1995 protocol</td>
+<td><strong>TLS</strong> — its more secure replacement</td>
+</tr>
+<tr>
+<td><strong>RBAC</strong></td>
+<td>Permissions attached to <strong>roles</strong></td>
+<td>Per-user permissions</td>
+</tr>
+<tr>
+<td><strong>MFA</strong></td>
+<td>Two or more <strong>independent</strong> factors</td>
+<td>Two passwords (same factor type)</td>
+</tr>
+<tr>
+<td><strong>Least privilege</strong></td>
+<td>Minimum access needed to do the job</td>
+<td>Convenience-based access</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>An instance of an app and its data in memory</td>
+<td>A login (one event that starts a session)</td>
+</tr>
+<tr>
+<td><strong>PIA</strong></td>
+<td>Structured privacy risk assessment at design</td>
+<td>A security audit (post-build)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-key-definitions-quick-reference">8. Key Definitions Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-Line Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Secure software architecture</td>
+<td>Designing security into software from the moment it is proposed</td>
+</tr>
+<tr>
+<td>Non-functional requirement</td>
+<td>A quality or constraint rather than a feature</td>
+</tr>
+<tr>
+<td>Confidentiality</td>
+<td>How secret the data is</td>
+</tr>
+<tr>
+<td>Integrity</td>
+<td>How whole or intact the data is</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>How accessible the data is</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>The method of proving identity to access data</td>
+</tr>
+<tr>
+<td>Authorisation</td>
+<td>The level of permission to view, edit or delete data</td>
+</tr>
+<tr>
+<td>Accountability</td>
+<td>The level of responsibility and record of actions taken</td>
+</tr>
+<tr>
+<td>CIA triad</td>
+<td>Confidentiality, Integrity, Availability</td>
+</tr>
+<tr>
+<td>Security by design</td>
+<td>Designing software to be secure from the needs analysis onward</td>
+</tr>
+<tr>
+<td>Privacy by design</td>
+<td>Designing control of who accesses what data from the beginning</td>
+</tr>
+<tr>
+<td>Memory management</td>
+<td>Preventing overflows, leaks and residual data in memory</td>
+</tr>
+<tr>
+<td>Session management</td>
+<td>Securing session tokens, timeouts and invalidation</td>
+</tr>
+<tr>
+<td>Exception management</td>
+<td>Handling errors without leaking internal detail</td>
+</tr>
+<tr>
+<td>Cross-site scripting</td>
+<td>Injecting malicious code via unsanitised user input</td>
+</tr>
+<tr>
+<td>SQL injection</td>
+<td>Injecting commands executed by the database</td>
+</tr>
+<tr>
+<td>Race condition</td>
+<td>Timing-dependent conflict between simultaneous operations</td>
+</tr>
+<tr>
+<td>Broken authentication</td>
+<td>Weak credentials or improperly managed sessions</td>
+</tr>
+<tr>
+<td>Invalid forwarding</td>
+<td>Redirecting users via unvalidated destination parameters</td>
+</tr>
+<tr>
+<td>Sandboxing</td>
+<td>Running code in an isolated, restricted environment</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Checking input conforms to expected type, format and range</td>
+</tr>
+<tr>
+<td>Sanitisation</td>
+<td>Neutralising input that could be interpreted as code</td>
+</tr>
+<tr>
+<td>Code review</td>
+<td>Developers manually inspecting code for flaws</td>
+</tr>
+<tr>
+<td>SAST</td>
+<td>Static analysis of source code without executing it</td>
+</tr>
+<tr>
+<td>DAST</td>
+<td>Dynamic testing of the running application</td>
+</tr>
+<tr>
+<td>Vulnerability assessment</td>
+<td>Systematic identification and ranking of weaknesses</td>
+</tr>
+<tr>
+<td>Penetration testing</td>
+<td>Authorised simulated attack to exploit weaknesses</td>
+</tr>
+<tr>
+<td>Cryptography</td>
+<td>Making data unreadable except to those authorised</td>
+</tr>
+<tr>
+<td>Encryption</td>
+<td>Scrambling plaintext into ciphertext using a key</td>
+</tr>
+<tr>
+<td>Hash function</td>
+<td>One-way keyless transformation producing a fixed-length fingerprint</td>
+</tr>
+<tr>
+<td>Symmetric encryption</td>
+<td>Same key encrypts and decrypts; fast (AES)</td>
+</tr>
+<tr>
+<td>Asymmetric encryption</td>
+<td>Public and private key pair</td>
+</tr>
+<tr>
+<td>Digital signature</td>
+<td>Hash encrypted with the sender&#39;s private key</td>
+</tr>
+<tr>
+<td>SSL / TLS</td>
+<td>Protocols encrypting traffic between site and user</td>
+</tr>
+<tr>
+<td>RBAC</td>
+<td>Access permissions assigned to roles rather than individuals</td>
+</tr>
+<tr>
+<td>MFA</td>
+<td>Authentication requiring two or more independent factors</td>
+</tr>
+<tr>
+<td>Privacy Act 1988</td>
+<td>Principal Commonwealth privacy legislation</td>
+</tr>
+<tr>
+<td>APPs</td>
+<td>Australian Privacy Principles governing personal information</td>
+</tr>
+<tr>
+<td>Privacy impact assessment</td>
+<td>Structured assessment of privacy risks during design</td>
+</tr>
+<tr>
+<td>Data minimisation</td>
+<td>Collecting only the data necessary for the purpose</td>
+</tr>
+<tr>
+<td>Least privilege</td>
+<td>Granting the minimum access required</td>
+</tr>
+<tr>
+<td>Defence in depth</td>
+<td>Layering multiple independent security controls</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-quick-revision-checklist">9. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Explain why security is a non-functional requirement designed in from step 1</li>
+<li><input disabled="" type="checkbox"> Name and define all <strong>six</strong> security concepts, and identify the CIA triad within them</li>
+<li><input disabled="" type="checkbox"> Distinguish authentication / authorisation / accountability</li>
+<li><input disabled="" type="checkbox"> Give a code illustration for each of the six concepts</li>
+<li><input disabled="" type="checkbox"> Analyse the Instagram and TikTok cases by concept breached</li>
+<li><input disabled="" type="checkbox"> Map security activities across all eight SDLC steps</li>
+<li><input disabled="" type="checkbox"> Distinguish security by design from privacy by design, with a scenario</li>
+<li><input disabled="" type="checkbox"> Three secure coding practices — memory, session, exception management</li>
+<li><input disabled="" type="checkbox"> Explain XSS, SQL injection, race conditions, broken authentication, invalid forwarding</li>
+<li><input disabled="" type="checkbox"> Validation vs sanitisation, and why server-side matters</li>
+<li><input disabled="" type="checkbox"> All five testing strategies; SAST vs DAST; assessment vs pen test</li>
+<li><input disabled="" type="checkbox"> Recommend a full control set using the tram model</li>
+<li><input disabled="" type="checkbox"> RBAC and MFA — what they are and what attacks they defeat</li>
+<li><input disabled="" type="checkbox"> Three encryption types; why hashing is one-way</li>
+<li><input disabled="" type="checkbox"> Digital signature steps and the reversed key order</li>
+<li><input disabled="" type="checkbox"> Privacy Act 1988, APPs, and the three obligations from your class notes</li>
+<li><input disabled="" type="checkbox"> Data minimisation, least privilege, defence in depth</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> | <a href="Software_Engineering__Software_Automation.html">Software Automation</a> | <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> | <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-designing-software-for-security" data-target="1-designing-software-for-security">1. Designing Software for Security</a><ul class="sub"><li><a href="#1-1-security-from-the-start" data-target="1-1-security-from-the-start" data-parent="1-designing-software-for-security">1.1 Security From the Start</a></li><li><a href="#1-2-benefits-of-developing-secure-software" data-target="1-2-benefits-of-developing-secure-software" data-parent="1-designing-software-for-security">1.2 Benefits of Developing Secure Software</a></li><li><a href="#1-3-the-six-fundamental-security-concepts" data-target="1-3-the-six-fundamental-security-concepts" data-parent="1-designing-software-for-security">1.3 The Six Fundamental Security Concepts</a></li><li><a href="#1-4-worked-case-studies" data-target="1-4-worked-case-studies" data-parent="1-designing-software-for-security">1.4 Worked Case Studies</a></li><li><a href="#1-5-security-across-the-software-development-lifecycle" data-target="1-5-security-across-the-software-development-lifecycle" data-parent="1-designing-software-for-security">1.5 Security Across the Software Development Lifecycle</a></li></ul></li><li><a href="#2-developing-secure-code" data-target="2-developing-secure-code">2. Developing Secure Code</a><ul class="sub"><li><a href="#2-1-security-by-design-and-privacy-by-design" data-target="2-1-security-by-design-and-privacy-by-design" data-parent="2-developing-secure-code">2.1 Security by Design and Privacy by Design</a></li><li><a href="#2-2-secure-coding-practices" data-target="2-2-secure-coding-practices" data-parent="2-developing-secure-code">2.2 Secure Coding Practices</a></li><li><a href="#2-3-common-vulnerabilities" data-target="2-3-common-vulnerabilities" data-parent="2-developing-secure-code">2.3 Common Vulnerabilities</a></li><li><a href="#2-4-the-universal-defence-input-validation-and-sanitisation" data-target="2-4-the-universal-defence-input-validation-and-sanitisation" data-parent="2-developing-secure-code">2.4 The Universal Defence: Input Validation and Sanitisation</a></li><li><a href="#2-5-testing-strategies" data-target="2-5-testing-strategies" data-parent="2-developing-secure-code">2.5 Testing Strategies</a></li><li><a href="#2-6-worked-application-the-tram-timetable-system" data-target="2-6-worked-application-the-tram-timetable-system" data-parent="2-developing-secure-code">2.6 Worked Application — the Tram Timetable System</a></li></ul></li><li><a href="#3-cryptography-and-encryption" data-target="3-cryptography-and-encryption">3. Cryptography and Encryption</a><ul class="sub"><li><a href="#3-1-core-terms" data-target="3-1-core-terms" data-parent="3-cryptography-and-encryption">3.1 Core Terms</a></li><li><a href="#3-2-the-three-encryption-types" data-target="3-2-the-three-encryption-types" data-parent="3-cryptography-and-encryption">3.2 The Three Encryption Types</a></li><li><a href="#3-3-ssl-and-tls" data-target="3-3-ssl-and-tls" data-parent="3-cryptography-and-encryption">3.3 SSL and TLS</a></li><li><a href="#3-4-digital-signatures" data-target="3-4-digital-signatures" data-parent="3-cryptography-and-encryption">3.4 Digital Signatures</a></li></ul></li><li><a href="#4-australian-legal-and-privacy-context" data-target="4-australian-legal-and-privacy-context">4. Australian Legal and Privacy Context</a><ul class="sub"><li><a href="#4-1-from-your-class-materials" data-target="4-1-from-your-class-materials" data-parent="4-australian-legal-and-privacy-context">4.1 From Your Class Materials</a></li><li><a href="#4-2-wider-framework-standard-content-verify-with-your-teacher" data-target="4-2-wider-framework-standard-content-verify-with-your-teacher" data-parent="4-australian-legal-and-privacy-context">4.2 Wider Framework (standard content — verify with your teacher)</a></li><li><a href="#4-3-data-handling-principles" data-target="4-3-data-handling-principles" data-parent="4-australian-legal-and-privacy-context">4.3 Data Handling Principles</a></li></ul></li><li><a href="#5-impact-of-safe-and-secure-software-development" data-target="5-impact-of-safe-and-secure-software-development">5. Impact of Safe and Secure Software Development</a><ul class="sub"><li><a href="#5-1-benefits-of-collaboration" data-target="5-1-benefits-of-collaboration" data-parent="5-impact-of-safe-and-secure-software-development">5.1 Benefits of Collaboration</a></li><li><a href="#5-2-safe-and-secure-practices" data-target="5-2-safe-and-secure-practices" data-parent="5-impact-of-safe-and-secure-software-development">5.2 Safe and Secure Practices</a></li><li><a href="#5-3-the-enterprise-benefit" data-target="5-3-the-enterprise-benefit" data-parent="5-impact-of-safe-and-secure-software-development">5.3 The Enterprise Benefit</a></li></ul></li><li><a href="#6-hsc-exam-response-structures" data-target="6-hsc-exam-response-structures">6. HSC Exam Response Structures</a><ul class="sub"><li><a href="#security-question-scaffold" data-target="security-question-scaffold" data-parent="6-hsc-exam-response-structures">Security Question Scaffold</a></li><li><a href="#common-question-types" data-target="common-question-types" data-parent="6-hsc-exam-response-structures">Common Question Types</a></li></ul></li><li><a href="#7-glossary-terms-students-mix-up" data-target="7-glossary-terms-students-mix-up">7. Glossary — Terms Students Mix Up</a></li><li><a href="#8-key-definitions-quick-reference" data-target="8-key-definitions-quick-reference">8. Key Definitions Quick Reference</a></li><li><a href="#9-quick-revision-checklist" data-target="9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

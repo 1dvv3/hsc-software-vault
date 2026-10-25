@@ -1,0 +1,310 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Software Engineering — Final Vault Map of Content — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="active" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Software Engineering — Final Vault Map of Content</h1><p class="meta">Software Engineering · Software_Engineering/MOC.md</p><div class="toc"><b>On this page</b><ul><li><a href="#year-11">Year 11</a></li><li><a href="#year-12">Year 12</a></li><li><a href="#case-studies">Case Studies</a></li><li><a href="#exam-structure">Exam Structure</a></li><li><a href="#the-verbs">The Verbs</a></li><li><a href="#high-value-cross-unit-threads">High-Value Cross-Unit Threads</a></li></ul></div><h1>Software Engineering — Final Vault Map of Content</h1>
+<blockquote>
+<p>Polished, exam-ready Software Engineering notes. <strong>One note per syllabus unit</strong>, each self-contained with worked examples, a confusing-terms glossary and a revision checklist.</p>
+</blockquote>
+<hr>
+<h2 id="year-11">Year 11</h2>
+<h3 id="overview">Overview</h3>
+<ul>
+<li><a href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a>: condensed guide to all three Year 11 focus areas, with exam-focused examples and a revision checklist</li>
+</ul>
+<h3 id="1-programming-fundamentals">1. <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></h3>
+<p>Software development steps, requirements vs specifications, error types, testing methods, conversion methods, Waterfall vs Agile, control structures, subroutines, <strong>desk checks with full worked trace tables</strong>, DFDs, structure charts, data dictionaries, decision trees, storyboards, Gantt charts, numbering systems, two&#39;s complement, and the four programming paradigms.</p>
+<h3 id="2-object-oriented-programming">2. <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></h3>
+<p>The four pillars, classes and objects, message passing, design diagrams (DFD, structure chart, class diagram), the <strong>DFD → class → method → attribute pipeline</strong>, design approaches (top-down, bottom-up, façade, agility), the ten algorithm effectiveness criteria, and collaboration factors.</p>
+<h3 id="3-mechatronics">3. <a href="Software_Engineering__Mechatronics.html">Mechatronics</a></h3>
+<p>CPUs vs microcontrollers, the registers and <strong>fetch–execute cycle</strong>, machine language, sensors and actuators, wiring diagrams, control algorithms, open vs closed loop, on/off vs proportional vs PID, and electricity fundamentals.</p>
+<hr>
+<h2 id="year-12">Year 12</h2>
+<h3 id="4-programming-for-the-web">4. <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></h3>
+<p>Client vs server-side, networking hardware and topologies, protocols and ports, the six V&#39;s of big data, web mining, W3C and accessibility, <strong>CSS syntax</strong>, version control, MVC and CMSes, <strong>SQL and ORM</strong>, the TLS handshake, encryption types, digital signatures, XSS, web storage, and the Caesar cipher.</p>
+<h3 id="5-software-automation">5. <a href="Software_Engineering__Software_Automation.html">Software Automation</a></h3>
+<p>AI vs ML, the four ML types, <strong>the three stages of MLOps</strong>, regression algorithms with <strong>fully worked least-squares calculations</strong>, logistic regression and the sigmoid, KNN, neural networks (training vs execution cycle), decision trees and overfitting, psychology links, and the ethics of automation.</p>
+<h3 id="6-secure-software-architecture">6. <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></h3>
+<p>Security by design, the <strong>six fundamental security concepts</strong>, security across the SDLC, secure coding practices, common vulnerabilities, validation and sanitisation, the five testing strategies, cryptography, RBAC and MFA, and the Australian privacy framework.</p>
+<hr>
+<h2 id="case-studies">Case Studies</h2>
+<p>Your own projects live in the Brain vault note <code>SE_Your_Projects</code>: the D&amp;D App systems report and the Wicked Problems group project. Use these as concrete evidence in extended responses. This is plain text because Final and Brain are separate vaults.</p>
+<hr>
+<h2 id="exam-structure">Exam Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Marks</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>I. Multiple Choice</td>
+<td>20</td>
+<td>20 × 1 mark</td>
+</tr>
+<tr>
+<td>II. Short Answer</td>
+<td>40</td>
+<td>Structured, multi-part</td>
+</tr>
+<tr>
+<td>III. Extended Response</td>
+<td>20</td>
+<td>Design / discussion</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="the-verbs">The Verbs</h2>
+<table>
+<thead>
+<tr>
+<th>Verb</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>List / State</strong></td>
+<td>Name items — no explanation</td>
+</tr>
+<tr>
+<td><strong>Define</strong></td>
+<td>State the meaning and essential qualities</td>
+</tr>
+<tr>
+<td><strong>Describe</strong></td>
+<td>Provide characteristics and features</td>
+</tr>
+<tr>
+<td><strong>Explain</strong></td>
+<td>Relate cause and effect; say why and how</td>
+</tr>
+<tr>
+<td><strong>Analyse</strong></td>
+<td>Identify components and relationships; draw out implications</td>
+</tr>
+<tr>
+<td><strong>Justify</strong></td>
+<td>Support an argument with evidence</td>
+</tr>
+<tr>
+<td><strong>Evaluate</strong></td>
+<td>Make a judgement based on criteria</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="high-value-cross-unit-threads">High-Value Cross-Unit Threads</h2>
+<p>These recur across units — knowing the links is what separates top-band answers.</p>
+<table>
+<thead>
+<tr>
+<th>Thread</th>
+<th>Where it appears</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Security by design</strong></td>
+<td><a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> (core) · <a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> (non-functional requirement) · <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> (XSS, TLS)</td>
+</tr>
+<tr>
+<td><strong>Unsanitised input</strong></td>
+<td>XSS and SQL injection in <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> and <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></td>
+</tr>
+<tr>
+<td><strong>Encryption and hashing</strong></td>
+<td><a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> §8 · <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> §3</td>
+</tr>
+<tr>
+<td><strong>Desk checks / algorithms</strong></td>
+<td><a href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a> §3 — applies to any code fragment in any unit</td>
+</tr>
+<tr>
+<td><strong>Effectiveness criteria</strong></td>
+<td><a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> §4 — use these to evaluate any solution</td>
+</tr>
+<tr>
+<td><strong>Version control &amp; collaboration</strong></td>
+<td><a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> §5 · <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> §5</td>
+</tr>
+<tr>
+<td><strong>Regression</strong></td>
+<td><a href="Software_Engineering__Software_Automation.html">Software Automation</a> §3 — also underlies neural network training</td>
+</tr>
+<tr>
+<td><strong>Closed-loop feedback</strong></td>
+<td><a href="Software_Engineering__Mechatronics.html">Mechatronics</a> §5 — the same principle underlies model monitoring in MLOps</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Brain vault holds the full detailed per-module research notes; Final vault holds the exam-ready consolidations.</em></p>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#year-11" data-target="year-11">Year 11</a><ul class="sub"><li><a href="#overview" data-target="overview" data-parent="year-11">Overview</a></li><li><a href="#1-programming-fundamentals" data-target="1-programming-fundamentals" data-parent="year-11">1. Programming Fundamentals</a></li><li><a href="#2-object-oriented-programming" data-target="2-object-oriented-programming" data-parent="year-11">2. Object Oriented Programming</a></li><li><a href="#3-mechatronics" data-target="3-mechatronics" data-parent="year-11">3. Mechatronics</a></li></ul></li><li><a href="#year-12" data-target="year-12">Year 12</a><ul class="sub"><li><a href="#4-programming-for-the-web" data-target="4-programming-for-the-web" data-parent="year-12">4. Programming For The Web</a></li><li><a href="#5-software-automation" data-target="5-software-automation" data-parent="year-12">5. Software Automation</a></li><li><a href="#6-secure-software-architecture" data-target="6-secure-software-architecture" data-parent="year-12">6. Secure Software Architecture</a></li></ul></li><li><a href="#case-studies" data-target="case-studies">Case Studies</a></li><li><a href="#exam-structure" data-target="exam-structure">Exam Structure</a></li><li><a href="#the-verbs" data-target="the-verbs">The Verbs</a></li><li><a href="#high-value-cross-unit-threads" data-target="high-value-cross-unit-threads">High-Value Cross-Unit Threads</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

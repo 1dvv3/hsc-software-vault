@@ -1,0 +1,1755 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Programming Fundamentals — HSC Software Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Software Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Software Engineering</h3><ul><li><a class="" href="Software_Engineering__MOC.html">MOC</a></li><li><a class="" href="Software_Engineering__Mechatronics.html">Mechatronics</a></li><li><a class="" href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a></li><li><a class="" href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a></li><li><a class="active" href="Software_Engineering__Programming_Fundamentals.html">Programming Fundamentals</a></li><li><a class="" href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a></li><li><a class="" href="Software_Engineering__Software_Automation.html">Software Automation</a></li><li><a class="" href="Software_Engineering__Year_11_Software_Engineering_Summary.html">Year 11 Software Engineering Summary</a></li></ul><p class="side-note">Source: TheSashi HSC Software Engineering Notes, Final folder. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Programming Fundamentals</h1><p class="meta">Software Engineering · Software_Engineering/Programming_Fundamentals.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-software-development-steps">1. Software Development Steps</a></li><li><a href="#2-algorithms">2. Algorithms</a></li><li><a href="#3-desk-checks">3. Desk Checks</a></li><li><a href="#4-system-and-data-modelling-tools">4. System and Data Modelling Tools</a></li><li><a href="#5-numbering-systems">5. Numbering Systems</a></li><li><a href="#6-programming-paradigms">6. Programming Paradigms</a></li><li><a href="#7-hsc-exam-response-structures">7. HSC Exam Response Structures</a></li><li><a href="#8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></div><h1>Programming Fundamentals — HSC Final Notes</h1>
+<blockquote>
+<p><strong>Year 11, Unit 1</strong> | Software development steps, algorithms, desk checks, data modelling tools, numbering systems and programming paradigms.</p>
+</blockquote>
+<hr>
+<h2 id="1-software-development-steps">1. Software Development Steps</h2>
+<p><strong>The eight steps:</strong></p>
+<pre><code>1. Requirements definition
+2. Determining specifications
+3. Design
+4. Coding
+5. Testing
+6. Installation
+7. Maintenance
+8. Evaluation
+</code></pre>
+<h3 id="1-1-tool-to-step-mapping">1.1 Tool-to-Step Mapping</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tools used</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Requirements</strong></td>
+<td>Needs analysis, requirements definition, flowchart</td>
+</tr>
+<tr>
+<td><strong>2. Specifications</strong></td>
+<td>Data dictionary</td>
+</tr>
+<tr>
+<td><strong>3. Design</strong></td>
+<td>Flowchart, pseudocode, decision tree, storyboard, algorithm, DFD, structure chart, IPO chart, class diagram</td>
+</tr>
+<tr>
+<td><strong>4. Coding</strong></td>
+<td>Control structures</td>
+</tr>
+<tr>
+<td><strong>5. Testing</strong></td>
+<td>Syntax / logic / runtime error checking; white, black and grey box testing</td>
+</tr>
+<tr>
+<td><strong>6. Installation</strong></td>
+<td>Phased, pilot, direct or parallel conversion; installation plan</td>
+</tr>
+<tr>
+<td><strong>7. Maintenance</strong></td>
+<td>Maintenance plan</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Requirements vs Specifications</strong>
+<strong>Requirements</strong> = <em>what the user needs</em> — described in the user&#39;s language (&quot;staff must be able to look up a booking&quot;).
+<strong>Specifications</strong> = <em>what the system must do</em> — described in technical terms, measurable and testable (&quot;the system shall return booking records matching a surname within 2 seconds&quot;).
+Requirements come from the client; specifications are the developer&#39;s translation of them.</p>
+</blockquote>
+<h3 id="1-2-requirements-functional-vs-non-functional">1.2 Requirements — Functional vs Non-Functional</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Functional</strong></td>
+<td>What the system <strong>must do</strong></td>
+<td>Log in, calculate a total, store a record, print a receipt</td>
+</tr>
+<tr>
+<td><strong>Non-functional</strong></td>
+<td><strong>How well</strong> the system does it — qualities and constraints</td>
+<td>Security, performance, usability, reliability, portability, accessibility</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Security is a non-functional requirement</strong> — this matters in <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a>, where security must be designed in from step 1 rather than added later.</p>
+</blockquote>
+<h3 id="1-3-errors">1.3 Errors</h3>
+<table>
+<thead>
+<tr>
+<th>Error type</th>
+<th>Definition</th>
+<th>When detected</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Syntax error</strong></td>
+<td>Breaks the rules of the language</td>
+<td>At compile/interpretation — before running</td>
+</tr>
+<tr>
+<td><strong>Logic error</strong></td>
+<td>Code runs but produces the <strong>wrong output</strong></td>
+<td>Only by testing the output against expectations</td>
+</tr>
+<tr>
+<td><strong>Runtime error</strong></td>
+<td>Occurs <strong>only at execution</strong> — e.g. divide by zero, file not found</td>
+<td>While the program is running</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Memory hook</strong>: <strong>Syntax</strong> = the computer can&#39;t <em>read</em> it. <strong>Runtime</strong> = the computer <em>crashes</em> on it. <strong>Logic</strong> = the computer runs it happily and gives you the <em>wrong answer</em>.</p>
+</blockquote>
+<h3 id="1-4-testing">1.4 Testing</h3>
+<p><strong>Error-detection testing:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Black box</strong></td>
+<td>Tester knows only inputs and expected outputs — <strong>not</strong> the internal code</td>
+</tr>
+<tr>
+<td><strong>White box</strong></td>
+<td>Tester can see and test the <strong>internal code</strong> and logic paths</td>
+</tr>
+<tr>
+<td><strong>Grey box</strong></td>
+<td>A combination — partial knowledge of internals</td>
+</tr>
+</tbody></table>
+<p><strong>NESA-specified system testing methods:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Functional testing</strong></td>
+<td>Verifies each function performs according to its specification</td>
+</tr>
+<tr>
+<td><strong>Acceptance testing</strong></td>
+<td>The <strong>client</strong> confirms the system meets their requirements</td>
+</tr>
+<tr>
+<td><strong>Live data</strong></td>
+<td>Testing with real, current organisational data</td>
+</tr>
+<tr>
+<td><strong>Simulated data</strong></td>
+<td>Testing with artificially generated data, including edge cases</td>
+</tr>
+<tr>
+<td><strong>Beta testing</strong></td>
+<td>Release to a limited group of <strong>real users</strong> outside the development team</td>
+</tr>
+<tr>
+<td><strong>Volume testing</strong></td>
+<td>Testing with <strong>large quantities</strong> of data to check performance under load</td>
+</tr>
+</tbody></table>
+<p><strong>Test data categories:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Definition</th>
+<th>Example (age must be 0–120)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Normal / valid</strong></td>
+<td>Typical expected values</td>
+<td>25</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>Values at the edges of the valid range</td>
+<td>0, 120</td>
+</tr>
+<tr>
+<td><strong>Extreme / invalid</strong></td>
+<td>Values outside the range, or the wrong type</td>
+<td>−5, 200, &quot;abc&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="1-5-installation-and-conversion">1.5 Installation and Conversion</h3>
+<p><strong>Installation methods</strong>: complete download; partial download; <strong>cloud-based deployment</strong> (e.g. Google Suite — no install required).</p>
+<p><strong>Conversion methods:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How it works</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Parallel</strong></td>
+<td>Old and new systems run <strong>together</strong> for a period</td>
+<td><strong>Lowest risk</strong> — old system is a fallback. Most expensive</td>
+</tr>
+<tr>
+<td><strong>Pilot</strong></td>
+<td>New system trialled with a <strong>small group</strong> first</td>
+<td>Low risk; limited disruption if it fails</td>
+</tr>
+<tr>
+<td><strong>Phased</strong></td>
+<td>Introduced <strong>step by step</strong>, module by module</td>
+<td>Moderate risk; slower</td>
+</tr>
+<tr>
+<td><strong>Direct</strong></td>
+<td>Old system switched off, new one switched on — a straight swap</td>
+<td><strong>Highest risk</strong> — no fallback. Cheapest and fastest</td>
+</tr>
+</tbody></table>
+<h3 id="1-6-maintenance">1.6 Maintenance</h3>
+<p><strong>Reasons for maintenance</strong>: changing user requirements, UI upgrades, data changes, new hardware or software, change in organisational focus, government requirements, poor code.</p>
+<p><strong>A maintenance plan includes</strong>: the issue, its urgency, a description of the change, who will do it, and the timeframe.</p>
+<p><strong>Types of maintenance:</strong></p>
+<ul>
+<li><strong>Corrective</strong> — fixing faults discovered after release</li>
+<li><strong>Adaptive</strong> — adjusting to a changed environment (new OS, new hardware)</li>
+<li><strong>Perfective</strong> — improving performance or adding features</li>
+</ul>
+<h3 id="1-7-comparative-development-approaches">1.7 Comparative Development Approaches</h3>
+<h4>Waterfall (5 stages)</h4>
+<pre><code>1. Define problem
+2. Plan &amp; design  (Gantt chart, context diagram, DFD, system flowchart, test plan)
+3. Implement
+4. Test &amp; evaluate
+5. Maintain
+</code></pre>
+<h4>Agile</h4>
+<pre><code>1. Define
+2. Plan / design / implement  ┐
+3. Test &amp; evaluate            │  stages 2–5 repeat
+4. Release                    │
+5. New requirements           ┘
+</code></pre>
+<blockquote>
+<p><strong>The comparison, in the exam&#39;s words</strong>: &quot;Agile is iterative and flexible; Waterfall is linear and sequential. Agile is more adaptable to changing requirements; Waterfall is better for well-defined requirements.&quot;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Waterfall</strong></th>
+<th><strong>Agile</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Structure</td>
+<td>Linear, sequential</td>
+<td>Iterative, incremental</td>
+</tr>
+<tr>
+<td>Requirements</td>
+<td>Fixed at the start</td>
+<td>Expected to change</td>
+</tr>
+<tr>
+<td>Client involvement</td>
+<td>Mainly at start and end</td>
+<td>Continuous</td>
+</tr>
+<tr>
+<td>Working software</td>
+<td>Only at the end</td>
+<td>Every iteration</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Well-defined, stable projects; safety-critical work</td>
+<td>Evolving requirements; fast-moving projects</td>
+</tr>
+<tr>
+<td>Weakness</td>
+<td>Very costly to change late</td>
+<td>Harder to predict total cost and time</td>
+</tr>
+</tbody></table>
+<p><strong>WAgile</strong> — a hybrid using Waterfall&#39;s structured planning with Agile&#39;s iterative build cycles.</p>
+<hr>
+<h2 id="2-algorithms">2. Algorithms</h2>
+<h3 id="2-1-the-three-control-structures">2.1 The Three Control Structures</h3>
+<table>
+<thead>
+<tr>
+<th>Structure</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sequence</strong></td>
+<td>Steps executed one after the other, in the order written</td>
+</tr>
+<tr>
+<td><strong>Selection</strong></td>
+<td>A condition determines which path is taken</td>
+</tr>
+<tr>
+<td><strong>Repetition</strong></td>
+<td>A set of steps is repeated</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-pseudocode-conventions-nesa">2.2 Pseudocode Conventions (NESA)</h3>
+<ul>
+<li><strong>Keywords are written in CAPITALS</strong></li>
+<li>Structural elements come in <strong>pairs</strong> — every <code>BEGIN</code> has an <code>END</code>, every <code>IF</code> has an <code>ENDIF</code></li>
+<li><strong>Indenting</strong> identifies control structures</li>
+<li>Subroutines are referred to by <strong>name</strong>, with the detailed logic shown separately</li>
+</ul>
+<p><strong>Templates:</strong></p>
+<pre><code>BEGIN … END                          start / end
+IF … THEN / ELSEIF … THEN / ELSE / ENDIF     selection
+CASEWHERE expression evaluates to … END CASE  multi-way selection
+FOR I = 1 TO n … NEXT I              counted repetition
+WHILE condition … ENDWHILE           pre-test loop
+REPEAT … UNTIL condition             post-test loop
+PRINT / DISPLAY                      output
+INPUT / READ                         input
+LET x = 0                            process / assignment
+</code></pre>
+<h3 id="2-3-selection-in-detail">2.3 Selection in Detail</h3>
+<p><strong>Binary selection</strong> — two possible paths:</p>
+<pre><code>IF condition THEN
+    process 1
+ELSE
+    process 2
+ENDIF
+</code></pre>
+<p><strong>Multi-way selection (case structure)</strong> — several possible choices. Once a path is determined and executed, evaluation <strong>ceases</strong>. Only <strong>one</strong> process is executed:</p>
+<pre><code>CASEWHERE expression evaluates to
+    choice a: process a
+    choice b: process b
+    OTHERWISE: default process
+END CASE
+</code></pre>
+<p><strong>Nested IF</strong> — tests multiple conditions, with only <strong>one</strong> process executed:</p>
+<pre><code>IF condition A THEN
+    process 1
+ELSEIF condition B THEN
+    process 2
+ELSEIF condition C THEN
+    process 3
+ELSE
+    process 4
+ENDIF
+</code></pre>
+<h3 id="2-4-repetition-in-detail">2.4 Repetition in Detail</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+<th>Key property</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Pre-test</strong> (<code>WHILE</code>)</td>
+<td>Tests the condition <strong>at the start</strong>. Body executes repeatedly <strong>while</strong> the condition is true</td>
+<td>May execute <strong>zero</strong> times</td>
+</tr>
+<tr>
+<td><strong>Post-test</strong> (<code>REPEAT…UNTIL</code>)</td>
+<td>Executes the body <strong>first</strong>, then tests. Repeats <strong>until</strong> the condition is true</td>
+<td>Always executes <strong>at least once</strong></td>
+</tr>
+<tr>
+<td><strong>FOR / NEXT</strong> (counted)</td>
+<td>Repeats a <strong>known number</strong> of times. <code>FOR variable = start TO finish STEP increment</code></td>
+<td>Increment can be positive <strong>or negative</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Pre-test vs Post-test</strong>
+<strong>Pre-test</strong> checks <strong>before</strong> entering — so it can run <strong>0 times</strong>.
+<strong>Post-test</strong> checks <strong>after</strong> running — so it always runs <strong>at least once</strong>.
+This is the single most common multiple-choice trap in this topic.</p>
+</blockquote>
+<h3 id="2-5-flowchart-symbols">2.5 Flowchart Symbols</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Terminator</strong> (rounded rectangle / oval)</td>
+<td>Start / Stop</td>
+</tr>
+<tr>
+<td><strong>Parallelogram</strong></td>
+<td>Input / Output</td>
+</tr>
+<tr>
+<td><strong>Rectangle</strong></td>
+<td>Process</td>
+</tr>
+<tr>
+<td><strong>Diamond</strong></td>
+<td>Decision</td>
+</tr>
+<tr>
+<td><strong>Arrow / flow line</strong></td>
+<td>Direction of flow</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Flowcharts are read <strong>top to bottom, left to right</strong>. Arrows coming from a decision symbol should be <strong>labelled</strong> to remove ambiguity.</p>
+</blockquote>
+<h3 id="2-6-subroutines">2.6 Subroutines</h3>
+<p>The terms <strong>subroutine, module, subprogram and procedure</strong> are interchangeable — a collection of statements achieving a specific purpose.</p>
+<blockquote>
+<p>A <strong>function</strong> is a particular type of subroutine that <strong>returns a single value</strong>.</p>
+</blockquote>
+<p><strong>Why use subroutines</strong>: the same task can be performed at different points in an algorithm, operating on different data each time. <strong>Parameters</strong> indicate the data to be processed.</p>
+<p><strong>One parameter:</strong></p>
+<pre><code>BEGIN
+    read (name)
+    read (address)
+END
+
+BEGIN read (arrayname)
+    Set pointer to first position
+    Get a character
+    WHILE more data AND space in array
+        Store data in arrayname at the position given by the pointer
+        Increment the pointer
+        Get next character
+    ENDWHILE
+END read (arrayname)
+</code></pre>
+<p><strong>Multiple parameters:</strong></p>
+<pre><code>BEGIN AddNumbers
+    FOR i = 1 to 5
+        Add (i, i + 1, sum)
+        Display sum
+    NEXT i
+END AddNumbers
+
+BEGIN Add (x, y, total)
+    total = x + y
+END Add (x, y, total)
+</code></pre>
+<p><strong>Returning a value from a function</strong> — the word <code>RETURN</code> passes the single value back:</p>
+<pre><code>BEGIN Addnumbers
+    FOR i = 1 to 5
+        Display Add (i, i + 1)
+    NEXT i
+END Addnumbers
+
+BEGIN Add (x, y)
+    total = x + y
+    RETURN total
+END Add (x, y)
+</code></pre>
+<blockquote>
+<p><strong>Mainline principle</strong>: Start complex algorithms with a clear, uncluttered <strong>mainline</strong> that references subroutines. Each subroutine should be concise and may call further subroutines. Providing successively more detail this way is called <strong>refinement</strong>.</p>
+</blockquote>
+<h3 id="2-7-sorting-algorithms">2.7 Sorting Algorithms</h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>How it works</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Bubble sort</strong></td>
+<td>Repeatedly compares adjacent values and <strong>swaps</strong> if the next value is out of order. Largest values &quot;bubble&quot; to the end</td>
+</tr>
+<tr>
+<td><strong>Selection sort</strong></td>
+<td>Finds the smallest remaining value and swaps it into position, using a <code>Swap(A, B)</code> subroutine</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Known bug in the class source</strong>: a version of bubble sort was given where the <strong>swap is not inside the <code>IF</code></strong>, producing an <strong>infinite loop</strong>. Check that the swap is nested inside the condition.</p>
+</blockquote>
+<hr>
+<h2 id="3-desk-checks">3. Desk Checks</h2>
+<blockquote>
+<p>This is a high-frequency exam skill. Get the table right and the marks follow.</p>
+</blockquote>
+<p>A desk check is a <strong>trace table</strong>: you run the code by hand, one line at a time, and write down what each variable holds <strong>after</strong> every line.</p>
+<h3 id="3-1-the-four-desk-check-rules-memorise">3.1 The Four Desk Check Rules — memorise</h3>
+<ol>
+<li><strong>Variables</strong> must be there</li>
+<li><strong>Conditions</strong> must be there</li>
+<li><strong>Output statements</strong> must be there</li>
+<li>Statements appear <strong>in the order they do in the code</strong></li>
+</ol>
+<h3 id="3-2-setting-up-the-table">3.2 Setting Up the Table</h3>
+<ul>
+<li>One column per <strong>variable</strong>, plus an <code>Output</code> column and a <code>Step</code> column</li>
+<li>Add a <strong>Line executed</strong> column naming the code line each row runs — this makes the table easy to follow</li>
+<li>Use <code>-</code> for <em>not assigned yet / unknown</em></li>
+<li>For an <code>INPUT</code> line, drop in the <strong>test value</strong> you are feeding it</li>
+<li>After each line, write the <strong>new</strong> value of whatever that line changed</li>
+</ul>
+<h3 id="3-3-exam-rules-to-lock-in">3.3 Exam Rules to Lock In</h3>
+<ul>
+<li>Every variable gets a column, <strong>even before it is used</strong>. Unused = <code>-</code></li>
+<li>Write the value <strong>AFTER</strong> the line runs, not before</li>
+<li>The condition line (<code>IF</code> / <code>WHILE</code>) gets its <strong>own step</strong>. Note true/false</li>
+<li>When a loop finishes, <strong>show the final FALSE check</strong>. Markers look for that</li>
+<li>Feed in test data as <strong>normal / boundary / extreme</strong></li>
+</ul>
+<h3 id="3-4-worked-example-sequence">3.4 Worked Example — Sequence</h3>
+<pre><code>x = 5
+y = 10
+x = x + y
+OUTPUT x
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Line executed</th>
+<th>x</th>
+<th>y</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>x = 5</code></td>
+<td>5</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>y = 10</code></td>
+<td>5</td>
+<td>10</td>
+<td>-</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>x = x + y</code></td>
+<td>15</td>
+<td>10</td>
+<td>-</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>OUTPUT x</code></td>
+<td>15</td>
+<td>10</td>
+<td><strong>15</strong></td>
+</tr>
+</tbody></table>
+<p>Final output = <strong>15</strong>. Note <code>x</code> changes twice — row 3 shows the new value 15.</p>
+<h3 id="3-5-worked-example-while-loop">3.5 Worked Example — WHILE Loop</h3>
+<pre><code>total = 0
+count = 1
+WHILE count &lt;= 3:
+    total = total + count
+    count = count + 1
+OUTPUT total
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Line executed</th>
+<th>total</th>
+<th>count</th>
+<th>Output</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>total = 0</code></td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+<td>init</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>count = 1</code></td>
+<td>0</td>
+<td>1</td>
+<td>-</td>
+<td>init</td>
+</tr>
+<tr>
+<td>3</td>
+<td>check <code>count &lt;= 3</code></td>
+<td>0</td>
+<td>1</td>
+<td>-</td>
+<td>TRUE, enter loop</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>total = total + count</code></td>
+<td>1</td>
+<td>1</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>count = count + 1</code></td>
+<td>1</td>
+<td>2</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>check <code>count &lt;= 3</code></td>
+<td>1</td>
+<td>2</td>
+<td>-</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>total = total + count</code></td>
+<td>3</td>
+<td>2</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>count = count + 1</code></td>
+<td>3</td>
+<td>3</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>check <code>count &lt;= 3</code></td>
+<td>3</td>
+<td>3</td>
+<td>-</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>total = total + count</code></td>
+<td>6</td>
+<td>3</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>count = count + 1</code></td>
+<td>6</td>
+<td>4</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>check <code>count &lt;= 3</code></td>
+<td>6</td>
+<td>4</td>
+<td>-</td>
+<td><strong>FALSE, exit loop</strong></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>OUTPUT total</code></td>
+<td>6</td>
+<td>4</td>
+<td><strong>6</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Final output = <strong>6</strong> (that is 1+2+3). The loop ran <strong>3</strong> times.</p>
+<h3 id="3-6-worked-example-if-else">3.6 Worked Example — IF / ELSE</h3>
+<pre><code>age = 16
+IF age &gt;= 18 THEN
+    status = &quot;adult&quot;
+ELSE
+    status = &quot;minor&quot;
+OUTPUT status
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Line executed</th>
+<th>age</th>
+<th>status</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>age = 16</code></td>
+<td>16</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>2</td>
+<td>check <code>age &gt;= 18</code></td>
+<td>16</td>
+<td>-</td>
+<td>FALSE, go ELSE</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>status = &quot;minor&quot;</code></td>
+<td>16</td>
+<td>minor</td>
+<td>-</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>OUTPUT status</code></td>
+<td>16</td>
+<td>minor</td>
+<td><strong>minor</strong></td>
+</tr>
+</tbody></table>
+<p>Output = <strong>&quot;minor&quot;</strong>.</p>
+<h3 id="3-7-worked-desk-check-a-multiplication">3.7 Worked Desk Check (a) — Multiplication</h3>
+<pre><code>READ num1, num2
+LET multi = num1 * num2
+DISPLAY multi
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>num1</th>
+<th>num2</th>
+<th>multi</th>
+<th>DISPLAY multi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>3</td>
+<td>2 × 3 = 6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+<td>5 × 4 = 20</td>
+<td>20</td>
+</tr>
+<tr>
+<td>7</td>
+<td>8</td>
+<td>7 × 8 = 56</td>
+<td>56</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0</td>
+<td>10 × 0 = 0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<h3 id="3-8-worked-desk-check-b-if-elseif-else">3.8 Worked Desk Check (b) — IF / ELSEIF / ELSE</h3>
+<pre><code>READ isFive
+IF   (isFive = 5)  DISPLAY &quot;your number is 5&quot;
+ELSE IF (isFive = 6)  DISPLAY &quot;your number is 6&quot;
+ELSE                  DISPLAY &quot;your number is not 5 or 6&quot;
+ENDIF
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>isFive</th>
+<th>isFive = 5?</th>
+<th>isFive = 6?</th>
+<th>DISPLAY</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5</td>
+<td>T</td>
+<td>F</td>
+<td>&quot;Your number is 5&quot;</td>
+</tr>
+<tr>
+<td>6</td>
+<td>F</td>
+<td>T</td>
+<td>&quot;Your number is 6&quot;</td>
+</tr>
+<tr>
+<td>8</td>
+<td>F</td>
+<td>F</td>
+<td>&quot;Your number is not 5 or 6&quot;</td>
+</tr>
+<tr>
+<td>0</td>
+<td>F</td>
+<td>F</td>
+<td>&quot;Your number is not 5 or 6&quot;</td>
+</tr>
+<tr>
+<td>−1</td>
+<td>F</td>
+<td>F</td>
+<td>&quot;Your number is not 5 or 6&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="3-9-worked-desk-check-c-while-loop">3.9 Worked Desk Check (c) — WHILE Loop</h3>
+<pre><code>READ count
+LET x = 0
+WHILE (x &lt; count)
+    LET even = even + 2
+    LET x = x + 1
+    DISPLAY even
+ENDWHILE
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>even (before update)</th>
+<th>even = even + 2</th>
+<th>x = x + 1</th>
+<th>DISPLAY even</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>6</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>6</td>
+<td>8</td>
+<td>4</td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>8</td>
+<td>10</td>
+<td>5</td>
+<td>10</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-system-and-data-modelling-tools">4. System and Data Modelling Tools</h2>
+<h3 id="4-1-data-flow-diagram-dfd">4.1 Data Flow Diagram (DFD)</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Circle</strong></td>
+<td>A <strong>process</strong> — uses input(s) to generate output(s)</td>
+</tr>
+<tr>
+<td><strong>Open-ended rectangle</strong></td>
+<td>A <strong>data store</strong> — an electronic file or non-computer storage</td>
+</tr>
+<tr>
+<td><strong>Rectangle</strong></td>
+<td>An <strong>external entity</strong> — any person, organisation or element that provides data to, or receives data from, the system</td>
+</tr>
+<tr>
+<td><strong>Labelled curved arrow</strong></td>
+<td>A <strong>data flow</strong> between processes, data stores and external entities</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Level 0 DFD</strong> represents an <strong>overview of the entire system</strong> and does <strong>not</strong> show data stores or internal processes.
+<strong>Level 1 DFD</strong> breaks the system into its main processes.</p>
+</blockquote>
+<h3 id="4-2-structure-chart">4.2 Structure Chart</h3>
+<p>Represents a system by showing the separate <strong>subroutines</strong> and their relationships.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Empty circle</strong></td>
+<td>Data movement between subroutines (a <strong>parameter</strong>)</td>
+</tr>
+<tr>
+<td><strong>Filled circle</strong></td>
+<td>A <strong>flag or control variable</strong> passed between subroutines</td>
+</tr>
+<tr>
+<td><strong>Small diamond</strong></td>
+<td>A <strong>decision</strong> — optional execution of a subroutine, from binary or multi-way selection</td>
+</tr>
+<tr>
+<td><strong>Curved arrow</strong></td>
+<td><strong>Repetition</strong> — a subroutine executed multiple times</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Providing successively more detail in separate charts is called <strong>refinement</strong>.</p>
+</blockquote>
+<h3 id="4-3-data-dictionary">4.3 Data Dictionary</h3>
+<p>A comprehensive description of <strong>each variable</strong> stored or referred to in a system.</p>
+<p><strong>Columns</strong>: Variable name · Data type · Format for display · Size in bytes · Size for display · Description · Example · Validation rule</p>
+<p><strong>Worked extract:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Data type</th>
+<th>Format</th>
+<th>Bytes</th>
+<th>Display</th>
+<th>Description</th>
+<th>Example</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UserId</td>
+<td>String</td>
+<td>XXNNN</td>
+<td>5</td>
+<td>5</td>
+<td>Primary key; first 2 letters of surname + unique 3-digit identifier</td>
+<td>PT173</td>
+<td>First 2 characters letters, last 3 digits</td>
+</tr>
+<tr>
+<td>UserName</td>
+<td>String</td>
+<td>XX..XX</td>
+<td>15</td>
+<td>15</td>
+<td>Username of employee</td>
+<td>Kim</td>
+<td>First letter a capital</td>
+</tr>
+<tr>
+<td>DOB</td>
+<td>Date and Time</td>
+<td>YYYY/MM/DD</td>
+<td>4</td>
+<td>10</td>
+<td>Birth date of employee</td>
+<td>1953/10/05</td>
+<td>Valid date less than today</td>
+</tr>
+<tr>
+<td>Times_Late</td>
+<td>Integer</td>
+<td>NNN</td>
+<td>2</td>
+<td>3</td>
+<td>Times late to work this year</td>
+<td>147</td>
+<td>Integer between 0 and 999</td>
+</tr>
+<tr>
+<td>PayRate</td>
+<td>Floating point</td>
+<td>$NNN.NN</td>
+<td>4</td>
+<td>7</td>
+<td>Hourly rate of pay</td>
+<td>$124.37</td>
+<td>Decimal &gt; 20 and &lt; 400</td>
+</tr>
+<tr>
+<td>SocialClub</td>
+<td>Boolean</td>
+<td>X</td>
+<td>1 bit</td>
+<td>1</td>
+<td>Y or N</td>
+<td>N</td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: a date and time data type is <strong>always stored as 32 bits (4 bytes)</strong> and can be displayed in different formats such as <code>DD/MM/YYYY hh:mm:ss</code> or <code>YYYY/MM/DD</code>.</p>
+</blockquote>
+<h3 id="4-4-decision-tree">4.4 Decision Tree</h3>
+<p>A diagram representing <strong>all possible combinations of decisions and their resulting actions</strong>. Branches describe the eventual action depending on the condition at the time. Each decision path leads to <strong>either another decision or a final action</strong>.</p>
+<blockquote>
+<p>Example use: the rules controlling a temperature system in a smart house.</p>
+</blockquote>
+<h3 id="4-5-storyboard">4.5 Storyboard</h3>
+<p>Shows the various <strong>interfaces (screens)</strong> and the <strong>links between them</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Structure</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Linear</strong></td>
+<td>Screens in a fixed sequence</td>
+</tr>
+<tr>
+<td><strong>Hierarchical</strong></td>
+<td>A tree branching from a main menu</td>
+</tr>
+<tr>
+<td><strong>Non-linear</strong></td>
+<td>Any screen can link to any other</td>
+</tr>
+<tr>
+<td><strong>Composite</strong></td>
+<td>A combination of the above</td>
+</tr>
+</tbody></table>
+<h3 id="4-6-ipo-chart">4.6 IPO Chart</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Input</strong></td>
+<td>Data entering the system</td>
+</tr>
+<tr>
+<td><strong>Process</strong></td>
+<td>What is done to it</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>What comes out</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>IPSO</strong> adds <strong>Storage</strong> — used for web and mobile applications that persist data.</p>
+</blockquote>
+<h3 id="4-7-gantt-charts-project-management">4.7 Gantt Charts (Project Management)</h3>
+<p>A Gantt chart displays each <strong>component task</strong> on an estimated <strong>timeline</strong>. Tasks should have self-explanatory titles; the estimated time and <strong>dependent tasks</strong> should be clearly shown; the time scale should show dates and <strong>milestones</strong>.</p>
+<blockquote>
+<p>Gantt charts can also <strong>allocate resources</strong>, including team members, and show percentage completion. Charts should be <strong>regularly updated</strong> to reflect actual versus estimated times.</p>
+</blockquote>
+<h3 id="4-8-process-diaries-log-books">4.8 Process Diaries / Log Books</h3>
+<p>Document the progress of a project. Entries at regular intervals should include: date · person making the entry · progress since the last entry · tasks achieved · stumbling blocks and how they were managed · possible approaches for upcoming tasks · reflective comments · resources used.</p>
+<hr>
+<h2 id="5-numbering-systems">5. Numbering Systems</h2>
+<p><strong>What a numbering system (a &quot;base&quot;) is</strong>: the set of digits you are allowed to use, plus the rule that each position is worth <code>base ^ position</code> (counted from 0 at the right).</p>
+<table>
+<thead>
+<tr>
+<th>Base</th>
+<th>Name</th>
+<th>Allowed digits</th>
+<th>Why it exists</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>Decimal</td>
+<td>0–9</td>
+<td>The everyday system</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Binary</td>
+<td>0, 1</td>
+<td>Computers are switches: 0 = off, 1 = on</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Hexadecimal</td>
+<td>0–9 then A–F</td>
+<td>Shorthand for binary (4 bits = 1 hex digit)</td>
+</tr>
+</tbody></table>
+<p><strong>Place-value grids:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Col 4</th>
+<th>Col 3</th>
+<th>Col 2</th>
+<th>Col 1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Decimal</strong></td>
+<td>10³ = 1000</td>
+<td>10² = 100</td>
+<td>10¹ = 10</td>
+<td>10⁰ = 1</td>
+</tr>
+<tr>
+<td><strong>Binary</strong></td>
+<td>2³ = 8</td>
+<td>2² = 4</td>
+<td>2¹ = 2</td>
+<td>2⁰ = 1</td>
+</tr>
+<tr>
+<td><strong>Hex</strong></td>
+<td>16³ = 4096</td>
+<td>16² = 256</td>
+<td>16¹ = 16</td>
+<td>16⁰ = 1</td>
+</tr>
+</tbody></table>
+<h3 id="5-1-binary-decimal">5.1 Binary → Decimal</h3>
+<p>Write the place value above each bit, multiply, then add. <strong>Only the 1-bits count.</strong></p>
+<p>Worked <code>1010</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Bit</th>
+<th>1</th>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Place value</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Bit × place</td>
+<td>8</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>Sum = 8 + 0 + 2 + 0 = <strong>10</strong></p>
+<p>Second example <code>1101</code>: 8 + 4 + 0 + 1 = <strong>13</strong></p>
+<h3 id="5-2-decimal-binary">5.2 Decimal → Binary</h3>
+<p>Start from the biggest power of 2 that fits, turn that bit ON, subtract, repeat until 0. Unused powers stay OFF.</p>
+<p>Worked <code>10</code>:</p>
+<ul>
+<li>Biggest power ≤ 10 is <strong>8</strong> (2³). 10 − 8 = 2 → bit 8 ON</li>
+<li>Biggest power ≤ 2 is <strong>2</strong> (2¹). 2 − 2 = 0 → bit 2 ON</li>
+<li>Bits 4 and 1 never used → OFF</li>
+<li>8 4 2 1 = <strong>1 0 1 0</strong> → <code>1010</code></li>
+</ul>
+<p>Second example <code>13</code>: 13 − 8 = 5; 5 − 4 = 1; 1 − 1 = 0 → bits 8, 4, 1 ON, bit 2 OFF → <code>1101</code></p>
+<p><strong>Powers to know (8 bits = 1 byte)</strong>: 128, 64, 32, 16, 8, 4, 2, 1</p>
+<h3 id="5-3-hex-decimal">5.3 Hex → Decimal</h3>
+<p>Each hex digit × 16^position, summed.</p>
+<p><code>DEAF</code> = (13 × 4096) + (14 × 256) + (10 × 16) + (15 × 1) = 53248 + 3584 + 160 + 15 = <strong>57007</strong></p>
+<h3 id="5-4-decimal-hex">5.4 Decimal → Hex</h3>
+<p>Repeatedly divide by 16, keep remainders, map 10–15 to A–F, read <strong>bottom to top</strong>.</p>
+<p><code>999</code> → 999 ÷ 16 = 62 r <strong>7</strong>; 62 ÷ 16 = 3 r <strong>14 (E)</strong>; 3 ÷ 16 = 0 r <strong>3</strong> → read up = <strong>3E7</strong></p>
+<h3 id="5-5-binary-hex-shortcut">5.5 Binary ↔ Hex Shortcut</h3>
+<p>Every <strong>4 binary digits = exactly 1 hex digit</strong>. Memorise this row:</p>
+<table>
+<thead>
+<tr>
+<th>Dec</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Bin</strong></td>
+<td>0000</td>
+<td>0001</td>
+<td>0010</td>
+<td>0011</td>
+<td>0100</td>
+<td>0101</td>
+<td>0110</td>
+<td>0111</td>
+<td>1000</td>
+<td>1001</td>
+<td>1010</td>
+<td>1011</td>
+<td>1100</td>
+<td>1101</td>
+<td>1110</td>
+<td>1111</td>
+</tr>
+<tr>
+<td><strong>Hex</strong></td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+</tr>
+</tbody></table>
+<p>So <code>3AB2</code> → <code>3</code>=0011, <code>A</code>=1010, <code>B</code>=1011, <code>2</code>=0010 ⇒ <code>0011 1010 1011 0010</code></p>
+<h3 id="5-6-two-s-complement-storing-negative-numbers">5.6 Two&#39;s Complement — Storing Negative Numbers</h3>
+<p>Computers only have 0 and 1, so the <strong>leftmost bit is the sign bit</strong> (0 = positive, 1 = negative). Two&#39;s complement is standard because it lets the CPU use the <strong>same addition circuit</strong> for positive and negative numbers — no separate subtractor is needed.</p>
+<p><strong>Method:</strong></p>
+<ol>
+<li>Write the <strong>positive</strong> value in binary</li>
+<li><strong>Flip every bit</strong> (0↔1) — this is the <strong>one&#39;s complement</strong></li>
+<li><strong>Add 1</strong> — this gives the <strong>two&#39;s complement</strong></li>
+</ol>
+<blockquote>
+<p><strong>Worked: −14</strong></p>
+<ul>
+<li><code>+14</code> = <code>0001110</code></li>
+<li>Flip every bit → <code>1110001</code></li>
+<li>Add 1 → <code>1110010</code></li>
+<li>With the sign bit separated: <strong><code>1 1110010</code></strong></li>
+</ul>
+</blockquote>
+<p><strong>Answers to memorise</strong>: <code>−127</code> → <code>1 0000001</code> | <code>+32</code> → <code>0 0100000</code> | <code>−14</code> → <code>1 1110010</code></p>
+<h3 id="5-7-character-representation">5.7 Character Representation</h3>
+<p>Characters are represented with <strong>ASCII</strong> or <strong>Unicode</strong>. When working with text strings, a developer can use how the text is stored <strong>in binary</strong> to perform functions such as <strong>changing the case</strong> of letters or performing a <strong>simple encryption</strong>.</p>
+<blockquote>
+<p>This is the mechanism behind the Caesar cipher work in <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> — shifting a character is arithmetic on its character code.</p>
+</blockquote>
+<hr>
+<h2 id="6-programming-paradigms">6. Programming Paradigms</h2>
+<p>A <strong>paradigm</strong> is the overall <strong>style</strong> a language uses to solve problems.</p>
+<table>
+<thead>
+<tr>
+<th>Paradigm</th>
+<th>What it is</th>
+<th>Students should know how to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Object-oriented</strong></td>
+<td>Build the program as a set of &quot;things&quot; (objects), each bundling its own data and the actions it can perform. Models the real world</td>
+<td>Define classes, objects, attributes and methods; use inheritance, polymorphism and encapsulation; perform <strong>message passing</strong>; use control structures and variables</td>
+</tr>
+<tr>
+<td><strong>Logic</strong></td>
+<td>Program as a base of <strong>facts</strong> and <strong>rules</strong>; an inference engine reasons over them to answer questions</td>
+<td>Define and edit <strong>facts</strong>; create, edit and remove <strong>rules</strong>; display the solution <strong>and the rules the system used</strong></td>
+</tr>
+<tr>
+<td><strong>Imperative / procedural</strong></td>
+<td>Code as a sequence of step-by-step commands that change program state</td>
+<td>Use control structures and variables; use <strong>assignment statements</strong>; use <strong>expressions</strong>; use <strong>subroutines</strong></td>
+</tr>
+<tr>
+<td><strong>Functional</strong></td>
+<td>Builds results by combining functions, avoiding changing state</td>
+<td>Call functions and use <strong>recursion</strong>; use functions as <strong>first-class objects</strong> and collections; use abstraction, encapsulation, inheritance and polymorphism</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Students should know how to use <strong>appropriate data structures</strong> for each paradigm.</p>
+</blockquote>
+<h3 id="6-1-logic-paradigm-terms">6.1 Logic Paradigm Terms</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fact</strong></td>
+<td>A statement asserted to be true — part of the <strong>knowledge base</strong></td>
+</tr>
+<tr>
+<td><strong>Rule</strong></td>
+<td>An &quot;if this then that&quot; relationship the system can apply</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong></td>
+<td>The complete collection of facts and rules</td>
+</tr>
+<tr>
+<td><strong>Inference engine</strong></td>
+<td>The component that applies rules to facts to reach conclusions</td>
+</tr>
+<tr>
+<td><strong>Forward chaining</strong></td>
+<td>Starts from <strong>known facts</strong> and works forward to a conclusion</td>
+</tr>
+<tr>
+<td><strong>Backward chaining</strong></td>
+<td>Starts from a <strong>goal</strong> and works backwards to find supporting facts</td>
+</tr>
+<tr>
+<td><strong>Heuristics</strong></td>
+<td>Rules of thumb — practical shortcuts that usually work</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>The query the system is trying to prove</td>
+</tr>
+<tr>
+<td><strong>Expert system</strong></td>
+<td>A program that emulates the decision-making of a human expert</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Forward vs Backward chaining</strong>
+<strong>Forward</strong> = data-driven. &quot;I know A and B — what can I conclude?&quot;
+<strong>Backward</strong> = goal-driven. &quot;I want to prove Z — what would I need to know?&quot;</p>
+</blockquote>
+<hr>
+<h2 id="7-hsc-exam-response-structures">7. HSC Exam Response Structures</h2>
+<h3 id="verb-action">Verb → Action</h3>
+<table>
+<thead>
+<tr>
+<th>Verb</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>List / State</strong></td>
+<td>Name items — no explanation</td>
+</tr>
+<tr>
+<td><strong>Define</strong></td>
+<td>State the meaning and essential qualities</td>
+</tr>
+<tr>
+<td><strong>Describe</strong></td>
+<td>Provide characteristics and features</td>
+</tr>
+<tr>
+<td><strong>Explain</strong></td>
+<td>Relate cause and effect; make relationships evident; say <strong>why</strong> and <strong>how</strong></td>
+</tr>
+<tr>
+<td><strong>Analyse</strong></td>
+<td>Identify components and the relationships between them; draw out implications</td>
+</tr>
+<tr>
+<td><strong>Justify</strong></td>
+<td>Support an argument or conclusion with evidence</td>
+</tr>
+<tr>
+<td><strong>Evaluate</strong></td>
+<td>Make a judgement based on criteria</td>
+</tr>
+</tbody></table>
+<h3 id="desk-check-question-scaffold">Desk Check Question Scaffold</h3>
+<ol>
+<li>Write the header row with <strong>every variable, condition and output</strong>, in code order</li>
+<li>Execute <strong>row by row</strong>, writing the value after each line runs</li>
+<li>For loops, one row per iteration, tracking the counter and changed variables</li>
+<li>Show the <strong>final FALSE check</strong> that exits the loop</li>
+</ol>
+<h3 id="extended-paragraph-scaffold">Extended Paragraph Scaffold</h3>
+<pre><code>Topic sentence (define the term)
+  → explain the mechanism (how it works)
+  → apply to a scenario (your project or a given case)
+  → link to a syllabus concept
+</code></pre>
+<hr>
+<h2 id="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Requirements</strong></td>
+<td>What the <strong>user</strong> needs</td>
+<td><strong>Specifications</strong> — the technical translation</td>
+</tr>
+<tr>
+<td><strong>Functional requirement</strong></td>
+<td>What the system <strong>does</strong></td>
+<td><strong>Non-functional</strong> — how well it does it</td>
+</tr>
+<tr>
+<td><strong>Syntax error</strong></td>
+<td>Breaks language rules; caught before running</td>
+<td><strong>Logic error</strong> — runs but gives the wrong answer</td>
+</tr>
+<tr>
+<td><strong>Logic error</strong></td>
+<td>Wrong output, no crash</td>
+<td><strong>Runtime error</strong> — crashes during execution</td>
+</tr>
+<tr>
+<td><strong>Black box testing</strong></td>
+<td>Tester sees only inputs and outputs</td>
+<td><strong>White box</strong> — tester sees the code</td>
+</tr>
+<tr>
+<td><strong>Beta testing</strong></td>
+<td>Real users outside the dev team</td>
+<td><strong>Acceptance testing</strong> — the client signs off</td>
+</tr>
+<tr>
+<td><strong>Volume testing</strong></td>
+<td>Large quantities of data</td>
+<td>Load/stress testing (related but about traffic)</td>
+</tr>
+<tr>
+<td><strong>Parallel conversion</strong></td>
+<td>Old and new run together — safest</td>
+<td><strong>Direct</strong> — straight swap, riskiest</td>
+</tr>
+<tr>
+<td><strong>Pilot conversion</strong></td>
+<td>Small group trials it first</td>
+<td><strong>Phased</strong> — introduced module by module</td>
+</tr>
+<tr>
+<td><strong>Pre-test loop</strong></td>
+<td>Checks first; may run <strong>0</strong> times</td>
+<td><strong>Post-test</strong> — always runs <strong>at least once</strong></td>
+</tr>
+<tr>
+<td><strong>Binary selection</strong></td>
+<td>Two paths (IF/ELSE)</td>
+<td><strong>Multi-way</strong> — several cases</td>
+</tr>
+<tr>
+<td><strong>Subroutine</strong></td>
+<td>A block of statements achieving a purpose</td>
+<td><strong>Function</strong> — a subroutine that <strong>returns a value</strong></td>
+</tr>
+<tr>
+<td><strong>Parameter</strong></td>
+<td>The variable named in the subroutine definition</td>
+<td><strong>Argument</strong> — the actual value passed in</td>
+</tr>
+<tr>
+<td><strong>Level 0 DFD</strong></td>
+<td>Whole-system overview; <strong>no</strong> data stores</td>
+<td><strong>Level 1</strong> — shows main processes</td>
+</tr>
+<tr>
+<td><strong>Data store</strong> (DFD)</td>
+<td>A file or storage location</td>
+<td><strong>External entity</strong> — a person or organisation</td>
+</tr>
+<tr>
+<td><strong>Structure chart</strong></td>
+<td>Shows subroutines and their relationships</td>
+<td><strong>DFD</strong> — shows data movement</td>
+</tr>
+<tr>
+<td><strong>Empty circle</strong> (structure chart)</td>
+<td>A data parameter</td>
+<td><strong>Filled circle</strong> — a control flag</td>
+</tr>
+<tr>
+<td><strong>Data dictionary</strong></td>
+<td>Describes <strong>every variable</strong> in the system</td>
+<td>Data flow diagram (shows movement)</td>
+</tr>
+<tr>
+<td><strong>Decision tree</strong></td>
+<td>All combinations of decisions and actions</td>
+<td>Structure chart</td>
+</tr>
+<tr>
+<td><strong>Storyboard</strong></td>
+<td>Screens and the links between them</td>
+<td>Flowchart (logic, not interface)</td>
+</tr>
+<tr>
+<td><strong>Gantt chart</strong></td>
+<td>Tasks on a timeline</td>
+<td>Critical path (dependencies)</td>
+</tr>
+<tr>
+<td><strong>One&#39;s complement</strong></td>
+<td>Flip every bit</td>
+<td><strong>Two&#39;s complement</strong> — flip, then <strong>add 1</strong></td>
+</tr>
+<tr>
+<td><strong>Refinement</strong></td>
+<td>Adding successive detail in separate diagrams</td>
+<td>Refactoring (rewriting code)</td>
+</tr>
+<tr>
+<td><strong>Forward chaining</strong></td>
+<td>Facts → conclusion</td>
+<td><strong>Backward chaining</strong> — goal → facts</td>
+</tr>
+<tr>
+<td><strong>Heuristic</strong></td>
+<td>A rule of thumb that usually works</td>
+<td>An algorithm (guaranteed correct)</td>
+</tr>
+<tr>
+<td><strong>Corrective maintenance</strong></td>
+<td>Fixing faults</td>
+<td><strong>Adaptive</strong> — adjusting to a new environment</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-quick-revision-checklist">9. Quick Revision Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Name the 8 software development steps and a tool for each</li>
+<li><input disabled="" type="checkbox"> Distinguish requirements from specifications</li>
+<li><input disabled="" type="checkbox"> Syntax vs logic vs runtime errors</li>
+<li><input disabled="" type="checkbox"> Black / white / grey box testing, and the 6 NESA system testing methods</li>
+<li><input disabled="" type="checkbox"> Four conversion methods and their risk profiles</li>
+<li><input disabled="" type="checkbox"> Waterfall vs Agile — structure, requirements, client involvement</li>
+<li><input disabled="" type="checkbox"> The three control structures; pre-test vs post-test</li>
+<li><input disabled="" type="checkbox"> The four desk check rules, and can run a full trace table with a FALSE exit</li>
+<li><input disabled="" type="checkbox"> Pseudocode templates: IF/ELSEIF, CASEWHERE, WHILE, REPEAT/UNTIL, FOR/NEXT</li>
+<li><input disabled="" type="checkbox"> Subroutines with parameters, and functions with RETURN</li>
+<li><input disabled="" type="checkbox"> DFD symbols; Level 0 vs Level 1</li>
+<li><input disabled="" type="checkbox"> Structure chart symbols (empty vs filled circle, diamond, curved arrow)</li>
+<li><input disabled="" type="checkbox"> Data dictionary columns and a worked row</li>
+<li><input disabled="" type="checkbox"> Binary ↔ decimal ↔ hex conversion</li>
+<li><input disabled="" type="checkbox"> Two&#39;s complement in three steps</li>
+<li><input disabled="" type="checkbox"> Four paradigms and what students must be able to do in each</li>
+<li><input disabled="" type="checkbox"> Forward vs backward chaining</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Software_Engineering__Object_Oriented_Programming.html">Object Oriented Programming</a> | <a href="Software_Engineering__Mechatronics.html">Mechatronics</a> | <a href="Software_Engineering__Programming_For_The_Web.html">Programming For The Web</a> | <a href="Software_Engineering__Software_Automation.html">Software Automation</a> | <a href="Software_Engineering__Secure_Software_Architecture.html">Secure Software Architecture</a> | <a href="Software_Engineering__MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-software-development-steps" data-target="1-software-development-steps">1. Software Development Steps</a><ul class="sub"><li><a href="#1-1-tool-to-step-mapping" data-target="1-1-tool-to-step-mapping" data-parent="1-software-development-steps">1.1 Tool-to-Step Mapping</a></li><li><a href="#1-2-requirements-functional-vs-non-functional" data-target="1-2-requirements-functional-vs-non-functional" data-parent="1-software-development-steps">1.2 Requirements — Functional vs Non-Functional</a></li><li><a href="#1-3-errors" data-target="1-3-errors" data-parent="1-software-development-steps">1.3 Errors</a></li><li><a href="#1-4-testing" data-target="1-4-testing" data-parent="1-software-development-steps">1.4 Testing</a></li><li><a href="#1-5-installation-and-conversion" data-target="1-5-installation-and-conversion" data-parent="1-software-development-steps">1.5 Installation and Conversion</a></li><li><a href="#1-6-maintenance" data-target="1-6-maintenance" data-parent="1-software-development-steps">1.6 Maintenance</a></li><li><a href="#1-7-comparative-development-approaches" data-target="1-7-comparative-development-approaches" data-parent="1-software-development-steps">1.7 Comparative Development Approaches</a></li></ul></li><li><a href="#2-algorithms" data-target="2-algorithms">2. Algorithms</a><ul class="sub"><li><a href="#2-1-the-three-control-structures" data-target="2-1-the-three-control-structures" data-parent="2-algorithms">2.1 The Three Control Structures</a></li><li><a href="#2-2-pseudocode-conventions-nesa" data-target="2-2-pseudocode-conventions-nesa" data-parent="2-algorithms">2.2 Pseudocode Conventions (NESA)</a></li><li><a href="#2-3-selection-in-detail" data-target="2-3-selection-in-detail" data-parent="2-algorithms">2.3 Selection in Detail</a></li><li><a href="#2-4-repetition-in-detail" data-target="2-4-repetition-in-detail" data-parent="2-algorithms">2.4 Repetition in Detail</a></li><li><a href="#2-5-flowchart-symbols" data-target="2-5-flowchart-symbols" data-parent="2-algorithms">2.5 Flowchart Symbols</a></li><li><a href="#2-6-subroutines" data-target="2-6-subroutines" data-parent="2-algorithms">2.6 Subroutines</a></li><li><a href="#2-7-sorting-algorithms" data-target="2-7-sorting-algorithms" data-parent="2-algorithms">2.7 Sorting Algorithms</a></li></ul></li><li><a href="#3-desk-checks" data-target="3-desk-checks">3. Desk Checks</a><ul class="sub"><li><a href="#3-1-the-four-desk-check-rules-memorise" data-target="3-1-the-four-desk-check-rules-memorise" data-parent="3-desk-checks">3.1 The Four Desk Check Rules — memorise</a></li><li><a href="#3-2-setting-up-the-table" data-target="3-2-setting-up-the-table" data-parent="3-desk-checks">3.2 Setting Up the Table</a></li><li><a href="#3-3-exam-rules-to-lock-in" data-target="3-3-exam-rules-to-lock-in" data-parent="3-desk-checks">3.3 Exam Rules to Lock In</a></li><li><a href="#3-4-worked-example-sequence" data-target="3-4-worked-example-sequence" data-parent="3-desk-checks">3.4 Worked Example — Sequence</a></li><li><a href="#3-5-worked-example-while-loop" data-target="3-5-worked-example-while-loop" data-parent="3-desk-checks">3.5 Worked Example — WHILE Loop</a></li><li><a href="#3-6-worked-example-if-else" data-target="3-6-worked-example-if-else" data-parent="3-desk-checks">3.6 Worked Example — IF / ELSE</a></li><li><a href="#3-7-worked-desk-check-a-multiplication" data-target="3-7-worked-desk-check-a-multiplication" data-parent="3-desk-checks">3.7 Worked Desk Check (a) — Multiplication</a></li><li><a href="#3-8-worked-desk-check-b-if-elseif-else" data-target="3-8-worked-desk-check-b-if-elseif-else" data-parent="3-desk-checks">3.8 Worked Desk Check (b) — IF / ELSEIF / ELSE</a></li><li><a href="#3-9-worked-desk-check-c-while-loop" data-target="3-9-worked-desk-check-c-while-loop" data-parent="3-desk-checks">3.9 Worked Desk Check (c) — WHILE Loop</a></li></ul></li><li><a href="#4-system-and-data-modelling-tools" data-target="4-system-and-data-modelling-tools">4. System and Data Modelling Tools</a><ul class="sub"><li><a href="#4-1-data-flow-diagram-dfd" data-target="4-1-data-flow-diagram-dfd" data-parent="4-system-and-data-modelling-tools">4.1 Data Flow Diagram (DFD)</a></li><li><a href="#4-2-structure-chart" data-target="4-2-structure-chart" data-parent="4-system-and-data-modelling-tools">4.2 Structure Chart</a></li><li><a href="#4-3-data-dictionary" data-target="4-3-data-dictionary" data-parent="4-system-and-data-modelling-tools">4.3 Data Dictionary</a></li><li><a href="#4-4-decision-tree" data-target="4-4-decision-tree" data-parent="4-system-and-data-modelling-tools">4.4 Decision Tree</a></li><li><a href="#4-5-storyboard" data-target="4-5-storyboard" data-parent="4-system-and-data-modelling-tools">4.5 Storyboard</a></li><li><a href="#4-6-ipo-chart" data-target="4-6-ipo-chart" data-parent="4-system-and-data-modelling-tools">4.6 IPO Chart</a></li><li><a href="#4-7-gantt-charts-project-management" data-target="4-7-gantt-charts-project-management" data-parent="4-system-and-data-modelling-tools">4.7 Gantt Charts (Project Management)</a></li><li><a href="#4-8-process-diaries-log-books" data-target="4-8-process-diaries-log-books" data-parent="4-system-and-data-modelling-tools">4.8 Process Diaries / Log Books</a></li></ul></li><li><a href="#5-numbering-systems" data-target="5-numbering-systems">5. Numbering Systems</a><ul class="sub"><li><a href="#5-1-binary-decimal" data-target="5-1-binary-decimal" data-parent="5-numbering-systems">5.1 Binary → Decimal</a></li><li><a href="#5-2-decimal-binary" data-target="5-2-decimal-binary" data-parent="5-numbering-systems">5.2 Decimal → Binary</a></li><li><a href="#5-3-hex-decimal" data-target="5-3-hex-decimal" data-parent="5-numbering-systems">5.3 Hex → Decimal</a></li><li><a href="#5-4-decimal-hex" data-target="5-4-decimal-hex" data-parent="5-numbering-systems">5.4 Decimal → Hex</a></li><li><a href="#5-5-binary-hex-shortcut" data-target="5-5-binary-hex-shortcut" data-parent="5-numbering-systems">5.5 Binary ↔ Hex Shortcut</a></li><li><a href="#5-6-two-s-complement-storing-negative-numbers" data-target="5-6-two-s-complement-storing-negative-numbers" data-parent="5-numbering-systems">5.6 Two's Complement — Storing Negative Numbers</a></li><li><a href="#5-7-character-representation" data-target="5-7-character-representation" data-parent="5-numbering-systems">5.7 Character Representation</a></li></ul></li><li><a href="#6-programming-paradigms" data-target="6-programming-paradigms">6. Programming Paradigms</a><ul class="sub"><li><a href="#6-1-logic-paradigm-terms" data-target="6-1-logic-paradigm-terms" data-parent="6-programming-paradigms">6.1 Logic Paradigm Terms</a></li></ul></li><li><a href="#7-hsc-exam-response-structures" data-target="7-hsc-exam-response-structures">7. HSC Exam Response Structures</a><ul class="sub"><li><a href="#verb-action" data-target="verb-action" data-parent="7-hsc-exam-response-structures">Verb → Action</a></li><li><a href="#desk-check-question-scaffold" data-target="desk-check-question-scaffold" data-parent="7-hsc-exam-response-structures">Desk Check Question Scaffold</a></li><li><a href="#extended-paragraph-scaffold" data-target="extended-paragraph-scaffold" data-parent="7-hsc-exam-response-structures">Extended Paragraph Scaffold</a></li></ul></li><li><a href="#8-glossary-terms-students-mix-up" data-target="8-glossary-terms-students-mix-up">8. Glossary — Terms Students Mix Up</a></li><li><a href="#9-quick-revision-checklist" data-target="9-quick-revision-checklist">9. Quick Revision Checklist</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>
